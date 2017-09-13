@@ -1,0 +1,120 @@
+import React from "react";
+// import './HomeView.scss'
+export default class ChangePassword extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      account: "",
+      oldPassword: "",
+      newPassword: ""
+    };
+    this.logout = this.logout.bind(this);
+  }
+  logout() {}
+  handleSubmit = async () => {
+    var formData = {
+      Account: this.state.account,
+      oldPassword: this.state.oldPassword,
+      newPassword: this.state.newPassword,
+      checkNewPassword: this.state.checkNewPassword
+    };
+    console.log(formData);
+    if (this.checkPassword()) {
+      await fetch("http://163.17.135.185/7thWebApi/api/Member/EditPassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          Account: formData.account,
+          odPassword: formData.oldPassword,
+          Password: formData.newPassword
+        })
+      })
+        .then(res => res.json())
+        .then(
+          function(responseJson) {
+            console.log(responseJson);
+            switch (responseJson.result) {
+              case "帳號錯誤":
+                break;
+              case "密碼錯誤":
+                break;
+              case "帳號錯誤":
+                break;
+            }
+          },
+          function(e) {
+            console.log(e);
+          }
+        );
+    } else {
+      alert("確認密碼輸入錯誤");
+    }
+  };
+  checkPassword = () => {
+    if (this.state.newPassword !== this.state.checkNewPassword) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+  handleAccountChange = event => {
+    this.setState({ account: event.target.value });
+  };
+  handleOldPasswordChange = event => {
+    this.setState({ oldPassword: event.target.value });
+  };
+  handleNewPasswordChange = event => {
+    this.setState({ newPassword: event.target.value });
+  };
+  handleCheckNewPasswordChange = event => {
+    this.setState({ checkNewPassword: event.target.value });
+  };
+
+  render() {
+    return (
+      <div>
+        <form>
+          <label>
+            帳號：
+            <input
+              type="text"
+              value={this.state.account}
+              onChange={this.handleAccountChange}
+            />
+          </label>
+          <br />
+          <label>
+            舊密碼：
+            <input
+              type="password"
+              value={this.state.oldPassword}
+              onChange={this.handleOldPasswordChange}
+            />
+          </label>
+          <br />
+          <label>
+            新密碼：
+            <input
+              type="password"
+              value={this.state.newPassword}
+              onChange={this.handleNewPasswordChange}
+            />
+          </label>
+          <br />
+          <label>
+            確認新密碼：
+            <input
+              type="password"
+              value={this.state.checkNewPassword}
+              onChange={this.handleCheckNewPasswordChange}
+            />
+          </label>
+          <br />
+          <input type="button" value="送出" onClick={this.handleSubmit} />
+        </form>
+      </div>
+    );
+  }
+}
