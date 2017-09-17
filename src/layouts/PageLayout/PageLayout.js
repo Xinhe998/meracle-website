@@ -4,10 +4,9 @@ import PropTypes from 'prop-types'
 import './PageLayout.scss'
 
 export const PageLayout = ({ children }) => (
+  // const isLoggedIn = this.state.isLoggedIn;
   <div className='container text-center'>
     <IndexLink to='/' activeClassName='page-layout__nav-item--active'>Home</IndexLink>
-    {' · '}
-    <Link to='/counter' activeClassName='page-layout__nav-item--active'>Counter</Link>
     {' · '}
     <Link to='/login' activeClassName='page-layout__nav-item--active'>登入</Link>
     {' · '}
