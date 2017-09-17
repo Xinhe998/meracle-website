@@ -3,12 +3,12 @@
 // import { Route, IndexRoute } from 'react-router';  
 import CoreLayout from '../layouts/PageLayout/PageLayout'
 import Home from './Home'
-import CounterRoute from './Counter'
 import Login from './Login'
 import Register from './Register'
 import ForgetPassword from './ForgetPassword'
 import ChangePassword from './ChangePassword'
 import Profile from './Profile'
+import Logout from './Logout'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -18,12 +18,12 @@ export const createRoutes = (store) => ({
   component   : CoreLayout,
   indexRoute  : Home,
   childRoutes : [
-    CounterRoute(store),
     Login(store),
     Register(store),
     ForgetPassword(store),
     ChangePassword(store),
     Profile(store),
+    Logout(store),
   ]
 })
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically

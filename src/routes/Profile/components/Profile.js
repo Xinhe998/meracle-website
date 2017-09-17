@@ -1,16 +1,28 @@
 import React from 'react'
+import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router'
 // import './HomeView.scss'
-export default class Profile extends React.Component{
-    constructor() {
-        super();
+export default class Profile extends React.Component {
+    static propTypes = {};
+    constructor(props) {
+        super(props);
         this.state = {
             userName: '',  
             password: '',
         };
         this.logout = this.logout.bind(this);
     }
+    componentWillMount() {
+        this.preventAnonymousAccess()
+    }
     logout() {
     }
+    preventAnonymousAccess = () => {
+        if (this.props.user) {
+          alert('請先登入')
+          browserHistory.push('/Login')
+        }
+      }
     getProfileData = async () => {
         console.log(formData);
         await fetch('http://localhost:64323/api/Member/PersonalPage', {

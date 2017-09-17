@@ -60,11 +60,12 @@ export default class Login extends React.Component {
   };
   render() {
     return (
-      <div>
+      <div className="form-group">
         <form>
           <label>
             帳號：
             <input
+              className="form-control"
               type="text"
               value={this.state.account}
               onChange={this.handleAccountChange}
@@ -74,6 +75,7 @@ export default class Login extends React.Component {
           <label>
             密碼：
             <input
+              className="form-control"
               type="password"
               value={this.state.password}
               onChange={this.handlePasswordChange}

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { browserHistory } from 'react-router'
+import { browserHistory } from "react-router";
 // import './HomeView.scss'
 export default class ChangePassword extends React.Component {
   static propTypes = {};
@@ -14,11 +14,14 @@ export default class ChangePassword extends React.Component {
     this.logout = this.logout.bind(this);
   }
   componentWillMount() {
-    if (this.props.user) {
-      alert('請先登入')
-      browserHistory.push('/Login')
-    }
+    this.preventAnonymousAccess();
   }
+  preventAnonymousAccess = () => {
+    if (this.props.user) {
+      alert("請先登入");
+      browserHistory.push("/Login");
+    }
+  };
   logout() {}
   handleSubmit = async () => {
     var formData = {
@@ -88,6 +91,7 @@ export default class ChangePassword extends React.Component {
           <label>
             帳號：
             <input
+              className="form-control"
               type="text"
               value={this.state.account}
               onChange={this.handleAccountChange}
@@ -97,6 +101,7 @@ export default class ChangePassword extends React.Component {
           <label>
             舊密碼：
             <input
+              className="form-control"
               type="password"
               value={this.state.oldPassword}
               onChange={this.handleOldPasswordChange}
@@ -106,6 +111,7 @@ export default class ChangePassword extends React.Component {
           <label>
             新密碼：
             <input
+              className="form-control"
               type="password"
               value={this.state.newPassword}
               onChange={this.handleNewPasswordChange}
@@ -115,6 +121,7 @@ export default class ChangePassword extends React.Component {
           <label>
             確認新密碼：
             <input
+              className="form-control"
               type="password"
               value={this.state.checkNewPassword}
               onChange={this.handleCheckNewPasswordChange}

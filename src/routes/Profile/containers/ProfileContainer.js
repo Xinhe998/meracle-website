@@ -10,7 +10,12 @@ import Profile from '../components/Profile'
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
-
+const userDispatchToProps = {
+    
+}
+const userStateToProps = (state) => ({
+    user : state.user
+})
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 
@@ -26,4 +31,4 @@ import Profile from '../components/Profile'
     Selectors are composable. They can be used as input to other selectors.
     https://github.com/reactjs/reselect    */
 
-export default Profile
+export default connect(userStateToProps, userDispatchToProps)(Profile)

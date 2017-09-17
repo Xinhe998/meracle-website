@@ -3,8 +3,9 @@ import { IndexLink, Link } from 'react-router'
 import PropTypes from 'prop-types'
 import './PageLayout.scss'
 
+// const isLogin = this.props.user;
 export const PageLayout = ({ children }) => (
-  // const isLoggedIn = this.state.isLoggedIn;
+  
   <div className='container text-center'>
     <IndexLink to='/' activeClassName='page-layout__nav-item--active'>Home</IndexLink>
     {' · '}
@@ -17,6 +18,8 @@ export const PageLayout = ({ children }) => (
     <Link to='/change_password' activeClassName='page-layout__nav-item--active'>修改密碼</Link>
     {' · '}
     <Link to='/profile' activeClassName='page-layout__nav-item--active'>個人資料</Link>
+    {' · '}
+    <Link to='/logout' activeClassName='page-layout__nav-item--active'>登出</Link>
     <div className='page-layout__viewport'>
       {children}
     </div>
