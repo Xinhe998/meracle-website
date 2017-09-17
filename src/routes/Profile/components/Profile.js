@@ -13,7 +13,7 @@ export default class Profile extends React.Component{
     }
     getProfileData = async () => {
         console.log(formData);
-        await fetch('http://163.17.135.185/7thWebApi/api/Member/PersonalPage', {
+        await fetch('http://localhost:64323/api/Member/PersonalPage', {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',

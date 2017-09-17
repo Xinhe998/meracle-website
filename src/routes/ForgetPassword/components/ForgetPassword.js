@@ -15,7 +15,7 @@ export default class ForgetPassword extends React.Component{
             Account: this.state.account,
         };
         console.log(formData);
-        await fetch('http://163.17.135.185/7thWebApi/api/Member/ForgetPassword', {
+        await fetch('http://localhost:64323/api/Member/ForgetPassword', {
             method: 'POST',
             headers:{
             'Content-Type':'application/json',

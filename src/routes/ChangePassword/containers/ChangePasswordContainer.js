@@ -7,6 +7,13 @@ import { connect } from 'react-redux'
 
 import ChangePassword from '../components/ChangePassword'
 
+const userDispatchToProps = {
+    
+}
+const userStateToProps = (state) => ({
+    user : state.user
+})
+
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
@@ -26,4 +33,4 @@ import ChangePassword from '../components/ChangePassword'
     Selectors are composable. They can be used as input to other selectors.
     https://github.com/reactjs/reselect    */
 
-export default ChangePassword
+    export default connect(userStateToProps, userDispatchToProps)(ChangePassword)

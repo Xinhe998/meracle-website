@@ -32,7 +32,7 @@ export default class Login extends React.Component{
             job: this.state.job,
         };
         console.log(formData);
-        await fetch('http://163.17.135.185/7thWebApi/api/Member/Register', {
+        await fetch('http://localhost:64323/api/Member/Register', {
             method: 'POST',
             mode: 'cors',
             headers:{

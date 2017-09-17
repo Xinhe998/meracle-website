@@ -1,14 +1,23 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { browserHistory } from 'react-router'
 // import './HomeView.scss'
 export default class ChangePassword extends React.Component {
-  constructor() {
-    super();
+  static propTypes = {};
+  constructor(props) {
+    super(props);
     this.state = {
       account: "",
       oldPassword: "",
       newPassword: ""
     };
     this.logout = this.logout.bind(this);
+  }
+  componentWillMount() {
+    if (this.props.user) {
+      alert('請先登入')
+      browserHistory.push('/Login')
+    }
   }
   logout() {}
   handleSubmit = async () => {
@@ -20,7 +29,7 @@ export default class ChangePassword extends React.Component {
     };
     console.log(formData);
     if (this.checkPassword()) {
-      await fetch("http://163.17.135.185/7thWebApi/api/Member/EditPassword", {
+      await fetch("http://localhost:64323/api/Member/EditPassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
