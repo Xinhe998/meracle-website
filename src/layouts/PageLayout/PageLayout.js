@@ -14,7 +14,7 @@ class PageLayout extends React.Component {
   }
   render() {
     // console.log("!!!", this.props)
-    const isLogin = this.props.user.account;
+    const isLogin = (this.props.user) ? this.props.user.account : this.props.user ;
 
     return (
       <div className="container text-center">
