@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 // import './HomeView.scss'
 export default class Login extends React.Component {
   static propTypes = {};
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      account: '',
-      password: '',
-    }
+      account: "",
+      password: ""
+    };
     this.logout = this.logout.bind(this);
   }
   logout() {}
@@ -31,25 +31,25 @@ export default class Login extends React.Component {
       })
         .then(res => res.json())
         .then(
-          function (responseJson) {
+          function(responseJson) {
             console.log(responseJson);
             switch (responseJson.result) {
-                case "帳號錯誤":
+              case "帳號錯誤":
                 break;
-                case "密碼錯誤":
+              case "密碼錯誤":
                 break;
-                case "登入成功":
-                    const data = {
-                        account: responseJson.account,
-                    }
-                    this.props.userLogin(data);
-                    break;
+              case "登入成功":
+                const data = {
+                  account: responseJson.account
+                };
+                this.props.userLogin(data);
+                break;
             }
           },
           function(e) {
             console.log(e);
           }
-        )
+        );
     } catch (e) {}
   };
   handleAccountChange = event => {
@@ -63,7 +63,7 @@ export default class Login extends React.Component {
       <div className="form-group">
         <form>
           <label>
-            帳號：
+            Email：
             <input
               className="form-control"
               type="text"
@@ -85,6 +85,6 @@ export default class Login extends React.Component {
           <input type="button" value="登入" onClick={this.handleSubmit} />
         </form>
       </div>
-    )
+    );
   }
 }

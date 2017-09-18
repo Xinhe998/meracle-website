@@ -1,31 +1,36 @@
-// We only need to import the modules necessary for initial render
-// import React from 'react';  
-// import { Route, IndexRoute } from 'react-router';  
+// import React from 'react';
+// import { Route, IndexRoute } from 'react-router';
 import CoreLayout from '../layouts/PageLayout/PageLayout'
-import Home from './Home'
-import Login from './Login'
-import Register from './Register'
-import ForgetPassword from './ForgetPassword'
-import ChangePassword from './ChangePassword'
-import Profile from './Profile'
-import Logout from './Logout'
+import NotFound from "./NotFound";
+import Home from "./Home";
+import Login from "./Login";
+import Register from "./Register";
+import ForgetPassword from "./ForgetPassword";
+import ChangePassword from "./ChangePassword";
+import Profile from "./Profile";
+import Logout from "./Logout";
+import AddChild from "./AddChild";
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
-export const createRoutes = (store) => ({
-  path        : '/',
-  component   : CoreLayout,
-  indexRoute  : Home,
-  childRoutes : [
-    Login(store),
-    Register(store),
-    ForgetPassword(store),
-    ChangePassword(store),
-    Profile(store),
-    Logout(store),
-  ]
-})
+export const createRoutes = store => (
+  {
+    path: "/",
+    component: CoreLayout,
+    indexRoute: Home,
+    childRoutes: [
+      Login(store),
+      Register(store),
+      ForgetPassword(store),
+      ChangePassword(store),
+      Profile(store),
+      Logout(store),
+      AddChild(store),
+      NotFound,
+    ]
+  }
+);
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically
     using getChildRoutes with the following signature:
 
@@ -44,4 +49,4 @@ export const createRoutes = (store) => ({
     when the route exists and matches.
 */
 
-export default createRoutes
+export default createRoutes;

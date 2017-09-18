@@ -99,7 +99,7 @@ export default class Login extends React.Component {
       <div>
         <form>
           <label>
-            帳號：
+            Email：
             <input
               type="text"
               className="form-control"

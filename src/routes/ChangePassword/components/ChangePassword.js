@@ -11,7 +11,6 @@ export default class ChangePassword extends React.Component {
       oldPassword: "",
       newPassword: ""
     };
-    this.logout = this.logout.bind(this);
   }
   componentWillMount() {
     this.preventAnonymousAccess();
@@ -22,7 +21,6 @@ export default class ChangePassword extends React.Component {
       browserHistory.push("/Login");
     }
   };
-  logout() {}
   handleSubmit = async () => {
     var formData = {
       Account: this.state.account,

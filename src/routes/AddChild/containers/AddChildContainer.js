@@ -5,15 +5,15 @@ import { connect } from 'react-redux'
     wiring in the actions and state necessary to render a presentational
     component - in this case, the counter:   */
 
-import ChangePassword from '../components/ChangePassword'
+import AddChild from '../components/AddChild'
 
 const userDispatchToProps = {
     
 }
-const userStateToProps = (state) => ({
-    user : state.user
+const addChildStateToProps = (state) => ({
+    user : state.user,
+    child: state.child,
 })
-
 /*  Object of action creators (can also be function that returns object).
     Keys will be passed as props to presentational components. Here we are
     implementing our wrapper around increment; the component doesn't care   */
@@ -33,4 +33,4 @@ const userStateToProps = (state) => ({
     Selectors are composable. They can be used as input to other selectors.
     https://github.com/reactjs/reselect    */
 
-export default connect(userStateToProps, userDispatchToProps)(ChangePassword)
+export default connect(addChildStateToProps, userDispatchToProps)(AddChild)

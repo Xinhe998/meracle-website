@@ -13,7 +13,7 @@ export default class Profile extends React.Component {
         this.logout = this.logout.bind(this);
     }
     componentWillMount() {
-        this.preventAnonymousAccess()
+        // this.preventAnonymousAccess()
     }
     logout() {
     }
