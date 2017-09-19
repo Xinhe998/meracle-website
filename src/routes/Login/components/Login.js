@@ -13,11 +13,12 @@ export default class Login extends React.Component {
     };
   }
   componentDidMount() {
-    setInterval(() => {
+    setTimeout(() => {
       this.setState({
         isLoading: false
       });
     }, 300);
+    
   }
   handleSubmit = async () => {
     try {
