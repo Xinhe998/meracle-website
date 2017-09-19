@@ -7,6 +7,14 @@ export default class PageLayout extends React.Component {
   };
   constructor(props) {
     super(props);
+    this.state= {
+      isLoading: true
+    }
+  }
+  componentDidMount () {
+    this.setState({
+      isLoading: false
+    })
   }
   render() {
     const { children } = this.props;
