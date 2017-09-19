@@ -1,5 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from "react"
+import PropTypes from "prop-types"
+import Halogen from "halogen"
 // import './HomeView.scss'
 export default class PageLayout extends React.Component {
   static propTypes = {
@@ -19,6 +20,7 @@ export default class PageLayout extends React.Component {
   render() {
     const { children } = this.props;
     return (
+      <div><Halogen.BeatLoader/></div>
       <div className='container text-center'>
       <IndexLink to='/' activeClassName='page-layout__nav-item--active'>Home</IndexLink>
       {' · '}

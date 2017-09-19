@@ -3,6 +3,7 @@ import { IndexLink, Link } from "react-router"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import "./PageLayout.scss"
+import Halogen from "halogen"
 
 // const isLogin = this.props.user;
 class PageLayout extends React.Component {
@@ -11,13 +12,23 @@ class PageLayout extends React.Component {
   };
   constructor(props) {
     super(props);
+    this.state= {
+      isLoading: true
+    }
+  }
+  componentDidMount () {
+    this.setState({
+      isLoading: false
+    })
   }
   render() {
     // console.log("!!!", this.props)
     const isLogin = (this.props.user) ? this.props.user.account : this.props.user ;
-
+    const isLoading = (this.state.isLoading);
     return (
       <div className="container text-center">
+        <div><Halogen.BeatLoader /></div>
+        {isLoading && <div><Halogen.BeatLoader /></div>}
         <IndexLink to="/" activeClassName="page-layout__nav-item--active">
           Home
         </IndexLink>
