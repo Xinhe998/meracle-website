@@ -12,8 +12,8 @@ export default class Login extends React.Component {
       isLoading: true
     };
   }
-  componentDidMount() {
-    document.title = this.state.title + " | 憶想奇機";
+  componentDidMount () {
+    // document.title = this.state.title + " | 憶想奇機";
     setTimeout(() => {
       this.setState({
         isLoading: false
@@ -26,7 +26,7 @@ export default class Login extends React.Component {
         account: this.state.account,
         password: this.state.password
       };
-      console.log(formData);
+      console.log(formData)
       await fetch("http://localhost:64323/api/Member/Login", {
         method: "POST",
         headers: {
@@ -39,7 +39,7 @@ export default class Login extends React.Component {
       })
         .then(res => res.json())
         .then(
-          function(responseJson) {
+          function (responseJson) {
             console.log(responseJson);
             switch (responseJson.result) {
               case "帳號錯誤":
@@ -52,10 +52,12 @@ export default class Login extends React.Component {
                 };
                 this.props.userLogin(data);
                 break;
+              case "尚未填寫問卷":
+                break;
             }
           },
-          function(e) {
-            console.log(e);
+          function (e) {
+            console.log(e)
           }
         );
     } catch (e) {}
@@ -98,6 +100,6 @@ export default class Login extends React.Component {
           <input type="button" value="登入" onClick={this.handleSubmit} />
         </form>
       </div>
-    );
+    )
   }
 }

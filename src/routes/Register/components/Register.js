@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Redirect } from "react-router";
-import Loading from "../../../components/Loading"
+import { browserHistory } from "react-router";
+import Loading from "../../../components/Loading";
 // import './HomeView.scss'
 export default class Login extends React.Component {
   constructor() {
@@ -16,16 +16,17 @@ export default class Login extends React.Component {
       address: "",
       job: "",
       isLoading: true,
+      checkPasswordError: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentDidMount() {
-    document.title = this.state.title + " | 憶想奇機";
+  componentDidMount () {
+    // document.title = this.state.title + " | 憶想奇機"
     setTimeout(() => {
       this.setState({
         isLoading: false
-      });
-    }, 300);
+      })
+    }, 300)
   }
   handleSubmit = async () => {
     var formData = {
@@ -63,10 +64,13 @@ export default class Login extends React.Component {
               alert("註冊成功，請去登入");
               // Clear form
               ReactDOM.findDOMNode(this.refs.textInput).value = "";
-              this.setState({ fireRedirect: true });
+              browserHistory.push("/Login");
               break;
             case "帳號重複":
               alert("帳號重複");
+              break;
+            case "註冊失敗":
+              alert("註冊失敗");
               break;
           }
         },
@@ -83,6 +87,15 @@ export default class Login extends React.Component {
   };
   handleCheckPasswordChange = event => {
     this.setState({ checkPassword: event.target.value });
+    if (event.target.value !== this.state.password) {
+      this.setState({
+        checkPasswordError: "密碼不一致"
+      });
+    } else {
+      this.setState({
+        checkPasswordError: ""
+      });
+    }
   };
   handleNameChange = event => {
     this.setState({ name: event.target.value });
@@ -99,13 +112,11 @@ export default class Login extends React.Component {
   handleJobChange = event => {
     this.setState({ job: event.target.value });
   };
-  render() {
+  render () {
     const isLoading = this.state.isLoading;
     return (
       <div>
-        {isLoading && (
-          <Loading />
-        )}
+        {isLoading && <Loading />}
         <form>
           <label>
             Email：
@@ -135,6 +146,7 @@ export default class Login extends React.Component {
               value={this.state.CheckPassword}
               onChange={this.handleCheckPasswordChange}
             />
+            <span>{this.state.checkPasswordError}</span>
           </label>
           <br />
           <label>
@@ -190,6 +202,6 @@ export default class Login extends React.Component {
           <input type="button" value="註冊" onClick={this.handleSubmit} />
         </form>
       </div>
-    );
+    )
   }
 }

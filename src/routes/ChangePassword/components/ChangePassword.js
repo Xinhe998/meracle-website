@@ -12,13 +12,13 @@ export default class ChangePassword extends React.Component {
       newPassword: ""
     };
   }
-  componentWillMount() {
-    this.preventAnonymousAccess();
+  componentWillMount () {
+    this.preventAnonymousAccess()
   }
   preventAnonymousAccess = () => {
     if (this.props.user) {
-      alert("請先登入");
-      browserHistory.push("/Login");
+      alert("請先登入")
+      browserHistory.push("/Login")
     }
   };
   handleSubmit = async () => {
@@ -46,11 +46,9 @@ export default class ChangePassword extends React.Component {
           function(responseJson) {
             console.log(responseJson);
             switch (responseJson.result) {
-              case "帳號錯誤":
+              case "修改成功":
                 break;
               case "密碼錯誤":
-                break;
-              case "帳號錯誤":
                 break;
             }
           },
