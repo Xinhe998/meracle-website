@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Redirect } from "react-router";
+import Loading from "../../../components/Loading"
 // import './HomeView.scss'
 export default class Login extends React.Component {
   constructor() {
@@ -14,12 +15,18 @@ export default class Login extends React.Component {
       birth: "",
       address: "",
       job: "",
-      fireRedirect: false
+      isLoading: true,
     };
-    this.logout = this.logout.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  logout() {}
+  componentDidMount() {
+    document.title = this.state.title + " | 憶想奇機";
+    setTimeout(() => {
+      this.setState({
+        isLoading: false
+      });
+    }, 300);
+  }
   handleSubmit = async () => {
     var formData = {
       account: this.state.account,
@@ -93,10 +100,12 @@ export default class Login extends React.Component {
     this.setState({ job: event.target.value });
   };
   render() {
-    const { from } = this.props.location.state || "/";
-    const { fireRedirect } = this.state;
+    const isLoading = this.state.isLoading;
     return (
       <div>
+        {isLoading && (
+          <Loading />
+        )}
         <form>
           <label>
             Email：
@@ -180,7 +189,6 @@ export default class Login extends React.Component {
           <br />
           <input type="button" value="註冊" onClick={this.handleSubmit} />
         </form>
-        {fireRedirect && <Redirect to={from || "/login"} />}
       </div>
     );
   }

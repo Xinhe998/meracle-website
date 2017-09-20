@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Halogen from "halogen";
+import Loading from "../../../components/Loading"
 // import './Login.scss'
 export default class Login extends React.Component {
   static propTypes = {};
@@ -13,12 +13,12 @@ export default class Login extends React.Component {
     };
   }
   componentDidMount() {
+    document.title = this.state.title + " | 憶想奇機";
     setTimeout(() => {
       this.setState({
         isLoading: false
       });
     }, 300);
-    
   }
   handleSubmit = async () => {
     try {
@@ -68,37 +68,11 @@ export default class Login extends React.Component {
   };
 
   render() {
-    var color = "#064065";
-    var overlayStyle = {
-      display: "-webkit-flex",
-      display: "flex",
-      WebkitFlex: "0 1 auto",
-      flex: "0 1 auto",
-      WebkitFlexDirection: "column",
-      flexDirection: "column",
-      WebkitFlexGrow: 1,
-      flexGrow: 1,
-      WebkitFlexShrink: 0,
-      flexShrink: 0,
-      width: "100%",
-      height: "100%",
-      WebkitAlignItems: "center",
-      alignItems: "center",
-      WebkitJustifyContent: "center",
-      justifyContent: "center",
-      backgroundColor: "rgba(255,255,255,0.9)",
-      position: "absolute",
-      zIndex: 100,
-      top: 0,
-      left: 0
-    };
     const isLoading = this.state.isLoading;
     return (
       <div className="form-group">
         {isLoading && (
-          <div style={overlayStyle}>
-            <Halogen.BeatLoader color={color} size="20px" margin="6px" />
-          </div>
+          <Loading />
         )}
         <form>
           <label>
