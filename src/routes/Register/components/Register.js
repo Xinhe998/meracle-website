@@ -4,7 +4,7 @@ import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
 // import './HomeView.scss'
 export default class Login extends React.Component {
-  constructor() {
+  constructor () {
     super();
     this.state = {
       account: "",

@@ -1,12 +1,48 @@
+body {
+  font-family: "Roboto", "Noto Sans TC", "Arial Unicode MS", sans-serif;
+}
 .page-layout__viewport {
   padding-top: 4rem;
 }
-
-.page-layout__nav-item--active {
-  font-weight: bold;
-  text-decoration: underline;
+@font-face {
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: 300;
+  src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Light.woff2)
+      format("woff2"),
+    url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Light.woff)
+      format("woff"),
+    url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Light.otf)
+      format("opentype");
 }
-
+@font-face {
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: 400;
+  src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.woff2)
+      format("woff2"),
+    url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.woff)
+      format("woff"),
+    url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Regular.otf)
+      format("opentype");
+}
+@font-face {
+  font-family: "Noto Sans TC";
+  font-style: normal;
+  font-weight: 500;
+  src: url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Medium.woff2)
+      format("woff2"),
+    url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Medium.woff)
+      format("woff"),
+    url(//fonts.gstatic.com/ea/notosanstc/v1/NotoSansTC-Medium.otf)
+      format("opentype");
+}
+.meracle-navbar {
+  .navbar-toggler {
+    outline: none;
+    cursor: pointer;
+  }
+}
 .meracle-navbar-logo {
   width: 60px;
   height: auto;

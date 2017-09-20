@@ -3,21 +3,8 @@ import PropTypes from "prop-types";
 import Halogen from "halogen";
 
 export default class Loading extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     isLoading: true
-  //   };
-  // }
-  // componentDidMount() {
-  //   setTimeout(() => {
-  //     this.setState({
-  //       isLoading: false
-  //     });
-  //   }, 300);
-  // }
-  render() {
-    var color = "#064065";
+  render () {
+    var color = "#064065"
     var overlayStyle = {
       display: "-webkit-flex",
       display: "flex",
@@ -40,7 +27,7 @@ export default class Loading extends React.Component {
       zIndex: 100,
       top: 0,
       left: 0
-    };
+    }
     var logoStyle = {
       width: 150,
     }
