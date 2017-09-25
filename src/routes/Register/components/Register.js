@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
+import { DatePicker } from 'antd';
+import 'antd/dist/antd.css';// 加载 CSS
 // import './HomeView.scss'
 export default class Login extends React.Component {
   constructor () {
@@ -181,6 +183,7 @@ export default class Login extends React.Component {
           <br />
           <label>
             生日：
+            <DatePicker />
             <input
               type="date"
               className="form-control"

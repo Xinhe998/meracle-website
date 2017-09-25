@@ -15,7 +15,7 @@ class HomeView extends React.Component {
       this.setState({
         isLoading: false
       });
-    }, 300);
+    }, 800);
   }
   render() {
     const isMobile = 
@@ -33,6 +33,16 @@ class HomeView extends React.Component {
         {isLoading  && (
           <Loading />
         )}
+        <div id="welcome-section">
+          <div className="container">
+            <h1>憶想奇機</h1>
+          </div>
+        </div>
+        <div id="feature-section">
+          <div className="container">
+            <h1>特色</h1>
+          </div>
+        </div>
       </div>
     )
   }

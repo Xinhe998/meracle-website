@@ -13,21 +13,45 @@ class PageLayout extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isScrollTop: true,
+    };
+    this.handleScroll = this.handleScroll.bind(this);
   }
-  render() {
+  componentDidMount () {
+    window.addEventListener('scroll', this.handleScroll);
+  };
+  
+  componentWillUnmount () {
+    window.removeEventListener('scroll', this.handleScroll);
+  };
+  handleScroll (event) {
+    let supportPageOffset = window.pageXOffset !== undefined;
+    let isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
+    let scroll = {
+       x: supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft,
+       y: supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop
+    };
+    if (scroll.y === 0) {
+      document.getElementById('navbar').classList.remove('not-in-top');
+    } else {
+      // console.log("!!!!!!");
+      document.getElementById('navbar').classList.add('not-in-top');
+    }
+  };
+  render () {
     // console.log("!!!", this.props)
     const isLogin = this.props.user ? this.props.user.account : this.props.user;
     return (
       <div className="meracle-navbar">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-md navbar-light bg-light" id="navbar">
           <IndexLink className="navbar-brand" to="#">
             <img
               src={require("../../components/assets/logo_no_background.png")}
               className="d-inline-block align-top meracle-navbar-logo"
               alt=""
             />
-            Meracle
+            <span><text className="notice">M</text>eracle</span>
           </IndexLink>
           <button
             className="navbar-toggler"
@@ -129,7 +153,7 @@ class PageLayout extends React.Component {
             </ul>
           </div>
         </nav>
-        <div className="container page-layout__viewport">{this.props.children}</div>
+        <div className="page-layout__viewport">{this.props.children}</div>
       </div>
     );
   }

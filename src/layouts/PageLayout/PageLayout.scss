@@ -1,8 +1,12 @@
+$mobileWidh: 768px;
 body {
   font-family: "Roboto", "Noto Sans TC", "Arial Unicode MS", sans-serif;
 }
 .page-layout__viewport {
-  padding-top: 4rem;
+  // padding-top: 4rem;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 @font-face {
   font-family: "Noto Sans TC";
@@ -38,12 +42,48 @@ body {
       format("opentype");
 }
 .meracle-navbar {
+  .navbar {
+    width: 100%;
+    background-color: #222838!important;
+    transition: .2s background;
+    z-index: 100;
+    a {
+      color: white!important;
+    }
+    &.not-in-top {
+      position: fixed;
+      background: #FBEFEF!important;
+      transition: .2s background;
+      a {
+        color: initial!important;
+      }
+    }
+  }
+  .navbar-nav {
+    @media (min-width: $mobileWidh) {
+      position: absolute;
+      right: 50px;
+    }
+  }
   .navbar-toggler {
     outline: none;
     cursor: pointer;
   }
 }
-.meracle-navbar-logo {
-  width: 60px;
-  height: auto;
+.navbar-brand {
+  .meracle-navbar-logo {
+    width: 60px;
+    height: auto;
+  }
+  span {
+    top: 11px;
+    position: relative;
+    color: #0c4268;
+    font-weight: 100;
+    font-size: 24px;
+    margin-left: 15px;
+    .notice {
+      color: #f77c86;
+    }
+  }
 }

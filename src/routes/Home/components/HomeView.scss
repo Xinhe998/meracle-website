@@ -1,5 +1,60 @@
-.duck {
-  display: block;
-  width: 120px;
-  margin: 1.5rem auto;
+@mixin gradient-text($gradient, $bg : 'light') {
+  @supports(mix-blend-mode: lighten) {
+    display: inline-block;
+    position: relative;
+    
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      
+      background: unquote($gradient);
+      pointer-events: none;
+    }
+
+    @if ($bg == 'light') {
+      color: #000;
+      background: #fff;
+      mix-blend-mode: multiply;
+
+      &::before {
+        mix-blend-mode: screen;
+      }
+    } @else {
+      color: #fff;
+      background: #000;
+      mix-blend-mode: lighten;
+
+      &::before {
+        mix-blend-mode: multiply;
+      }
+    }
+  }
+}
+#welcome-section {
+  width: 100%;
+  background-image: url('https://pixiefy.com/themes/apps-craft/html/img/welcome-bg.jpg');
+  height: 680px;
+  background-size: cover;
+  .container {
+    padding-top: 50px;
+  }
+  h1 {
+    color: white;
+  }
+}
+#feature-section {
+  width: 100%;
+  background-color: #F4F4F4;
+  height: 680px;
+  background-size: cover;
+  .container {
+    padding-top: 50px;
+    text-align: center;
+  }
+  h1 {
+    text-align: center;
+    @include gradient-text('linear-gradient(to right,#f77c86, #668BA2)', 'light');
+  }
 }

@@ -69,7 +69,7 @@ const config = {
 // JavaScript
 // ------------------------------------
 config.module.rules.push({
-  test: /\.(js|jsx)$/,
+  test: /\.(js|jsx|css)$/,
   exclude: /node_modules/,
   use: [{
     loader: 'babel-loader',
@@ -91,7 +91,9 @@ config.module.rules.push({
           {
             useBuiltIns: true // we polyfill Object.assign in src/normalize.js
           },
+          // ['import', { libraryName: "antd", style: true }]
         ],
+        ['babel-plugin-import', { libraryName: 'antd', style: 'css' }] // `style: true` 会加载 less 文件
       ],
       presets: [
         'babel-preset-react',
@@ -163,6 +165,25 @@ config.module.rules.push({
   options : {
     limit : 8192,
   },
+})
+
+config.module.rules.push({
+  test: /\.css$/,
+  use: [
+      { loader: 'style-loader' },
+      { loader: 'css-loader', options: { modules: true, importLoaders: 1 } },
+      { loader: 'postcss-loader' }
+  ],
+  exclude: /node_modules/
+})
+
+config.module.rules.push({
+  test: /\.css$/,
+  use: [
+      { loader: 'style-loader' },
+      { loader: 'css-loader' }
+  ],
+  include: /node_modules/
 })
 
 // Fonts
