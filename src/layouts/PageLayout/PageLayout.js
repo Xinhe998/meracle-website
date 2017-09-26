@@ -26,17 +26,11 @@ class PageLayout extends React.Component {
     window.removeEventListener('scroll', this.handleScroll);
   };
   handleScroll (event) {
-    let supportPageOffset = window.pageXOffset !== undefined;
-    let isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
-    let scroll = {
-       x: supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft,
-       y: supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop
-    };
-    if (scroll.y === 0) {
-      document.getElementById('navbar').classList.remove('not-in-top');
-    } else {
-      // console.log("!!!!!!");
+    var value = document.body.scrollTop;
+    if (value > 0) {
       document.getElementById('navbar').classList.add('not-in-top');
+    } else {
+      document.getElementById('navbar').classList.remove('not-in-top');
     }
   };
   render () {

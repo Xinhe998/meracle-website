@@ -1,8 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Loading from "../../../components/Loading"
+import Loading from "../../../components/Loading";
+import { Button, Input, Form } from "antd";
 // import './Login.scss'
-export default class Login extends React.Component {
+const FormItem = Form.Item;
+function hasErrors(fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+class Login extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
@@ -11,56 +16,68 @@ export default class Login extends React.Component {
       password: "",
       isLoading: true
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentDidMount () {
+  componentDidMount() {
     // document.title = this.state.title + " | 憶想奇機";
     setTimeout(() => {
       this.setState({
         isLoading: false
       });
     }, 300);
+    this.props.form.validateFields();
   }
-  handleSubmit = async () => {
-    try {
-      var formData = {
-        account: this.state.account,
-        password: this.state.password
-      };
-      console.log(formData)
-      await fetch("http://localhost:64323/api/Member/Login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          Account: formData.account,
-          Password: formData.password
-        })
-      })
-        .then(res => res.json())
-        .then(
-          function (responseJson) {
-            console.log(responseJson);
-            switch (responseJson.result) {
-              case "帳號錯誤":
-                break;
-              case "密碼錯誤":
-                break;
-              case "登入成功":
-                const data = {
-                  account: responseJson.account
-                };
-                this.props.userLogin(data);
-                break;
-              case "尚未填寫問卷":
-                break;
-            }
+  handleSubmit = async e => {
+    e.preventDefault();
+    var formData = {
+      account: "",
+      password: ""
+    };
+    var isOk = false;
+    this.props.form.validateFields((err, values) => {
+      formData.account = values.account;
+      formData.password = values.password;
+      if (!err) {
+        isOk = true;
+      }
+    });
+    if (isOk) {
+      try {
+        await fetch("http://localhost:64323/api/Member/Login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
           },
-          function (e) {
-            console.log(e)
-          }
-        );
-    } catch (e) {}
+          body: JSON.stringify({
+            Account: formData.account,
+            Password: formData.password
+          })
+        })
+          .then(res => res.json())
+          .then(
+            function(responseJson) {
+              console.log(responseJson);
+              switch (responseJson.result) {
+                case "帳號錯誤":
+                  break;
+                case "密碼錯誤":
+                  break;
+                case "登入成功":
+                  const data = {
+                    account: responseJson.account
+                  };
+                  this.props.userLogin(data);
+                  break;
+                case "尚未填寫問卷":
+                  break;
+              }
+            },
+            function(e) {
+              console.log(e);
+            }
+          );
+      } catch (e) {}
+    }
   };
   handleAccountChange = event => {
     this.setState({ account: event.target.value });
@@ -70,36 +87,65 @@ export default class Login extends React.Component {
   };
 
   render() {
+    const {
+      getFieldDecorator,
+      getFieldsError,
+      getFieldError,
+      isFieldTouched
+    } = this.props.form;
     const isLoading = this.state.isLoading;
+    const accountError = isFieldTouched("account") && getFieldError("account");
+    const passwordError =
+      isFieldTouched("password") && getFieldError("password");
     return (
-      <div className="form-group">
-        {isLoading && (
-          <Loading />
-        )}
-        <form>
-          <label>
-            Email：
-            <input
+      <Form onSubmit={this.handleSubmit} className="login-form">
+        {isLoading && <Loading />}
+
+        <FormItem
+          label="E-mail"
+          validateStatus={accountError ? "error" : ""}
+          help={accountError || ""}
+        >
+          {getFieldDecorator("account", {
+            rules: [
+              { required: true, type: "email", message: "請輸入您註冊時申請的E-mail" }
+            ]
+          })(
+            <Input
               className="form-control"
               type="text"
-              value={this.state.account}
               onChange={this.handleAccountChange}
             />
-          </label>
-          <br />
-          <label>
-            密碼：
-            <input
+          )}
+        </FormItem>
+        <FormItem
+          label="密碼"
+          validateStatus={passwordError ? "error" : ""}
+          help={passwordError || ""}
+        >
+          {getFieldDecorator("password", {
+            rules: [{ required: true, message: "請輸入密碼" }]
+          })(
+            <Input
               className="form-control"
               type="password"
-              value={this.state.password}
               onChange={this.handlePasswordChange}
             />
-          </label>
-          <br />
-          <input type="button" value="登入" onClick={this.handleSubmit} />
-        </form>
-      </div>
-    )
+          )}
+        </FormItem>
+        <br />
+        <Button
+          type="primary"
+          size="large"
+          onClick={this.handleSubmit}
+          htmlType="submit"
+          disabled={hasErrors(getFieldsError())}
+        >
+          登入
+        </Button>
+      </Form>
+    );
   }
 }
+// Form.create()(Login);
+export default Form.create()(Login)
