@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
 import { Button, Input, Form } from "antd";
+import { Link } from "react-router";
 // import './Login.scss'
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -98,54 +99,57 @@ class Login extends React.Component {
     const passwordError =
       isFieldTouched("password") && getFieldError("password");
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        {isLoading && <Loading />}
+      <div>
+        <Form onSubmit={this.handleSubmit} className="login-form">
+          {isLoading && <Loading />}
 
-        <FormItem
-          label="E-mail"
-          validateStatus={accountError ? "error" : ""}
-          help={accountError || ""}
-        >
-          {getFieldDecorator("account", {
-            rules: [
-              { required: true, type: "email", message: "請輸入您註冊時申請的E-mail" }
-            ]
-          })(
-            <Input
-              className="form-control"
-              type="text"
-              onChange={this.handleAccountChange}
-            />
-          )}
-        </FormItem>
-        <FormItem
-          label="密碼"
-          validateStatus={passwordError ? "error" : ""}
-          help={passwordError || ""}
-        >
-          {getFieldDecorator("password", {
-            rules: [{ required: true, message: "請輸入密碼" }]
-          })(
-            <Input
-              className="form-control"
-              type="password"
-              onChange={this.handlePasswordChange}
-            />
-          )}
-        </FormItem>
-        <br />
-        <Button
-          type="primary"
-          size="large"
-          onClick={this.handleSubmit}
-          htmlType="submit"
-          disabled={hasErrors(getFieldsError())}
-        >
-          登入
-        </Button>
-      </Form>
+          <FormItem
+            label="E-mail"
+            validateStatus={accountError ? "error" : ""}
+            help={accountError || ""}
+          >
+            {getFieldDecorator("account", {
+              rules: [
+                { required: true, type: "email", message: "請輸入您註冊時申請的E-mail" }
+              ]
+            })(
+              <Input
+                className="form-control"
+                type="text"
+                onChange={this.handleAccountChange}
+              />
+            )}
+          </FormItem>
+          <FormItem
+            label="密碼"
+            validateStatus={passwordError ? "error" : ""}
+            help={passwordError || ""}
+          >
+            {getFieldDecorator("password", {
+              rules: [{ required: true, message: "請輸入密碼" }]
+            })(
+              <Input
+                className="form-control"
+                type="password"
+                onChange={this.handlePasswordChange}
+              />
+            )}
+          </FormItem>
+          <br />
+          <Button
+            type="primary"
+            size="large"
+            onClick={this.handleSubmit}
+            htmlType="submit"
+            disabled={hasErrors(getFieldsError())}
+          >
+            登入
+          </Button>
+        </Form>
+        <Link to="/forget_password">忘記密碼？</Link>
+      </div>
     );
   }
 }
 // Form.create()(Login);
-export default Form.create()(Login)
+export default Form.create()(Login);

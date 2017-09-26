@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { browserHistory } from "react-router";
+import Loading from "../../../components/Loading";
+import { DatePicker, Button, Input, Radio, Form } from "antd";
 // import './HomeView.scss'
-export default class AddChild extends React.Component {
+const FormItem = Form.Item;
+function hasErrors(fieldsError) {
+  return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+const RadioGroup = Radio.Group;
+class AddChild extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
@@ -18,9 +26,19 @@ export default class AddChild extends React.Component {
       child_eat_meat: false,
       child_eat_milk: false,
       child_eat_fruit: false,
-      child_eat_veg: false
+      child_eat_veg: false,
+      isLoading: true
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  componentDidMount() {
+    // document.title = this.state.title + " | 憶想奇機"
+    setTimeout(() => {
+      this.setState({
+        isLoading: false
+      });
+    }, 300);
+    this.props.form.validateFields();
   }
   componentWillMount() {
     //this.preventAnonymousAccess();
@@ -31,49 +49,62 @@ export default class AddChild extends React.Component {
       browserHistory.push("/Login");
     }
   };
-  handleSubmit = async () => {
+  handleSubmit = async e => {
     var formData = {
-      account: this.props.user.account,
-      child_name: this.state.child_name,
-      child_gender: this.state.child_gender,
-      child_birth: this.state.child_birth,
-      child_avatar: this.state.child_avatar
+      account: "",
+      child_name: "",
+      child_gender: "",
+      child_birth: "",
+      child_avatar: ""
     };
+    var isOk = false;
+    this.props.form.validateFields((err, values) => {
+      formData.account = values.account;
+      formData.child_name = values.child_name;
+      formData.child_gender = values.child_gender;
+      formData.child_birth = values.child_birth;
+      formData.child_avatar = values.child_avatar;
+      if (!err) {
+        isOk = true;
+      }
+    });
     console.log(formData);
-    await fetch("http://localhost:64323/api/Member/CdRegister", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        Account: formData.account,
-        CdName: formData.child_name,
-        Birthday: formData.child_birth,
-        Gender: formData.child_gender,
-        Imageurl: formData.image
-      })
-    })
-      .then(res => res.json())
-      .then(
-        function(responseJson) {
-          console.log(responseJson);
-          switch (responseJson.result) {
-            case "註冊成功，請去登入":
-              alert("註冊成功，請去登入");
-              // Clear form
-              ReactDOM.findDOMNode(this.refs.textInput).value = "";
-              this.setState({ fireRedirect: true });
-              break;
-            case "帳號重複":
-              alert("帳號重複");
-              break;
-          }
+    if (isOk) {
+      await fetch("http://localhost:64323/api/Member/CdRegister", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json"
         },
-        function(e) {
-          console.log(e);
-        }
-      );
+        body: JSON.stringify({
+          Account: formData.account,
+          CdName: formData.child_name,
+          Birthday: formData.child_birth,
+          Gender: formData.child_gender,
+          Imageurl: formData.image
+        })
+      })
+        .then(res => res.json())
+        .then(
+          function(responseJson) {
+            console.log(responseJson);
+            switch (responseJson.result) {
+              case "註冊成功，請去登入":
+                alert("註冊成功，請去登入");
+                // Clear form
+                ReactDOM.findDOMNode(this.refs.textInput).value = "";
+                this.setState({ fireRedirect: true });
+                break;
+              case "帳號重複":
+                alert("帳號重複");
+                break;
+            }
+          },
+          function(e) {
+            console.log(e);
+          }
+        );
+    }
   };
   handleSurveySubmit = async () => {
     var formData = {
@@ -166,49 +197,62 @@ export default class AddChild extends React.Component {
     this.setState({ child_conditions: event.target.value });
   };
   render() {
+    const {
+      getFieldDecorator,
+      getFieldsError,
+      getFieldError,
+      isFieldTouched
+    } = this.props.form;
+    const isLoading = this.state.isLoading;
+    const config = {
+      rules: [{ type: "object", required: true, message: "請選擇生日" }]
+    };
+    const childNameError =
+      isFieldTouched("child_name") && getFieldError("child_name");
+    const childGenderError = isFieldTouched("child_gender") && getFieldError("child_gender");
+    const childBirthError = isFieldTouched("child_birth") && getFieldError("child_birth");
+    const childAatarError = isFieldTouched("child_avatar") && getFieldError("child_avatar");
+    const checkPasswordError =
+      isFieldTouched("checkPassword") && getFieldError("checkPassword");
     return (
-      <div>
-        <form>
-          <label>
-            孩子姓名：
-            <input
-              type="text"
+      <Form onSubmit={this.handleSubmit} className="login-form">
+        {isLoading && <Loading />}
+        <FormItem
+          label="孩童姓名"
+          validateStatus={childNameError ? "error" : ""}
+          help={childNameError || ""}
+        >
+          {getFieldDecorator("child_name", {
+            rules: [{ required: true, message: "請輸入孩童姓名" }]
+          })(
+            <Input
               className="form-control"
-              value={this.state.name}
+              type="text"
               onChange={this.handleNameChange}
             />
-          </label>
-          <br />
-          <label>
-            孩子性別：
-            <label className="checkbox-inline">
-              <input
-                type="radio"
-                name="gender"
-                onChange={this.handleGenderChange}
-                value="男"
-              />男
-            </label>
-            <label className="radio-inline">
-              <input
-                type="radio"
-                name="gender"
-                onChange={this.handleGenderChange}
-                value="女"
-              />女
-            </label>
-          </label>
-          <br />
-          <label>
-            孩子生日：
-            <input
-              type="date"
-              className="form-control"
-              value={this.state.birth}
-              onChange={this.handleBirthChange}
-            />
-          </label>
-          <br />
+          )}
+        </FormItem>
+        <FormItem
+          label="孩童性別"
+          validateStatus={childGenderError ? "error" : ""}
+          help={childGenderError || ""}
+        >
+          {getFieldDecorator("child_gender")(
+            <RadioGroup onChange={this.handleGenderChange}>
+              <Radio value="male">男</Radio>
+              <Radio value="female">女</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+        <FormItem
+          label="孩童生日"
+          validateStatus={childBirthError ? "error" : ""}
+          help={childBirthError || ""}
+        >
+          {getFieldDecorator("child_birth", config)(
+            <DatePicker onChange={this.handleBirthChange} placeholder="請選擇生日" />
+          )}
+        </FormItem>
           <label>
             孩子大頭貼：
             <input
@@ -219,10 +263,8 @@ export default class AddChild extends React.Component {
             />
           </label>
           <br />
-          <input type="button" value="確定" onClick={this.handleSubmit} />
-        </form>
+         
         <hr />
-        <form>
           <p>兒童調查</p>
           <label>
             孩童目前情況(單選)：
@@ -373,8 +415,8 @@ export default class AddChild extends React.Component {
           </label>
           <br />
           <input type="button" value="確定" onClick={this.handleSurveySubmit} />
-        </form>
-      </div>
+        </Form>
     );
   }
 }
+export default Form.create()(AddChild);

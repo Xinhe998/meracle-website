@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from "prop-types"
 import './HomeView.scss'
 import Loading from "../../../components/Loading"
+import { LineChart, Line } from 'recharts';
 
 class HomeView extends React.Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class HomeView extends React.Component {
         <div id="feature-section">
           <div className="container">
             <h1>特色</h1>
+            
           </div>
         </div>
       </div>

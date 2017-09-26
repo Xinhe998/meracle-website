@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
 import { DatePicker, Button, Input, AutoComplete, Radio, Form } from "antd";
-import "antd/dist/antd.css"; // 加载 CSS
 // import './HomeView.scss'
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -258,7 +257,7 @@ class Register extends React.Component {
           validateStatus={genderError ? "error" : ""}
           help={genderError || ""}
         >
-          {getFieldDecorator("radio-group")(
+          {getFieldDecorator("gender")(
             <RadioGroup onChange={this.handleGenderChange}>
               <Radio value="male">男</Radio>
               <Radio value="female">女</Radio>
