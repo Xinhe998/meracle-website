@@ -93,7 +93,8 @@ config.module.rules.push({
           },
           // ['import', { libraryName: "antd", style: true }]
         ],
-        ['babel-plugin-import', { libraryName: 'antd', style: 'css' }] // `style: true` 会加载 less 文件
+        ['babel-plugin-import', { libraryName: 'antd', style: 'css' }], // `style: true` 会加载 less 文件
+        ['recharts'],
       ],
       presets: [
         'babel-preset-react',
@@ -104,6 +105,7 @@ config.module.rules.push({
           },
           uglify: true,
         }],
+        'es2015'
       ]
     },
   }],
