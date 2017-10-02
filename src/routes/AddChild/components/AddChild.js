@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
 import { DatePicker, Button, Input, Radio, Form } from "antd";
+import AvatarCropper from "react-avatar-cropper";
 // import './HomeView.scss'
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -27,7 +28,8 @@ class AddChild extends React.Component {
       child_eat_milk: false,
       child_eat_fruit: false,
       child_eat_veg: false,
-      isLoading: true
+      isLoading: true,
+      img: '../../../../src/components/assets/logo_no_background.png'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -70,7 +72,7 @@ class AddChild extends React.Component {
     });
     console.log(formData);
     if (isOk) {
-      await fetch("http://localhost:64323/api/Member/CdRegister", {
+      await fetch("http://meracal.azurewebsites.net/api/Member/CdRegister", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -119,7 +121,7 @@ class AddChild extends React.Component {
       child_eat_veg: this.state.child_eat_veg
     };
     console.log(formData);
-    await fetch("http://localhost:64323/api/Survey/Questionnaire", {
+    await fetch("http://meracal.azurewebsites.net/api/Survey/Questionnaire", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -167,8 +169,8 @@ class AddChild extends React.Component {
   handleAvatarChange = event => {
     this.setState({ child_avatar: event.target.value });
   };
-  handleBirthChange = event => {
-    this.setState({ child_birth: event.target.value });
+  handleBirthChange = (date, dateString) => {
+    this.setState({ child_birth: dateString });
   };
   handleSleepTimeChange = event => {
     this.setState({ child_sleep_time: event.target.value });
@@ -260,6 +262,13 @@ class AddChild extends React.Component {
               className="form-control"
               value={this.state.child_avatar}
               onChange={this.handleAvatarChange}
+            />
+            <AvatarCropper
+              onRequestHide={this.handleRequestHide}
+              onCrop={this.handleCrop}
+              image={this.state.img}
+              width={400}
+              height={400}
             />
           </label>
           <br />

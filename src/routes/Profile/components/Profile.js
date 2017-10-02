@@ -25,7 +25,7 @@ export default class Profile extends React.Component {
       }
     getProfileData = async () => {
         console.log(formData);
-        await fetch('http://localhost:64323/api/Member/PersonalPage', {
+        await fetch('http://meracal.azurewebsites.net/api/Member/PersonalPage', {
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',

@@ -62,7 +62,7 @@ class Register extends React.Component {
       }
     });
     if (isOk) {
-      await fetch("http://localhost:64323/api/Member/Register", {
+      await fetch("http://meracal.azurewebsites.net/api/Member/Register", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -270,7 +270,7 @@ class Register extends React.Component {
           help={addressError || ""}
         >
           {getFieldDecorator("address", {
-            rules: [{ required: true, message: "請輸入地址" }]
+            rules: [{ required: false }]
           })(
             <Input
               className="form-control"

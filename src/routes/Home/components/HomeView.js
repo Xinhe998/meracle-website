@@ -17,15 +17,44 @@ class HomeView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      data: [
+        { name: "", 黃小明: 50, 陳小花: 200 },
+        { name: "9/2", 黃小明: 90, 陳小花: 150 },
+        { name: "9/5", 黃小明: 65, 陳小花: 130 },
+        { name: "9/7", 黃小明: 80, 陳小花: 70 },
+        { name: "9/8", 黃小明: 95, 陳小花: 68 },
+        { name: "9/11", 黃小明: 88, 陳小花: 100 },
+        { name: "9/15", 黃小明: 120, 陳小花: 160 }
+      ],
+      isScrollToChart: false,
     };
+    this.handleChartScroll = this.handleChartScroll.bind(this);
   }
   componentDidMount() {
     setTimeout(() => {
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
     }, 800);
+    window.addEventListener("scroll", this.handleChartScroll);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleChartScroll);
+  }
+  handleChartScroll(event) {
+    var y =
+    window.pageYOffset ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    0;
+    var viewportY = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    var ChartY = document.getElementById("feature-section").offsetTop;
+    if (y > ChartY) {
+      this.setState({
+        isScrollToChart: true,
+      })
+    }
   }
   render() {
     const isMobile =
@@ -37,15 +66,7 @@ class HomeView extends React.Component {
       navigator.userAgent.match(/BlackBerry/i) ||
       navigator.userAgent.match(/Windows Phone/i);
     const isLoading = this.state.isLoading;
-    const data = [
-      { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
-      { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
-      { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
-      { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
-      { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
-      { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
-      { name: "Page G", uv: 3490, pv: 4300, amt: 2100 }
-    ];
+    const isScrollToChart = this.state.isScrollToChart;
     return (
       <div>
         {isLoading && <Loading />}
@@ -58,18 +79,30 @@ class HomeView extends React.Component {
           <div className="container">
             <h1>特色</h1>
             <LineChart
-              width={600}
-              height={300}
-              data={data}
-              margin={{ top: 20, right: 50, left: 20, bottom: 5 }}
+              width={700}
+              height={400}
+              data={this.state.data}
+              className="linechart"
             >
               <XAxis dataKey="name" />
               <YAxis />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
+              <Tooltip wrapperStyle="{{bor}}" />
               <Legend />
-              <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+              {isScrollToChart ? <Line
+                type="monotone"
+                dataKey="黃小明"
+                stroke="#2F9A9E"
+                strokeWidth="4"
+                dot={{ stroke: "#2F9A9E", strokeWidth: 4 }}
+              /> : null}
+              {isScrollToChart ? <Line
+                type="monotone"
+                dataKey="陳小花"
+                stroke="#F5808B"
+                strokeWidth="4"
+                dot={{ stroke: "#F5808B", strokeWidth: 4 }}
+              /> : null}
             </LineChart>
           </div>
         </div>

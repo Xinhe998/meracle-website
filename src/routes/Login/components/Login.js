@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
 import { Button, Input, Form } from "antd";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
+import { connect } from 'react-redux';
 // import './Login.scss'
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -44,7 +45,7 @@ class Login extends React.Component {
     });
     if (isOk) {
       try {
-        await fetch("http://localhost:64323/api/Member/Login", {
+        await fetch("http://meracal.azurewebsites.net/api/Member/Login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -56,7 +57,7 @@ class Login extends React.Component {
         })
           .then(res => res.json())
           .then(
-            function(responseJson) {
+            responseJson => {
               console.log(responseJson);
               switch (responseJson.result) {
                 case "帳號錯誤":
@@ -65,11 +66,13 @@ class Login extends React.Component {
                   break;
                 case "登入成功":
                   const data = {
-                    account: responseJson.account
+                    account: formData.account
                   };
+                  alert("!!!")
+                  this.setState(data)
                   this.props.userLogin(data);
-                  break;
-                case "尚未填寫問卷":
+                  alert("!!!")
+                  browserHistory.push("/dashboard");
                   break;
               }
             },
@@ -86,7 +89,9 @@ class Login extends React.Component {
   handlePasswordChange = event => {
     this.setState({ password: event.target.value });
   };
-
+  Login = connect((state) => {
+    
+  })(Login);
   render() {
     const {
       getFieldDecorator,
@@ -152,4 +157,12 @@ class Login extends React.Component {
   }
 }
 // Form.create()(Login);
-export default Form.create()(Login);
+export default Form.create({
+  onFieldsChange(props, fields) {
+    console.log('onFieldsChange', props ,fields);
+    // props.dispatch({
+    //   type: 'USER_LOGIN',
+    //   payload: fields,
+    // });
+  },
+})(Login);

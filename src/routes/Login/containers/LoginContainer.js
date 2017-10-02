@@ -9,11 +9,11 @@ import { userLogin } from '../modules/Login'
 import Login from '../components/Login'
 
 const userDispatchToProps = {
-    userLogin
+  userLogin
 }
 
 const userStateToProps = (state) => ({
-    user : state.user
+  user : state.user
 })
 
 /*  Object of action creators (can also be function that returns object).

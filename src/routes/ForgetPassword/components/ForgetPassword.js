@@ -40,7 +40,7 @@ class ForgetPassword extends React.Component {
       }
     });
     if (isOk) {
-      await fetch("http://localhost:64323/api/Member/ForgetPassword", {
+      await fetch("http://meracal.azurewebsites.net/api/Member/ForgotPassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./PageLayout.scss";
 require("bootstrap");
-import 'bootstrap/js/dist/util';
-import 'bootstrap/js/dist/dropdown';
+import "bootstrap/js/dist/util";
+import "bootstrap/js/dist/dropdown";
 // const isLogin = this.props.user;
 class PageLayout extends React.Component {
   static propTypes = {
@@ -14,38 +14,46 @@ class PageLayout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isScrollTop: true,
+      isScrollTop: true
     };
     this.handleScroll = this.handleScroll.bind(this);
   }
-  componentDidMount () {
-    window.addEventListener('scroll', this.handleScroll);
-  };
-  
-  componentWillUnmount () {
-    window.removeEventListener('scroll', this.handleScroll);
-  };
-  handleScroll (event) {
-    var value = document.body.scrollTop;
-    if (value > 0) {
-      document.getElementById('navbar').classList.add('not-in-top');
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+  handleScroll(event) {
+    var y =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+    if (y === 0) {
+      document.getElementById("navbar").classList.remove("not-in-top");
     } else {
-      document.getElementById('navbar').classList.remove('not-in-top');
+      document.getElementById("navbar").classList.add("not-in-top");
     }
-  };
-  render () {
+  }
+  render() {
     // console.log("!!!", this.props)
     const isLogin = this.props.user ? this.props.user.account : this.props.user;
     return (
       <div className="meracle-navbar">
-        <nav className="navbar navbar-expand-md navbar-light bg-light" id="navbar">
+        <nav
+          className="navbar navbar-expand-md navbar-light bg-light"
+          id="navbar"
+        >
           <IndexLink className="navbar-brand" to="#">
             <img
               src={require("../../components/assets/logo_no_background.png")}
               className="d-inline-block align-top meracle-navbar-logo"
               alt=""
             />
-            <span><text className="notice">M</text>eracle</span>
+            <span>
+              <text className="notice">M</text>eracle
+            </span>
           </IndexLink>
           <button
             className="navbar-toggler"
@@ -65,11 +73,14 @@ class PageLayout extends React.Component {
                   Home <span className="sr-only">(current)</span>
                 </a>
               </li> */}
+              {!isLogin && (
               <li className="nav-item">
                 <Link to="/login" className="nav-link" activeClassName="active">
                   登入
                 </Link>
               </li>
+              )}
+              {!isLogin && (
               <li className="nav-item">
                 <Link
                   to="/register"
@@ -79,6 +90,7 @@ class PageLayout extends React.Component {
                   註冊
                 </Link>
               </li>
+              )}
               {isLogin && (
                 <li className="nav-item">
                   <Link
@@ -87,39 +99,6 @@ class PageLayout extends React.Component {
                     activeClassName="active"
                   >
                     忘記密碼
-                  </Link>
-                </li>
-              )}
-              {isLogin && (
-                <li className="nav-item">
-                  <Link
-                    to="/change_password"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    修改密碼
-                  </Link>
-                </li>
-              )}
-              {isLogin && (
-                <li className="nav-item">
-                  <Link
-                    to="/profile"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    個人資料
-                  </Link>
-                </li>
-              )}
-              {isLogin && (
-                <li className="nav-item">
-                  <Link
-                    to="/addChild"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    新增孩子
                   </Link>
                 </li>
               )}
