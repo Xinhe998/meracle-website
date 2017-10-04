@@ -32,7 +32,7 @@ class ChangePassword extends React.Component {
     this.props.form.validateFields();
   }
   preventAnonymousAccess = () => {
-    if (this.props.user) {
+    if (!this.props.user) {
       alert("請先登入");
       browserHistory.push("/Login");
     }

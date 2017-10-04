@@ -1,24 +1,47 @@
-#components-layout-demo-custom-trigger .trigger {
+.ant-menu.ant-menu-dark {
+  .ant-menu-item-selected {
+    background-color: #0c4268;
+  }
+}
+.trigger {
   font-size: 18px;
   line-height: 64px;
   padding: 0 16px;
   cursor: pointer;
-  transition: color .3s;
+  transition: color 0.3s;
 }
 
-#components-layout-demo-custom-trigger .trigger:hover {
-  color: #108ee9;
+.trigger:hover {
+  color: #0c4268;
 }
 
-#components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: #333;
+.logo {
+  height: 60px;
+  // background: #C5C5C5;
   border-radius: 6px;
   margin: 16px;
+  .logo-img {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    padding: 10px;
+  }
+  span {
+    top: 11px;
+    position: relative;
+    color: white;
+    font-weight: 100;
+    font-size: 24px;
+    margin-left: 15px;
+    .notice {
+      color: #f77c86;
+    }
+  }
 }
 
 .dashboard-left-link {
-  color: #C0C0C0;
+  color: #c0c0c0;
 }
 
 .dashboare-left-link-active {

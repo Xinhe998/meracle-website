@@ -31,7 +31,7 @@ export const createRoutes = store => ([
   {
     path: "/dashboard",
     component: DashboardLayout,
-    indexRoute: Dashboard,
+    indexRoute: Dashboard(store),
     childRoutes: [
       ChangePassword(store),
       Profile(store),

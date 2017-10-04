@@ -43,10 +43,10 @@ class AddChild extends React.Component {
     this.props.form.validateFields();
   }
   componentWillMount() {
-    //this.preventAnonymousAccess();
+    this.preventAnonymousAccess();
   }
   preventAnonymousAccess = () => {
-    if (this.props.user) {
+    if (!this.props.user) {
       alert("請先登入");
       browserHistory.push("/Login");
     }

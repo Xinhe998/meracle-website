@@ -49,7 +49,7 @@ class Register extends React.Component {
       confirmDirty: false
     };
     var isOk = false;
-
+    console.log(formData)
     this.props.form.validateFields((err, values) => {
       formData.account = values.account;
       formData.password = values.password;
@@ -259,8 +259,8 @@ class Register extends React.Component {
         >
           {getFieldDecorator("gender")(
             <RadioGroup onChange={this.handleGenderChange}>
-              <Radio value="male">男</Radio>
-              <Radio value="female">女</Radio>
+              <Radio value="男">男</Radio>
+              <Radio value="女">女</Radio>
             </RadioGroup>
           )}
         </FormItem>

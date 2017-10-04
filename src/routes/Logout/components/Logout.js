@@ -16,7 +16,7 @@ export default class Logout extends React.Component {
   }
   logout = () => {
     const data = {
-      account: '',
+      
     }
     this.props.userLogout(data);
     browserHistory.push('/')

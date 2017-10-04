@@ -66,12 +66,11 @@ class Login extends React.Component {
                   break;
                 case "登入成功":
                   const data = {
-                    account: formData.account
+                    account: responseJson.Account,
+                    authorization: responseJson.Authorization
                   };
-                  alert("!!!")
-                  this.setState(data)
+                  this.setState(data);
                   this.props.userLogin(data);
-                  alert("!!!")
                   browserHistory.push("/dashboard");
                   break;
               }
@@ -89,9 +88,6 @@ class Login extends React.Component {
   handlePasswordChange = event => {
     this.setState({ password: event.target.value });
   };
-  Login = connect((state) => {
-    
-  })(Login);
   render() {
     const {
       getFieldDecorator,
@@ -157,12 +153,4 @@ class Login extends React.Component {
   }
 }
 // Form.create()(Login);
-export default Form.create({
-  onFieldsChange(props, fields) {
-    console.log('onFieldsChange', props ,fields);
-    // props.dispatch({
-    //   type: 'USER_LOGIN',
-    //   payload: fields,
-    // });
-  },
-})(Login);
+export default Form.create()(Login);

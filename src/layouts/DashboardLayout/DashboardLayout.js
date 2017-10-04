@@ -23,45 +23,60 @@ export default class DashBoardLayout extends React.Component {
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo">
             <img
-              src="./../../components/assets/logo_no_background.png"
-              style={{ width: "100%" }}
+              className="logo-img"
+              src={require("../../components/assets/logo_no_background.png")}
+              alt=""
             />
+            {!this.state.collapsed && (
+              <span>
+                <text className="notice">M</text>eracle
+              </span>
+            )}
           </div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1">
+              <Link
+                to="/dashboard"
+                className="dashboard-left-link"
+                activeClassName="dashboare-left-link-active"
+              >
+                <Icon type="home" /> <span> HOME </span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="2">
               <Link
                 to="/dashboard/addChild"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
-                <Icon type="user" /> <span> 新增孩子 </span>
+                <Icon type="user-add" /> <span> 新增孩子 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="2">
+            <Menu.Item key="3">
               <Link
                 to="/dashboard/profile"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
-                <Icon type="video-camera" /> <span> 個人資料 </span>
+                <Icon type="file" /> <span> 個人資料 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="4">
               <Link
                 to="/dashboard/change_password"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
-                <Icon type="upload" /> <span> 修改密碼 </span>
+                <Icon type="key" /> <span> 修改密碼 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="4">
+            <Menu.Item key="5">
               <Link
                 to="/logout"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
-                <Icon type="upload" /> <span> 登出 </span>
+                <Icon type="logout" /> <span> 登出 </span>
               </Link>
             </Menu.Item>
           </Menu>
