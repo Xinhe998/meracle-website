@@ -28,6 +28,7 @@
     "express": "^4.14.0",
     "halogen": "^0.2.0",
     "jquery": "^3.2.1",
+    "moment": "^2.18.1",
     "object-assign": "^4.1.1",
     "popper.js": "^1.12.5",
     "promise": "^7.1.1",

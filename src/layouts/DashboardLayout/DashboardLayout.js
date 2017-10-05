@@ -54,6 +54,15 @@ export default class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <Link
+                to="/dashboard/Child"
+                className="dashboard-left-link"
+                activeClassName="dashboare-left-link-active"
+              >
+                <Icon type="database" /> <span> 檢視孩子資料 </span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Link
                 to="/dashboard/profile"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
@@ -61,7 +70,7 @@ export default class DashBoardLayout extends React.Component {
                 <Icon type="file" /> <span> 個人資料 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="4">
+            <Menu.Item key="5">
               <Link
                 to="/dashboard/change_password"
                 className="dashboard-left-link"
@@ -70,7 +79,16 @@ export default class DashBoardLayout extends React.Component {
                 <Icon type="key" /> <span> 修改密碼 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="5">
+            <Menu.Item key="6">
+              <Link
+                to="/dashboard/public_data"
+                className="dashboard-left-link"
+                activeClassName="dashboare-left-link-active"
+              >
+                <Icon type="area-chart" /> <span> 大眾數據 </span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="7">
               <Link
                 to="/logout"
                 className="dashboard-left-link"

@@ -34,7 +34,7 @@ export default class Loading extends React.Component {
     // const isLoading = this.state.isLoading;
     return (
       <div style={overlayStyle}>
-        <img className='logo' style={logoStyle}
+        <img className='loading-img' style={logoStyle}
           src={require('./assets/logo_no_background.png')}
         />
         <Halogen.BeatLoader color={color} size="20px" margin="6px" />

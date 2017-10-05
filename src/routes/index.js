@@ -9,9 +9,12 @@ import Register from "./Register";
 import ForgetPassword from "./ForgetPassword";
 import ChangePassword from "./ChangePassword";
 import Profile from "./Profile";
+import EditProfile from "./EditProfile";
 import Logout from "./Logout";
 import AddChild from "./AddChild";
 import Dashboard from "./Dashboard";
+import Child from "./Child";
+import PublicData from "./PublicData";
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -37,6 +40,9 @@ export const createRoutes = store => ([
       Profile(store),
       Logout(store),
       AddChild(store),
+      Child(store),
+      EditProfile(store),
+      PublicData(store),
     ]
   },
   {

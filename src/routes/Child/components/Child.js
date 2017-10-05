@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { browserHistory, Link } from "react-router";
+import { browserHistory } from "react-router";
 import { Card, Icon, Button } from "antd";
 
 // import './HomeView.scss'
-export default class Profile extends React.Component {
+export default class Child extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
@@ -12,7 +12,7 @@ export default class Profile extends React.Component {
   }
   componentWillMount() {
     this.preventAnonymousAccess();
-    this.getProfileData();
+    this.getChildData();
   }
   preventAnonymousAccess = () => {
     if (!this.props.user) {
@@ -20,8 +20,8 @@ export default class Profile extends React.Component {
       browserHistory.push("/Login");
     }
   };
-  getProfileData = async () => {
-    await fetch("http://meracal.azurewebsites.net/api/Member/PersonalPage", {
+  getChildData = async () => {
+    await fetch("http://meracal.azurewebsites.net/api/Member/CdPersonalPage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,14 +34,17 @@ export default class Profile extends React.Component {
       .then(res => res.json())
       .then(
         responseJson => {
-          const data = {
-            name: responseJson[0].Name,
-            gender: responseJson[0].Gender.trim(),
-            birth: responseJson[0].Birthday,
-            address: responseJson[0].Address,
-            avatar: responseJson[0].Imageurl
-          };
-          this.props.getUserData(data);
+          if (responseJson.length) {
+            const data = {
+              name: responseJson[0].CdName,
+              gender: responseJson[0].Gender.trim(),
+              birth: responseJson[0].Birthday,
+              address: responseJson[0].Address,
+              avatar: responseJson[0].Imageurl
+            };
+            console.log(responseJson);
+            this.props.getChildData(data);
+          }
         },
         function(e) {
           console.log(e);
@@ -51,11 +54,11 @@ export default class Profile extends React.Component {
   render() {
     return (
       <div>
-        <Card style={{ width: "90%" }} extra={<Link to="/dashboard/edit_profile">編輯</Link>}>
-          帳號：{this.props.user.account} <br />
-          姓名：{this.props.user_detail.name} <br />
-          性別：{this.props.user_detail.gender} <br />
-          生日：{this.props.user_detail.birth} <br />
+        <Card style={{ width: "90%" }}>
+          {/* 帳號：{this.props.user.account} <br />
+          姓名：{this.props.child_detail.name} <br />
+          性別：{this.props.child_detail.gender} <br />
+          生日：{this.props.child_detail.birth} <br /> */}
         </Card>
         {/* <Button type="dashed" onClick={this.add} style={{ width: "90%", marginTop: "30px" }}>
           <Icon type="plus" /> Add field
