@@ -40,10 +40,9 @@ class AddChild extends React.Component {
       child_eat_fruit: false,
       child_eat_veg: false,
       isLoading: true,
-      cropperOpen: false,
       imageUrl: null,
       previewImage: null,
-      previewVisible: false,
+      previewVisible: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -118,7 +117,7 @@ class AddChild extends React.Component {
     reader.readAsDataURL(img);
   };
   beforeUpload = file => {
-    console.log("~!!!!", file);
+    console.log("beforeUpload", file);
     this.getBase64(file, imageUrl => this.setState({ imageUrl }));
     const isJPG = file.type === "image/jpeg";
     if (!isJPG) {
@@ -128,12 +127,12 @@ class AddChild extends React.Component {
     if (!isLt2M) {
       message.error("Image must smaller than 2MB!");
     }
-    return isJPG && isLt2M;
+    return false;
   };
 
   handleChange = info => {
+    console.log("!!!!!!!handleChange");
     if (info.file.status === "done") {
-      console.log("^^hihihi");
       // Get this url from response in real world.
       this.getBase64(info.file.originFileObj, imageUrl =>
         this.setState({ imageUrl })
@@ -142,13 +141,13 @@ class AddChild extends React.Component {
       message.error("圖片上傳失敗 !");
     }
   };
-
-  handlePreview = file => {
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true
-    });
-  };
+  
+  doOpen = event => {
+    event = event || window.event;
+    if(event.target.type !== 'file'){
+        event.preventDefault();
+    }
+  }
 
   handleSurveySubmit = async () => {
     var formData = {
@@ -307,16 +306,13 @@ class AddChild extends React.Component {
         </FormItem>
         <label>
           孩子大頭貼：
-          <div>
-            <p className="user center" />
+          <div onClick={this.doOpen}>
             <Upload
               className="avatar-uploader"
               name="avatar"
-              showUploadList={false}
               action="http://meracal.azurewebsites.net/api/Member/ReactPostImage"
               beforeUpload={this.beforeUpload}
               onChange={this.handleChange}
-              onPreview={this.handlePreview}
             >
               {imageUrl ? (
                 <img src={imageUrl} alt="" className="avatar" />
@@ -324,30 +320,7 @@ class AddChild extends React.Component {
                 <Icon type="plus" className="avatar-uploader-trigger" />
               )}
             </Upload>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
           </div>
-          {/* <div>
-            <div className="avatar-photo">
-              <FileUpload handleFileChange={this.handleFileChange} />
-              <div className="avatar-edit">
-                <span>Click to Pick Avatar</span>
-                <i className="fa fa-camera" />
-              </div>
-              <img src={this.state.croppedImg} />
-            </div>
-            {this.state.cropperOpen && (
-              <AvatarCropper
-                onRequestHide={this.handleRequestHide}
-                cropperOpen={this.state.cropperOpen}
-                onCrop={this.handleCrop}
-                image={this.state.img}
-                width={400}
-                height={400}
-              />
-            )}
-          </div> */}
         </label>
         <br />
 
