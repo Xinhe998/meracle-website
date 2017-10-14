@@ -15,7 +15,11 @@ export default class Profile extends React.Component {
     this.getProfileData();
   }
   preventAnonymousAccess = () => {
-    if (!this.props.user) {
+    if (
+      !this.props.user &&
+      !localStorage.getItem("account") &&
+      !localStorage.getItem("authorization")
+    ) {
       alert("請先登入");
       browserHistory.push("/Login");
     }
@@ -51,7 +55,10 @@ export default class Profile extends React.Component {
   render() {
     return (
       <div>
-        <Card style={{ width: "90%" }} extra={<Link to="/dashboard/edit_profile">編輯</Link>}>
+        <Card
+          style={{ width: "90%" }}
+          extra={<Link to="/dashboard/edit_profile">編輯</Link>}
+        >
           帳號：{this.props.user.account} <br />
           姓名：{this.props.user_detail.name} <br />
           性別：{this.props.user_detail.gender} <br />

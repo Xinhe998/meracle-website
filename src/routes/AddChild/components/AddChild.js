@@ -1,15 +1,26 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import ReactDom from "react-dom";
 import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
-import { DatePicker, Button, Input, Radio, Form } from "antd";
-import AvatarCropper from "react-avatar-cropper";
-// import './HomeView.scss'
+import {
+  DatePicker,
+  Button,
+  Input,
+  Radio,
+  Form,
+  Upload,
+  Icon,
+  message,
+  Modal
+} from "antd";
+import "./AddChild.scss";
+
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 const RadioGroup = Radio.Group;
+
 class AddChild extends React.Component {
   static propTypes = {};
   constructor(props) {
@@ -29,10 +40,14 @@ class AddChild extends React.Component {
       child_eat_fruit: false,
       child_eat_veg: false,
       isLoading: true,
-      img: "../../../../src/components/assets/logo_no_background.png"
+      cropperOpen: false,
+      imageUrl: null,
+      previewImage: null,
+      previewVisible: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   componentDidMount() {
     // document.title = this.state.title + " | 憶想奇機"
     setTimeout(() => {
@@ -90,17 +105,6 @@ class AddChild extends React.Component {
         .then(
           function(responseJson) {
             console.log(responseJson);
-            switch (responseJson.result) {
-              case "註冊成功，請去登入":
-                alert("註冊成功，請去登入");
-                // Clear form
-                ReactDOM.findDOMNode(this.refs.textInput).value = "";
-                this.setState({ fireRedirect: true });
-                break;
-              case "帳號重複":
-                alert("帳號重複");
-                break;
-            }
           },
           function(e) {
             console.log(e);
@@ -108,6 +112,44 @@ class AddChild extends React.Component {
         );
     }
   };
+  getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
+  beforeUpload = file => {
+    console.log("~!!!!", file);
+    this.getBase64(file, imageUrl => this.setState({ imageUrl }));
+    const isJPG = file.type === "image/jpeg";
+    if (!isJPG) {
+      message.error("You can only upload JPG file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must smaller than 2MB!");
+    }
+    return isJPG && isLt2M;
+  };
+
+  handleChange = info => {
+    if (info.file.status === "done") {
+      console.log("^^hihihi");
+      // Get this url from response in real world.
+      this.getBase64(info.file.originFileObj, imageUrl =>
+        this.setState({ imageUrl })
+      );
+    } else if (info.file.status === "error") {
+      message.error("圖片上傳失敗 !");
+    }
+  };
+
+  handlePreview = file => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true
+    });
+  };
+
   handleSurveySubmit = async () => {
     var formData = {
       account: this.props.user.account,
@@ -143,17 +185,6 @@ class AddChild extends React.Component {
       .then(
         function(responseJson) {
           console.log(responseJson);
-          switch (responseJson.result) {
-            case "註冊成功，請去登入":
-              alert("註冊成功，請去登入");
-              // Clear form
-              ReactDOM.findDOMNode(this.refs.textInput).value = "";
-              this.setState({ fireRedirect: true });
-              break;
-            case "帳號重複":
-              alert("帳號重複");
-              break;
-          }
         },
         function(e) {
           console.log(e);
@@ -223,6 +254,14 @@ class AddChild extends React.Component {
       // Can not select days after today
       return current && current.valueOf() > Date.now();
     }
+    const imageUrl = this.state.imageUrl;
+    const { previewVisible, previewImage, fileList } = this.state;
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         {isLoading && <Loading />}
@@ -268,19 +307,47 @@ class AddChild extends React.Component {
         </FormItem>
         <label>
           孩子大頭貼：
-          <input
-            type="file"
-            className="form-control"
-            value={this.state.child_avatar}
-            onChange={this.handleAvatarChange}
-          />
-          <AvatarCropper
-            onRequestHide={this.handleRequestHide}
-            onCrop={this.handleCrop}
-            image={this.state.img}
-            width={400}
-            height={400}
-          />
+          <div>
+            <p className="user center" />
+            <Upload
+              className="avatar-uploader"
+              name="avatar"
+              showUploadList={false}
+              action="http://meracal.azurewebsites.net/api/Member/ReactPostImage"
+              beforeUpload={this.beforeUpload}
+              onChange={this.handleChange}
+              onPreview={this.handlePreview}
+            >
+              {imageUrl ? (
+                <img src={imageUrl} alt="" className="avatar" />
+              ) : (
+                <Icon type="plus" className="avatar-uploader-trigger" />
+              )}
+            </Upload>
+            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+              <img alt="example" style={{ width: '100%' }} src={previewImage} />
+            </Modal>
+          </div>
+          {/* <div>
+            <div className="avatar-photo">
+              <FileUpload handleFileChange={this.handleFileChange} />
+              <div className="avatar-edit">
+                <span>Click to Pick Avatar</span>
+                <i className="fa fa-camera" />
+              </div>
+              <img src={this.state.croppedImg} />
+            </div>
+            {this.state.cropperOpen && (
+              <AvatarCropper
+                onRequestHide={this.handleRequestHide}
+                cropperOpen={this.state.cropperOpen}
+                onCrop={this.handleCrop}
+                image={this.state.img}
+                width={400}
+                height={400}
+              />
+            )}
+          </div> */}
         </label>
         <br />
 
@@ -439,4 +506,24 @@ class AddChild extends React.Component {
     );
   }
 }
+var FileUpload = React.createClass({
+  handleFile: function(e) {
+    var reader = new FileReader();
+    var file = e.target.files[0];
+
+    if (!file) return;
+
+    reader.onload = function(img) {
+      ReactDom.findDOMNode(this.refs.in).value = "";
+      this.props.handleFileChange(img.target.result);
+    }.bind(this);
+    reader.readAsDataURL(file);
+  },
+
+  render: function() {
+    return (
+      <input ref="in" type="file" accept="image/*" onChange={this.handleFile} />
+    );
+  }
+});
 export default Form.create()(AddChild);
