@@ -20,6 +20,7 @@ export const actions = {
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
+
 const ACTION_HANDLERS = {
   [USER_LOGOUT] : (state, action) => {
     return {
