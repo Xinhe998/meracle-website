@@ -27,33 +27,36 @@ class HomeView extends React.Component {
         { name: "9/11", 黃小明: 88, 陳小花: 100 },
         { name: "9/15", 黃小明: 120, 陳小花: 160 }
       ],
-      isScrollToChart: false,
+      isScrollToChart: false
     };
     this.handleChartScroll = this.handleChartScroll.bind(this);
   }
   componentDidMount() {
     setTimeout(() => {
       this.setState({
-        isLoading: false,
+        isLoading: false
       });
     }, 800);
     window.addEventListener("scroll", this.handleChartScroll);
+    
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleChartScroll);
   }
+  isScrolledIntoView(elem) {
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+
+    var elemTop = $(elem).offset().top;
+    var elemBottom = elemTop + $(elem).height();
+
+    return elemBottom <= docViewBottom && elemTop >= docViewTop;
+  }
   handleChartScroll(event) {
-    var y =
-    window.pageYOffset ||
-    document.documentElement.scrollTop ||
-    document.body.scrollTop ||
-    0;
-    var viewportY = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    var ChartY = document.getElementById("feature-section").offsetTop;
-    if (y > ChartY) {
+    if (this.isScrolledIntoView(document.getElementById("welcome-section"))) {
       this.setState({
-        isScrollToChart: true,
-      })
+        isScrollToChart: true
+      });
     }
   }
   render() {
@@ -89,20 +92,24 @@ class HomeView extends React.Component {
               <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
               <Tooltip wrapperStyle="{{bor}}" />
               <Legend />
-              {isScrollToChart ? <Line
-                type="monotone"
-                dataKey="黃小明"
-                stroke="#2F9A9E"
-                strokeWidth="4"
-                dot={{ stroke: "#2F9A9E", strokeWidth: 4 }}
-              /> : null}
-              {isScrollToChart ? <Line
-                type="monotone"
-                dataKey="陳小花"
-                stroke="#F5808B"
-                strokeWidth="4"
-                dot={{ stroke: "#F5808B", strokeWidth: 4 }}
-              /> : null}
+              {isScrollToChart ? (
+                <Line
+                  type="monotone"
+                  dataKey="黃小明"
+                  stroke="#2F9A9E"
+                  strokeWidth="4"
+                  dot={{ stroke: "#2F9A9E", strokeWidth: 4 }}
+                />
+              ) : null}
+              {isScrollToChart ? (
+                <Line
+                  type="monotone"
+                  dataKey="陳小花"
+                  stroke="#F5808B"
+                  strokeWidth="4"
+                  dot={{ stroke: "#F5808B", strokeWidth: 4 }}
+                />
+              ) : null}
             </LineChart>
           </div>
         </div>
