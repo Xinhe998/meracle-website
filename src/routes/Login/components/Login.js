@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
 import { Button, Input, Form } from "antd";
 import { Link, browserHistory } from "react-router";
-import { connect } from 'react-redux';
 // import './Login.scss'
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -70,6 +69,8 @@ class Login extends React.Component {
                     authorization: responseJson.Authorization
                   };
                   this.setState(data);
+                  localStorage.setItem('account', data.account);
+                  localStorage.setItem('authorization', data.authorization);
                   this.props.userLogin(data);
                   browserHistory.push("/dashboard");
                   break;
