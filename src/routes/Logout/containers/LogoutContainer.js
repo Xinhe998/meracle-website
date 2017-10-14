@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { userLogout } from '../modules/Logout'
+import { userLogout } from '../../../store/user'
 
 import Logout from '../components/Logout'
 const userDispatchToProps = {

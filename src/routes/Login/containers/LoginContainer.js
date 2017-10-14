@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { userLogin } from '../modules/Login'
+import { userLogin } from '../../../store/user'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for

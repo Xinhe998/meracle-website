@@ -1,11 +1,19 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
+export const USER_LOGIN = 'USER_LOGIN'
 export const USER_LOGOUT = 'USER_LOGOUT'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
+export function userLogin (data) {
+  return {
+    type    : USER_LOGIN,
+    data
+  }
+}
+
 export function userLogout (data) {
   return {
     type    : USER_LOGOUT,
@@ -14,14 +22,20 @@ export function userLogout (data) {
 }
 
 export const actions = {
-  userLogout,
+  userLogin,
+  userLogout
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
-
 const ACTION_HANDLERS = {
+  [USER_LOGIN] : (state, action) => {
+    return {
+      ...state,
+      ...action.data,
+    }
+  },
   [USER_LOGOUT] : (state, action) => {
     return {
       ...state,
@@ -35,6 +49,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   account: '',
+  authorization: '',
 }
 
 export default function counterReducer (state = initialState, action) {

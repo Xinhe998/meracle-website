@@ -10,7 +10,7 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const Logout = require('./containers/LogoutContainer').default
-      const reducer = require('./modules/Logout').default
+      const reducer = require('../../store/user').default
 
       /*  Add the reducer to the store on key 'counter'  */
       injectReducer(store, { key: 'user', reducer })

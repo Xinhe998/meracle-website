@@ -1,22 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { browserHistory } from "react-router";
-import { connect } from "react-redux";
-// import './HomeView.scss'
+
 class Logout extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
-    this.state = {
-      // account: "",
-    };
+    this.state = {};
     this.logout = this.logout.bind(this);
   }
   componentDidMount() {
+    console.log(this.props.user);
     this.logout();
   }
   logout = () => {
-    console.log(this);
     const data = {
       account: "",
       authorization: ""
