@@ -2,17 +2,27 @@ import React from "react";
 import PropTypes from "prop-types";
 import { browserHistory, Link } from "react-router";
 import { Card, Icon, Button } from "antd";
-
+import Loading from "../../../components/Loading";
 // import './HomeView.scss'
 export default class Profile extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isLoading: true
+    };
   }
   componentWillMount() {
     this.preventAnonymousAccess();
     this.getProfileData();
+  }
+  componentDidMount() {
+    // document.title = this.state.title + " | 憶想奇機";
+    setTimeout(() => {
+      this.setState({
+        isLoading: false
+      });
+    }, 300);
   }
   preventAnonymousAccess = () => {
     if (
@@ -53,8 +63,10 @@ export default class Profile extends React.Component {
       );
   };
   render() {
+    const isLoading = this.state.isLoading;
     return (
       <div>
+        {isLoading && <Loading />}
         <Card
           style={{ width: "90%" }}
           extra={<Link to="/dashboard/edit_profile">編輯</Link>}
