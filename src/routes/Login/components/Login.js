@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
-import { Button, Input, Form } from "antd";
+import { Button, Input, Form, Alert } from "antd";
 import { Link, browserHistory } from "react-router";
 // import './Login.scss'
 const FormItem = Form.Item;
@@ -15,7 +15,8 @@ class Login extends React.Component {
     this.state = {
       account: "",
       password: "",
-      isLoading: true
+      isLoading: true,
+      showLoginError: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -57,11 +58,17 @@ class Login extends React.Component {
           .then(res => res.json())
           .then(
             responseJson => {
-              console.log(responseJson);
+              // console.log(responseJson);
               switch (responseJson.result) {
                 case "帳號錯誤":
+                  this.setState({
+                    showLoginError: true
+                  });
                   break;
                 case "密碼錯誤":
+                  this.setState({
+                    showLoginError: true
+                  });
                   break;
                 case "登入成功":
                   const data = {
@@ -69,8 +76,8 @@ class Login extends React.Component {
                     authorization: responseJson.Authorization
                   };
                   this.setState(data);
-                  localStorage.setItem('account', data.account);
-                  localStorage.setItem('authorization', data.authorization);
+                  localStorage.setItem("account", data.account);
+                  localStorage.setItem("authorization", data.authorization);
                   this.props.userLogin(data);
                   browserHistory.push("/dashboard");
                   break;
@@ -97,6 +104,7 @@ class Login extends React.Component {
       isFieldTouched
     } = this.props.form;
     const isLoading = this.state.isLoading;
+    const isLoginError = this.state.showLoginError;
     const accountError = isFieldTouched("account") && getFieldError("account");
     const passwordError =
       isFieldTouched("password") && getFieldError("password");
@@ -104,7 +112,14 @@ class Login extends React.Component {
       <div>
         <Form onSubmit={this.handleSubmit} className="login-form">
           {isLoading && <Loading />}
-
+          {isLoginError ? (
+            <Alert
+              message="帳號或密碼錯誤"
+              description="請再試一次"
+              type="error"
+              showIcon
+            />
+          ) : null}
           <FormItem
             label="E-mail"
             validateStatus={accountError ? "error" : ""}
