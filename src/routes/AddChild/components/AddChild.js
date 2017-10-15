@@ -11,8 +11,11 @@ import {
   Upload,
   Icon,
   message,
-  Modal
+  Modal,
+  Checkbox,
+  Steps
 } from "antd";
+import moment from "moment";
 import "./AddChild.scss";
 
 const FormItem = Form.Item;
@@ -20,6 +23,7 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 const RadioGroup = Radio.Group;
+const Step = Steps.Step;
 
 class AddChild extends React.Component {
   static propTypes = {};
@@ -41,10 +45,25 @@ class AddChild extends React.Component {
       child_eat_veg: false,
       isLoading: true,
       imageUrl: null,
-      previewImage: null,
-      previewVisible: false
+      current: 0,
+      stepStatus: "wait"
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.step1 = this.step1.bind(this);
+  }
+
+  next() {
+    const current = this.state.current + 1;
+    console.log("current=>", current);
+    if (current === 1) {
+      this.step1(event);
+    }
+    this.setState({ current });
+  }
+  prev() {
+    const current = this.state.current - 1;
+    console.log("current=>", current);
+    this.setState({ current });
   }
 
   componentDidMount() {
@@ -111,6 +130,51 @@ class AddChild extends React.Component {
         );
     }
   };
+
+  //#region 暫存第1步驟data
+  step1 = async e => {
+    this.props.form.validateFields((err, values) => {
+      console.log("values", values);
+      console.log("err", err);
+      this.setState({
+        account: values.account,
+        child_name: values.child_name,
+        child_gender: values.child_gender,
+        child_birth: values.child_birth
+      });
+    });
+    console.log(this.state);
+  };
+  //#endregion
+
+  //#region 暫存第2步驟data
+  step2 = async e => {
+    this.props.form.validateFields((err, values) => {
+      console.log("values", values);
+      console.log("err", err);
+      this.setState({
+        child_avatar: values.child_avatar
+      });
+    });
+    console.log(this.state);
+  };
+  //#endregion
+
+  //#region 暫存第3步驟data
+  step3 = async e => {
+    this.props.form.validateFields((err, values) => {
+      console.log("values", values);
+      console.log("err", err);
+      this.setState({
+        child_conditions: values.child_conditions,
+        child_sleep_time: values.sleep_time
+      });
+    });
+    console.log(this.state);
+  };
+  //#endregion
+
+  //#region 上傳avatar方法
   getBase64 = (img, callback) => {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result));
@@ -121,11 +185,11 @@ class AddChild extends React.Component {
     this.getBase64(file, imageUrl => this.setState({ imageUrl }));
     const isJPG = file.type === "image/jpeg";
     if (!isJPG) {
-      message.error("You can only upload JPG file!");
+      message.error("只接受JPG圖片！");
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
+      message.error("圖片大小需小於2MB！");
     }
     return false;
   };
@@ -141,13 +205,14 @@ class AddChild extends React.Component {
       message.error("圖片上傳失敗 !");
     }
   };
-  
+
   doOpen = event => {
     event = event || window.event;
-    if(event.target.type !== 'file'){
-        event.preventDefault();
+    if (event.target.type !== "file") {
+      event.preventDefault();
     }
-  }
+  };
+  //#endregion
 
   handleSurveySubmit = async () => {
     var formData = {
@@ -205,29 +270,39 @@ class AddChild extends React.Component {
   handleSleepTimeChange = event => {
     this.setState({ child_sleep_time: event.target.value });
   };
-  handleFoodChange = event => {
-    switch (event.target.value) {
-      case "全榖根莖類":
-        this.setState({ child_eat_cereal: event.target.checked });
-        break;
-      case "蛋豆魚肉類":
-        this.setState({ child_eat_meat: event.target.checked });
-        break;
-      case "乳製品":
-        this.setState({ child_eat_milk: event.target.checked });
-        break;
-      case "蔬菜類":
-        this.setState({ child_eat_veg: event.target.checked });
-        break;
-      case "水果類":
-        this.setState({ child_eat_fruit: event.target.checked });
-        break;
+  handleFoodChange = checkedValues => {
+    console.log(checkedValues);
+    if (checkedValues.indexOf("全榖根莖類") > -1) {
+      this.setState({ child_eat_cereal: true });
+    } else {
+      this.setState({ child_eat_cereal: false });
     }
-    this.setState({ child_food: event.target.value });
+    if (checkedValues.indexOf("蛋豆魚肉類") > -1) {
+      this.setState({ child_eat_meat: event.target.checked });
+    } else {
+      this.setState({ child_eat_meat: false });
+    }
+    if (checkedValues.indexOf("乳製品") > -1) {
+      this.setState({ child_eat_milk: true });
+    } else {
+      this.setState({ child_eat_milk: false });
+    }
+    if (checkedValues.indexOf("蔬菜類") > -1) {
+      this.setState({ child_eat_veg: true });
+    } else {
+      this.setState({ child_eat_veg: false });
+    }
+    if (checkedValues.indexOf("水果類") > -1) {
+      this.setState({ child_eat_fruit: true });
+    } else {
+      this.setState({ child_eat_fruit: false });
+    }
+    this.setState({ child_food: checkedValues });
   };
   handleConditionChange = event => {
     this.setState({ child_conditions: event.target.value });
   };
+
   render() {
     const {
       getFieldDecorator,
@@ -235,9 +310,13 @@ class AddChild extends React.Component {
       getFieldError,
       isFieldTouched
     } = this.props.form;
+
     const isLoading = this.state.isLoading;
     const config = {
-      rules: [{ type: "object", required: true, message: "請選擇生日" }]
+      rules: [{ type: "object", required: true, message: "請選擇生日" }],
+      initialValue: this.state.child_birth
+        ? moment(this.state.child_birth, "YYYY-MM-DD")
+        : null
     };
     const childNameError =
       isFieldTouched("child_name") && getFieldError("child_name");
@@ -249,233 +328,207 @@ class AddChild extends React.Component {
       isFieldTouched("child_avatar") && getFieldError("child_avatar");
     const checkPasswordError =
       isFieldTouched("checkPassword") && getFieldError("checkPassword");
+    const childConditionError =
+      isFieldTouched("child_condition") && getFieldError("child_condition");
+    const sleepTimeError =
+      isFieldTouched("sleep_time") && getFieldError("sleep_time");
+    const foodError = isFieldTouched("food") && getFieldError("food");
+    const avatarError = isFieldTouched("upload") && getFieldError("upload");
+
     function disabledDate(current) {
       // Can not select days after today
       return current && current.valueOf() > Date.now();
     }
     const imageUrl = this.state.imageUrl;
-    const { previewVisible, previewImage, fileList } = this.state;
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-    return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        {isLoading && <Loading />}
-        <FormItem
-          label="孩童姓名"
-          validateStatus={childNameError ? "error" : ""}
-          help={childNameError || ""}
-        >
-          {getFieldDecorator("child_name", {
-            rules: [{ required: true, message: "請輸入孩童姓名" }]
-          })(
-            <Input
-              className="form-control"
-              type="text"
-              onChange={this.handleNameChange}
-            />
-          )}
-        </FormItem>
-        <FormItem
-          label="孩童性別"
-          validateStatus={childGenderError ? "error" : ""}
-          help={childGenderError || ""}
-        >
-          {getFieldDecorator("child_gender")(
-            <RadioGroup onChange={this.handleGenderChange}>
-              <Radio value="male">男</Radio>
-              <Radio value="female">女</Radio>
-            </RadioGroup>
-          )}
-        </FormItem>
-        <FormItem
-          label="孩童生日"
-          validateStatus={childBirthError ? "error" : ""}
-          help={childBirthError || ""}
-        >
-          {getFieldDecorator("child_birth", config)(
-            <DatePicker
-              onChange={this.handleBirthChange}
-              placeholder="請選擇生日"
-              disabledDate={disabledDate}
-            />
-          )}
-        </FormItem>
-        <label>
-          孩子大頭貼：
-          <div onClick={this.doOpen}>
-            <Upload
-              className="avatar-uploader"
-              name="avatar"
-              action="http://meracal.azurewebsites.net/api/Member/ReactPostImage"
-              beforeUpload={this.beforeUpload}
-              onChange={this.handleChange}
+    const { current } = this.state;
+    const steps = [
+      {
+        title: "First",
+        content: (
+          <Form name="step1">
+            <FormItem
+              label="孩童姓名"
+              validateStatus={childNameError ? "error" : ""}
+              help={childNameError || ""}
             >
-              {imageUrl ? (
-                <img src={imageUrl} alt="" className="avatar" />
-              ) : (
-                <Icon type="plus" className="avatar-uploader-trigger" />
+              {getFieldDecorator("child_name", {
+                rules: [{ required: true, message: "請輸入孩童姓名" }],
+                initialValue: this.state.child_name
+              })(
+                <Input
+                  className="form-control"
+                  type="text"
+                  onChange={this.handleNameChange}
+                />
               )}
-            </Upload>
+            </FormItem>
+            <FormItem
+              label="孩童性別"
+              validateStatus={childGenderError ? "error" : ""}
+              help={childGenderError || ""}
+            >
+              {getFieldDecorator("child_gender", {
+                rules: [{ required: true, message: "請選擇孩童性別" }],
+                initialValue: this.state.child_gender
+              })(
+                <RadioGroup onChange={this.handleGenderChange}>
+                  <Radio value="男">男</Radio>
+                  <Radio value="女">女</Radio>
+                </RadioGroup>
+              )}
+            </FormItem>
+            <FormItem
+              label="孩童生日"
+              validateStatus={childBirthError ? "error" : ""}
+              help={childBirthError || ""}
+            >
+              {getFieldDecorator("child_birth", config)(
+                <DatePicker
+                  onChange={this.handleBirthChange}
+                  placeholder="請選擇生日"
+                  disabledDate={disabledDate}
+                />
+              )}
+            </FormItem>
+          </Form>
+        )
+      },
+      {
+        title: "Second",
+        content: (
+          <Form>
+            <FormItem
+              label="孩子大頭貼"
+              extra=""
+              validateStatus={avatarError ? "error" : ""}
+              help={avatarError || ""}
+            >
+              {getFieldDecorator("upload", {
+                valuePropName: "fileList"
+              })(
+                <Upload
+                  className="avatar-uploader"
+                  name="avatar"
+                  action="http://meracal.azurewebsites.net/api/Member/ReactPostImage"
+                  beforeUpload={this.beforeUpload}
+                  onChange={this.handleChange}
+                >
+                  {imageUrl ? (
+                    <img src={imageUrl} alt="" className="avatar" />
+                  ) : (
+                    <Icon type="plus" className="avatar-uploader-trigger" />
+                  )}
+                </Upload>
+              )}
+            </FormItem>
+          </Form>
+        )
+      },
+      {
+        title: "Last",
+        content: (
+          <div>
+            <h4>填寫問卷</h4>
+            <p>幫助我們更了解您的孩童</p>
+            <br />
+            <Form>
+              <FormItem
+                label="孩童目前情況(單選)"
+                validateStatus={childConditionError ? "error" : ""}
+                help={childConditionError || ""}
+              >
+                {getFieldDecorator("child_condition", {
+                  rules: [{ required: true, message: "此欄位必選" }],
+                  initialValue: this.state.child_conditions
+                })(
+                  <RadioGroup onChange={this.handleConditionChange}>
+                    <Radio value="正常">正常</Radio>
+                    <Radio value="過動">過動</Radio>
+                    <Radio value="自閉">自閉</Radio>
+                    <Radio value="學習障礙">學習障礙</Radio>
+                    <Radio value="智能障礙">智能障礙</Radio>
+                    <Radio value="其他特殊疾病">其他特殊疾病</Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+              <FormItem
+                label="孩童平均睡眠時間(單選)"
+                validateStatus={sleepTimeError ? "error" : ""}
+                help={sleepTimeError || ""}
+              >
+                {getFieldDecorator("sleep_time", {
+                  rules: [{ required: true, message: "此欄位必選" }],
+                  initialValue: this.state.child_sleep_time
+                })(
+                  <RadioGroup onChange={this.handleSleepTimeChange}>
+                    <Radio value="6小時以下">6小時以下</Radio>
+                    <Radio value="6-7小時">6-7小時</Radio>
+                    <Radio value="7-8小時">7-8小時</Radio>
+                    <Radio value="8-9小時">8-9小時</Radio>
+                    <Radio value="9-10小時">9-10小時</Radio>
+                    <Radio value="10小時以上">10小時以上</Radio>
+                  </RadioGroup>
+                )}
+              </FormItem>
+              <FormItem
+                label="較注重孩童哪方面的飲食(複選)"
+                validateStatus={foodError ? "error" : ""}
+                help={foodError || ""}
+              >
+                {getFieldDecorator("food", {
+                  rules: [{ required: true, message: "此欄位必選" }],
+                  initialValue: this.state.child_food
+                })(
+                  <Checkbox.Group onChange={this.handleFoodChange}>
+                    <Checkbox value="全榖根莖類">全榖根莖類</Checkbox>
+                    <Checkbox value="蛋豆魚肉類">蛋豆魚肉類</Checkbox>
+                    <Checkbox value="乳製品">乳製品</Checkbox>
+                    <Checkbox value="蔬菜類">蔬菜類</Checkbox>
+                    <Checkbox value="水果類">水果類</Checkbox>
+                  </Checkbox.Group>
+                )}
+              </FormItem>
+            </Form>
           </div>
-        </label>
-        <br />
+        )
+      }
+    ];
+    return (
+      <div>
+        {isLoading && <Loading />}
+        <Steps progressDot current={current}>
+          {steps.map(item => (
+            <Step
+              key={item.title}
+              title={item.title}
+              status={this.stepStatus}
+            />
+          ))}
+        </Steps>
+        <div className="steps-content">{steps[this.state.current].content}</div>
+        <div className="steps-action">
+          {this.state.current > 0 && (
+            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+              上一步
+            </Button>
+          )}
 
-        <hr />
-        <p>兒童調查</p>
-        <label>
-          孩童目前情況(單選)：
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="condition"
-              onChange={this.handleConditionChange}
-              value="正常"
-            />正常
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="condition"
-              onChange={this.handleConditionChange}
-              value="過動"
-            />過動
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="condition"
-              onChange={this.handleConditionChange}
-              value="自閉"
-            />自閉
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="condition"
-              onChange={this.handleConditionChange}
-              value="學習障礙"
-            />學習障礙
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="condition"
-              onChange={this.handleConditionChange}
-              value="智能障礙"
-            />智能障礙
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="condition"
-              onChange={this.handleConditionChange}
-              value="其他特殊疾病"
-            />其他特殊疾病
-          </label>
-        </label>
-        <br />
-        <label>
-          孩童平均睡眠時間(單選)：
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="sleep"
-              onChange={this.handleSleepTimeChange}
-              value="6小時以下"
-            />6小時以下
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="sleep"
-              onChange={this.handleSleepTimeChange}
-              value="6-7小時"
-            />6-7小時
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="sleep"
-              onChange={this.handleSleepTimeChange}
-              value="7-8小時"
-            />7-8小時
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="sleep"
-              onChange={this.handleSleepTimeChange}
-              value="8-9小時"
-            />8-9小時
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="sleep"
-              onChange={this.handleSleepTimeChange}
-              value="9-10小時"
-            />9-10小時
-          </label>
-          <label className="radio-inline">
-            <input
-              type="radio"
-              name="sleep"
-              onChange={this.handleSleepTimeChange}
-              value="10小時以上"
-            />10小時以上
-          </label>
-        </label>
-        <br />
-        <label>
-          較注重孩童哪方面的飲食(複選)：
-          <label className="checkbox-inline">
-            <input
-              type="checkbox"
-              name="food"
-              onChange={this.handleFoodChange}
-              value="全榖根莖類"
-            />全榖根莖類
-          </label>
-          <label className="checkbox-inline">
-            <input
-              type="checkbox"
-              name="food"
-              onChange={this.handleFoodChange}
-              value="蛋豆魚肉類"
-            />蛋豆魚肉類
-          </label>
-          <label className="checkbox-inline">
-            <input
-              type="checkbox"
-              name="food"
-              onChange={this.handleFoodChange}
-              value="乳製品"
-            />乳製品
-          </label>
-          <label className="checkbox-inline">
-            <input
-              type="checkbox"
-              name="food"
-              onChange={this.handleFoodChange}
-              value="蔬菜類"
-            />蔬菜類
-          </label>
-          <label className="checkbox-inline">
-            <input
-              type="checkbox"
-              name="food"
-              onChange={this.handleFoodChange}
-              value="水果類"
-            />水果類
-          </label>
-        </label>
-        <br />
-        <input type="button" value="確定" onClick={this.handleSurveySubmit} />
-      </Form>
+          {this.state.current === steps.length - 1 && (
+            <Button
+              type="primary"
+              onClick={() => message.success("Processing complete!")}
+            >
+              送出
+            </Button>
+          )}
+
+          {this.state.current < steps.length - 1 && (
+            <Button type="primary" onClick={() => this.next()}>
+              下一步
+            </Button>
+          )}
+        </div>
+      </div>
     );
   }
 }
