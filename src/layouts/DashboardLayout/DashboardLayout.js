@@ -1,14 +1,19 @@
 import React from "react";
-import { Layout, Menu, Icon } from "antd";
+import { connect } from "react-redux";
+import { Layout, Menu, Icon, Tooltip } from "antd";
 import PropTypes from "prop-types";
 const { Header, Sider, Content } = Layout;
 import { IndexLink, Link } from "react-router";
 import "./DashboardLayout.scss";
+import createStore from "../../store/createStore";
 
-export default class DashBoardLayout extends React.Component {
+class DashBoardLayout extends React.Component {
   static propTypes = {
     children: PropTypes.node
   };
+  constructor(props) {
+    super(props);
+  }
   state = {
     collapsed: false
   };
@@ -17,6 +22,19 @@ export default class DashBoardLayout extends React.Component {
       collapsed: !this.state.collapsed
     });
   };
+  componentWillUnmount() {
+    console.log(this.props.user);
+    localStorage.setItem("state_user", this.props.user);
+  }
+  componentWillMount() {
+    if (localStorage.getItem("state_user")) {
+      const store = createStore(localStorage.getItem("state_user"));
+      store.subscribe(() => {
+        // user: store.getState().user
+      });
+      console.log(this.props);
+    }
+  }
   render() {
     return (
       <Layout style={{ height: "100%" }}>
@@ -27,12 +45,17 @@ export default class DashBoardLayout extends React.Component {
               src={require("../../components/assets/logo_no_background.png")}
               alt=""
             />
-            {!this.state.collapsed && (
-              <span>
-                <text className="notice">M</text>eracle
-              </span>
-            )}
+            <span>eracle</span>
           </div>
+          <div className="avatar-wrapper">
+            <img
+              className="dashboard-avatar"
+              src="https://avatars.io/facebook/xinhe998"
+              alt=""
+            />
+          </div>
+          <p className="user-name">{this.props.user_detail.name}</p>
+          <hr />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1">
               <Link
@@ -40,7 +63,7 @@ export default class DashBoardLayout extends React.Component {
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
-                <Icon type="home" /> <span> HOME </span>
+                <Icon type="home" /> <span> 首頁 </span>
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
@@ -58,7 +81,7 @@ export default class DashBoardLayout extends React.Component {
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
-                <Icon type="database" /> <span> 檢視孩子資料 </span>
+                <Icon type="database" /> <span> 學童資料 </span>
               </Link>
             </Menu.Item>
             <Menu.Item key="4">
@@ -106,6 +129,7 @@ export default class DashBoardLayout extends React.Component {
               type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
               onClick={this.toggle}
             />
+            <span className="document-name">首頁</span>
           </Header>
           <Content
             style={{
@@ -122,3 +146,11 @@ export default class DashBoardLayout extends React.Component {
     );
   }
 }
+const mapDispatchToProps = {};
+
+const mapStateToProps = state => ({
+  user: state.user,
+  user_detail: state.user_detail
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashBoardLayout);
