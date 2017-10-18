@@ -15,7 +15,8 @@ import {
   Tooltip,
   Legend,
   BarChart,
-  Bar
+  Bar,
+  ResponsiveContainer
 } from "recharts";
 
 export default class Dashboard extends React.Component {
@@ -66,6 +67,25 @@ export default class Dashboard extends React.Component {
         {isLoading && <Loading />}
         <div>
           <Card
+            title="個人平均狀態記憶力"
+            style={{ width: "100%" }}
+            className="dashboard-index-card"
+          >
+            <ResponsiveContainer aspect={2.5}>
+              <BarChart data={personal_average_memory_data}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <Tooltip />
+                <Legend iconType="circle" />
+                {/* <Legend /> 圖例 */}
+                {!isLoading ? (
+                  <Bar dataKey="val" fill="#9ACBD9" animationDuration={2000} />
+                ) : null}
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+          <Card
             title="一周內記憶力最佳"
             style={{ width: "45%" }}
             className="dashboard-index-card"
@@ -85,16 +105,6 @@ export default class Dashboard extends React.Component {
         <hr />
         <br />
         個人記憶力
-        <BarChart width={300} height={150} data={personal_average_memory_data}>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          {/* <Legend /> 圖例 */}
-          {!isLoading ? (
-            <Bar dataKey="val" fill="#f77c86" animationDuration={2000} />
-          ) : null}
-        </BarChart>
       </div>
     );
   }
