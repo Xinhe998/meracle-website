@@ -90,7 +90,7 @@ class HomeView extends React.Component {
               <XAxis dataKey="name" />
               <YAxis />
               <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
-              <Tooltip wrapperStyle="{{bor}}" />
+              <Tooltip />
               <Legend />
               {isScrollToChart ? (
                 <Line
