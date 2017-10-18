@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
-import { Button, Input, Form, Alert } from "antd";
+import { Button, Input, Form, Alert, Modal } from "antd";
 import { Link, browserHistory } from "react-router";
 // import './Login.scss'
 const FormItem = Form.Item;
@@ -85,6 +85,10 @@ class Login extends React.Component {
             },
             function(e) {
               console.log(e);
+              Modal.error({
+                title: "唉呀",
+                content: "發生不明錯誤，請再試一次"
+              });
             }
           );
       } catch (e) {}
