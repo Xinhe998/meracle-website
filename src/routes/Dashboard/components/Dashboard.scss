@@ -1,5 +1,9 @@
+
+::selection{
+	background: #2B5B7C;
+}
+
 .dashboard-index-card {
-  display: inline-block;
   margin-right: 20px;
   margin-bottom: 50px;
   .ant-card-head-title {
@@ -7,4 +11,57 @@
     color: #555555;
     letter-spacing: 1px;
   }
+}
+.recharts-default-legend {
+  text-align: left !important;
+  padding-left: 10% !important;
+}
+.avg-data-wrapper {
+  width: 100%;
+  height: 90%;
+}
+.latest-data-wrapper {
+  .ant-card-body {
+    text-align: center;
+    .latest-data-name {
+      font-size: 12px;
+      color: #6d7084;
+    }
+    .latest-data-time {
+      opacity: 0.5;
+      font-size: 10px;
+      color: #6d7084;
+      letter-spacing: 0.3px;
+      margin-top: 8px;
+    }
+    .ant-progress {
+      margin: auto;
+      margin-top: 16px;
+      width: 100%;
+      .ant-progress-inner {
+        width: 60% !important;
+        height: auto !important;
+        .ant-progress-circle-path {
+          stroke: #9acbd9;
+        }
+        .ant-progress-text {
+          font-size: 34px;
+          color: #6d7084;
+          letter-spacing: 1px;
+          margin-top: -12px;
+        }
+      }
+    }
+    .progress-gain {
+      font-size: 14px;
+      color: #9acbd9;
+      letter-spacing: 0.17px;
+      line-height: 16px;
+      position: relative;
+      top: -5vh;
+    }
+  }
+}
+.best-data-wrapper {
+  text-align: center
 }
