@@ -11,15 +11,8 @@ export default class Child extends React.Component {
     this.state = {};
   }
   componentWillMount() {
-    this.preventAnonymousAccess();
     this.getChildData();
   }
-  preventAnonymousAccess = () => {
-    if (!this.props.user) {
-      alert("請先登入");
-      browserHistory.push("/Login");
-    }
-  };
   getChildData = async () => {
     await fetch("http://meracal.azurewebsites.net/api/Member/CdPersonalPage", {
       method: "POST",

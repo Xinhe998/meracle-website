@@ -14,13 +14,21 @@ class Logout extends React.Component {
     this.logout();
   }
   logout = () => {
-    const data = {
+    const userData = {
       account: "",
       authorization: ""
     };
-    localStorage.setItem("account", data.account);
-    localStorage.setItem("authorization", data.authorization);
-    this.props.userLogout(data);
+    const userDeailData = {
+      name: "",
+      gender: "",
+      birth: "",
+      avatar: "",
+      address: "",
+    }
+    localStorage.setItem("account", userData.account);
+    localStorage.setItem("authorization", userData.authorization);
+    this.props.userLogout(userData);
+    this.props.getUserData(userDeailData);
     browserHistory.push("/");
   };
   render() {

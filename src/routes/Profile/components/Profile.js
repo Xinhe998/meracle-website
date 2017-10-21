@@ -13,7 +13,6 @@ export default class Profile extends React.Component {
     };
   }
   componentWillMount() {
-    this.preventAnonymousAccess();
     this.getProfileData();
   }
   componentDidMount() {
@@ -24,16 +23,6 @@ export default class Profile extends React.Component {
       });
     }, 300);
   }
-  preventAnonymousAccess = () => {
-    if (
-      !this.props.user &&
-      !localStorage.getItem("account") &&
-      !localStorage.getItem("authorization")
-    ) {
-      alert("請先登入");
-      browserHistory.push("/Login");
-    }
-  };
   getProfileData = async () => {
     await fetch("http://meracal.azurewebsites.net/api/Member/PersonalPage", {
       method: "POST",

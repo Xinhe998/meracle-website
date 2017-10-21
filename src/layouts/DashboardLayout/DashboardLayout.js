@@ -6,6 +6,8 @@ const { Header, Sider, Content } = Layout;
 import { IndexLink, Link } from "react-router";
 import "./DashboardLayout.scss";
 import createStore from "../../store/createStore";
+import { getUserData } from "../../store/userDetail";
+import { browserHistory } from "react-router";
 
 class DashBoardLayout extends React.Component {
   static propTypes = {
@@ -13,20 +15,24 @@ class DashBoardLayout extends React.Component {
   };
   constructor(props) {
     super(props);
+    this.getProfileData = this.getProfileData.bind(this);
   }
   state = {
     collapsed: false
   };
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
+
+  preventAnonymousAccess = () => {
+    if (!this.props.user) {
+      alert("請先登入");
+      browserHistory.push("/Login");
+    }
   };
   componentWillUnmount() {
     console.log(this.props.user);
     localStorage.setItem("state_user", this.props.user);
   }
   componentWillMount() {
+    this.preventAnonymousAccess();
     if (localStorage.getItem("state_user")) {
       const store = createStore(localStorage.getItem("state_user"));
       store.subscribe(() => {
@@ -35,6 +41,43 @@ class DashBoardLayout extends React.Component {
       console.log(this.props);
     }
   }
+  componentDidMount() {
+    this.getProfileData();
+  }
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    });
+  };
+  getProfileData = async () => {
+    console.log(this.props.user);
+    await fetch("http://meracal.azurewebsites.net/api/Member/PersonalPage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.props.user.authorization
+      },
+      body: JSON.stringify({
+        Account: this.props.user.account
+      })
+    })
+      .then(res => res.json())
+      .then(
+        responseJson => {
+          const data = {
+            name: responseJson[0].Name,
+            gender: responseJson[0].Gender.trim(),
+            birth: responseJson[0].Birthday,
+            address: responseJson[0].Address,
+            avatar: responseJson[0].Imageurl
+          };
+          this.props.getUserData(data);
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+  };
   render() {
     return (
       <Layout style={{ height: "100%" }}>
@@ -48,13 +91,20 @@ class DashBoardLayout extends React.Component {
             <span>eracle</span>
           </div>
           <div className="avatar-wrapper">
-            <img
+          {this.props.user_detail.avatar !== null ? <img
               className="dashboard-avatar"
-              src="https://avatars.io/facebook/xinhe998"
+              src={this.props.user_detail.avatar}
               alt=""
-            />
+            />: <img
+              className="dashboard-avatar"
+              src={'https://ui-avatars.com/api/?name=' + this.props.user_detail.name}
+              alt=""
+            /> }
+            
           </div>
-          <p className="user-name">{this.props.user_detail.name}</p>
+          <p className="user-name">
+            {this.props.user_detail ? this.props.user_detail.name : ""}
+          </p>
           <hr />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1">
@@ -146,7 +196,9 @@ class DashBoardLayout extends React.Component {
     );
   }
 }
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getUserData
+};
 
 const mapStateToProps = state => ({
   user: state.user,

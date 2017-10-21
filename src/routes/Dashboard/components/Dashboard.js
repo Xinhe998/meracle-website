@@ -27,9 +27,7 @@ export default class Dashboard extends React.Component {
       isLoading: true
     };
   }
-  componentWillMount() {
-    this.preventAnonymousAccess();
-  }
+  componentWillMount() {}
   componentDidMount() {
     setTimeout(() => {
       this.setState({
@@ -37,12 +35,6 @@ export default class Dashboard extends React.Component {
       });
     }, 800);
   }
-  preventAnonymousAccess = () => {
-    if (!this.props.user) {
-      alert("請先登入");
-      browserHistory.push("/Login");
-    }
-  };
   render() {
     const isMobile =
       navigator.userAgent.match(/Android/i) ||
@@ -78,7 +70,6 @@ export default class Dashboard extends React.Component {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <Tooltip />
                 <Legend iconType="circle" />
-                {/* <Legend /> 圖例 */}
                 {!isLoading ? (
                   <Bar dataKey="val" fill="#9ACBD9" animationDuration={2000} />
                 ) : null}

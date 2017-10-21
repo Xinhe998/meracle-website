@@ -10,10 +10,10 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const EditProfile = require('./containers/EditProfileContainer').default
-      const reducer = require('./modules/EditProfile').default
+      const reducer = require('../../store/userDetail').default
 
       /*  Add the reducer to the store on key 'counter'  */
-      // injectReducer(store, { key: 'user_detail', reducer })
+      injectReducer(store, { key: 'user_detail', reducer })
 
       /*  Return getComponent   */
       cb(null, EditProfile)

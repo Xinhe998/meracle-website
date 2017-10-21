@@ -6,6 +6,7 @@ import "./PageLayout.scss";
 require("bootstrap");
 import "bootstrap/js/dist/util";
 import "bootstrap/js/dist/dropdown";
+import createStore from '../../store/createStore'
 // const isLogin = this.props.user;
 class PageLayout extends React.Component {
   static propTypes = {
@@ -21,8 +22,19 @@ class PageLayout extends React.Component {
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
   }
+  componentWillMount () {
+    if (localStorage.getItem("state_user")) {
+      const store = createStore(localStorage.getItem("state_user"));
+      console.log("componentWillMount",store.getState());
+      store.subscribe(() => {
+          // user: store.getState().user
+      });
+    }
+  }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+    console.log("componentWillUnmount",this.props.user);
+    localStorage.setItem("state_user", this.props.user);
   }
   handleScroll(event) {
     var y =
@@ -37,7 +49,6 @@ class PageLayout extends React.Component {
     }
   }
   render() {
-    // console.log("!!!", this.props)
     const isLogin = this.props.user ? this.props.user.account : this.props.user;
     return (
       <div className="meracle-navbar">

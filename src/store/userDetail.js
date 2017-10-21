@@ -40,7 +40,7 @@ const initialState = {
   address: '',
 }
 
-export default function counterReducer (state = initialState, action) {
+export default function userDetailReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state

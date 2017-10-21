@@ -32,9 +32,7 @@ export default class PublicData extends React.Component {
       isLoading: true
     };
   }
-  componentWillMount() {
-    this.preventAnonymousAccess();
-  }
+  componentWillMount() {}
   componentDidMount() {
     setTimeout(() => {
       this.setState({
@@ -42,12 +40,6 @@ export default class PublicData extends React.Component {
       });
     }, 800);
   }
-  preventAnonymousAccess = () => {
-    if (!this.props.user) {
-      alert("請先登入");
-      browserHistory.push("/Login");
-    }
-  };
   render() {
     const isMobile =
       navigator.userAgent.match(/Android/i) ||

@@ -19,9 +19,7 @@ class ChangePassword extends React.Component {
       confirmDirty: false
     };
   }
-  componentWillMount() {
-    this.preventAnonymousAccess();
-  }
+  componentWillMount() {}
   componentDidMount() {
     // document.title = this.state.title + " | 憶想奇機"
     setTimeout(() => {
@@ -31,12 +29,6 @@ class ChangePassword extends React.Component {
     }, 300);
     this.props.form.validateFields();
   }
-  preventAnonymousAccess = () => {
-    if (!this.props.user) {
-      alert("請先登入");
-      browserHistory.push("/Login");
-    }
-  };
   handleSubmit = async e => {
     e.preventDefault();
     var formData = {
@@ -129,8 +121,7 @@ class ChangePassword extends React.Component {
     const newPasswordError =
       isFieldTouched("newPassword") && getFieldError("newPassword");
     const checkNewPasswordError =
-      isFieldTouched("checkNewPassword") &&
-      getFieldError("checkNewPassword");
+      isFieldTouched("checkNewPassword") && getFieldError("checkNewPassword");
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         {isLoading && <Loading />}

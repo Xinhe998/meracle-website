@@ -2,8 +2,19 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
-import { DatePicker, Button, Input, AutoComplete, Radio, Form } from "antd";
+import {
+  DatePicker,
+  Button,
+  Input,
+  AutoComplete,
+  Radio,
+  Form,
+  Upload,
+  Icon,
+  message
+} from "antd";
 import moment from "moment";
+import "./EditProfile.scss";
 
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -26,7 +37,8 @@ class EditProfile extends React.Component {
       address: "",
       isLoading: true,
       checkPasswordError: "",
-      result: []
+      result: [],
+      avatar: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -45,14 +57,16 @@ class EditProfile extends React.Component {
       gender: "",
       birth: "",
       address: "",
+      avatar: "",
       confirmDirty: false
     };
     var isOk = false;
     this.props.form.validateFields((err, values) => {
       formData.name = values.name;
       formData.gender = values.gender;
-      formData.birth = moment(values.birth.toString()).format("YYYY-MM-DD");
+      formData.birth = moment(values.birth).format("YYYY-MM-DD");
       formData.address = values.address;
+      formData.avatar = this.state.avatar;
       if (!err) {
         isOk = true;
       }
@@ -72,22 +86,23 @@ class EditProfile extends React.Component {
             Name: formData.name,
             Address: formData.address,
             Birthday: formData.birth,
-            Gender: formData.gender
+            Gender: formData.gender,
+            Imageurl: formData.avatar,
           })
         }
       )
-        .then(res => res.json())
         .then(
-          function(responseJson) {
-            console.log(responseJson);
+          responseJson => {
             const data = {
-              name: responseJson[0].Name,
-              gender: responseJson[0].Gender.trim(),
-              birth: responseJson[0].Birthday,
-              address: responseJson[0].Address,
-              avatar: responseJson[0].Imageurl
+              name: formData.name,
+              gender: formData.gender,
+              birth: formData.birth,
+              address: formData.address,
+              avatar: formData.avatar
             };
+            console.log("data",data);
             this.props.getUserData(data);
+            // browserHistory.push("/dashboard/profile");
           },
           function(e) {
             console.log(e);
@@ -105,12 +120,55 @@ class EditProfile extends React.Component {
     this.setState({ address: event.target.value });
   };
   handleBirthChange = (date, dateString) => {
+    console.log(dateString);
     this.setState({ birth: dateString });
   };
   handleConfirmBlur = e => {
     const value = e.target.value;
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
+
+  //#region 上傳avatar方法
+  getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(img);
+  };
+  beforeUpload = file => {
+    console.log("beforeUpload", file);
+    this.getBase64(file, avatar => this.setState({ avatar }));
+    const isJPG = file.type === "image/jpeg";
+    if (!isJPG) {
+      message.error("只接受JPG圖片！");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("圖片大小需小於2MB！");
+    }
+    return false;
+  };
+
+  handleChange = info => {
+    console.log("!!!!!!!handleChange");
+    if (info.file.status === "done") {
+      // Get this url from response in real world.
+      this.getBase64(info.file.originFileObj, imageUrl =>
+        this.setState({ imageUrl })
+      );
+    } else if (info.file.status === "error") {
+      message.error("圖片上傳失敗 !");
+    }
+  };
+
+  doOpen = event => {
+    event = event || window.event;
+    if (event.target.type !== "file") {
+      event.preventDefault();
+    }
+  };
+  //#endregion
+
+
   render() {
     const {
       getFieldDecorator,
@@ -123,8 +181,9 @@ class EditProfile extends React.Component {
     const nameError = isFieldTouched("name") && getFieldError("name");
     const genderError = isFieldTouched("gender") && getFieldError("gender");
     const birthError = isFieldTouched("birth") && getFieldError("birth");
-
     const addressError = isFieldTouched("address") && getFieldError("address");
+    const avatarError = isFieldTouched("upload") && getFieldError("upload");
+
     const config = {
       rules: [{ type: "object", required: true, message: "請選擇生日" }],
       initialValue: moment(
@@ -132,6 +191,8 @@ class EditProfile extends React.Component {
         "YYYY-MM-DD"
       )
     };
+    const avatar = this.state.avatar;
+
     function disabledDate(current) {
       // Can not select days after today
       return current && current.valueOf() > Date.now();
@@ -140,6 +201,30 @@ class EditProfile extends React.Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         {isLoading && <Loading />}
         {this.props.user.account}
+        <FormItem
+          label="大頭貼"
+          extra=""
+          validateStatus={avatarError ? "error" : ""}
+          help={avatarError || ""}
+        >
+          {getFieldDecorator("upload", {
+            valuePropName: "fileList"
+          })(
+            <Upload
+              className="avatar-uploader"
+              name="avatar"
+              action="http://meracal.azurewebsites.net/api/Member/ReactPostImage"
+              beforeUpload={this.beforeUpload}
+              onChange={this.handleChange}
+            >
+              {avatar ? (
+                <img src={avatar} alt="" className="avatar" />
+              ) : (
+                <Icon type="plus" className="avatar-uploader-trigger" />
+              )}
+            </Upload>
+          )}
+        </FormItem>
         <FormItem
           label="姓名"
           validateStatus={nameError ? "error" : ""}

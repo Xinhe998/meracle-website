@@ -75,15 +75,7 @@ class AddChild extends React.Component {
     }, 300);
     this.props.form.validateFields();
   }
-  componentWillMount() {
-    this.preventAnonymousAccess();
-  }
-  preventAnonymousAccess = () => {
-    if (!this.props.user) {
-      alert("請先登入");
-      browserHistory.push("/Login");
-    }
-  };
+  componentWillMount() {}
   handleSubmit = async e => {
     var formData = {
       account: "",
