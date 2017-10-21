@@ -91,16 +91,19 @@ class DashBoardLayout extends React.Component {
             <span>eracle</span>
           </div>
           <div className="avatar-wrapper">
-          {this.props.user_detail.avatar !== null ? <img
-              className="dashboard-avatar"
-              src={this.props.user_detail.avatar}
-              alt=""
-            />: <img
-              className="dashboard-avatar"
-              src={'https://ui-avatars.com/api/?name=' + this.props.user_detail.name}
-              alt=""
-            /> }
-            
+            {this.props.user_detail.avatar !== "" ? (
+              <img
+                className="dashboard-avatar"
+                src={this.props.user_detail.avatar}
+                alt=""
+              />
+            ) : (
+              <img
+                className="dashboard-avatar"
+                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                alt=""
+              />
+            )}
           </div>
           <p className="user-name">
             {this.props.user_detail ? this.props.user_detail.name : ""}
