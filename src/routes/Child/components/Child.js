@@ -14,45 +14,89 @@ export default class Child extends React.Component {
     this.getChildData();
   }
   getChildData = async () => {
-    await fetch("http://meracal.azurewebsites.net/api/Member/CdPersonalPage", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: this.props.user.authorization
-      },
-      body: JSON.stringify({
-        Account: this.props.user.account
-      })
-    })
+    //取得有哪些學童，存姓名至array
+    await fetch(
+      "http://meracal.azurewebsites.net/api/Member/GetAccountCdName",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.props.user.authorization
+        },
+        body: JSON.stringify({
+          Account: this.props.user.account
+        })
+      }
+    )
       .then(res => res.json())
       .then(
         responseJson => {
-          if (responseJson.length) {
-            const data = {
-              name: responseJson[0].CdName,
-              gender: responseJson[0].Gender.trim(),
-              birth: responseJson[0].Birthday,
-              address: responseJson[0].Address,
-              avatar: responseJson[0].Imageurl
-            };
-            console.log(responseJson);
-            this.props.getChildData(data);
+          var cdArray = [];
+          if (responseJson.CdName.length) {
+            for (var index in responseJson.CdName) {
+              let cdData = {
+                name: responseJson.CdName[index],
+                gender: "",
+                birth: "",
+                avatar: ""
+              };
+              cdArray.push(cdData);
+            }
+            this.props.getChildData(cdArray);
           }
         },
         function(e) {
           console.log(e);
         }
       );
+    //依取得的學童姓名拿詳細資料
+    var cdDetailArray = [];
+    for (var index in this.props.child) {
+      await fetch(
+        "http://meracal.azurewebsites.net/api/Member/CdPersonalPage",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: this.props.user.authorization
+          },
+          body: JSON.stringify({
+            Account: this.props.user.account,
+            CdName: this.props.child[index].name
+          })
+        }
+      )
+        .then(res => res.json())
+        .then(
+          responseJson => {
+            if (responseJson.length) {
+              var cdDetailData = {
+                name: responseJson[0].CdName,
+                gender: responseJson[0].Gender.trim(),
+                birth: responseJson[0].Birthday,
+                avatar: responseJson[0].Imageurl
+              };
+              cdDetailArray.push(cdDetailData);
+            }
+          },
+          function(e) {
+            console.log(e);
+          }
+        );
+      this.props.getChildData(cdDetailArray);
+    }
   };
   render() {
+    const child = this.props.child
     return (
       <div>
-        <Card style={{ width: "90%" }}>
-          {/* 帳號：{this.props.user.account} <br />
-          姓名：{this.props.child_detail.name} <br />
-          性別：{this.props.child_detail.gender} <br />
-          生日：{this.props.child_detail.birth} <br /> */}
-        </Card>
+        {Object.keys(child).map(function(index) {
+          <Card style={{ width: "90%" }}>
+            <p>姓名：{child[index].name}</p>
+            <p>性別：{child[index].gender}</p>
+            <p>生日：{child[index].birth}</p>
+          </Card>;
+        })}
         {/* <Button type="dashed" onClick={this.add} style={{ width: "90%", marginTop: "30px" }}>
           <Icon type="plus" /> Add field
         </Button> */}

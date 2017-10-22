@@ -82,45 +82,113 @@ class AddChild extends React.Component {
       child_name: "",
       child_gender: "",
       child_birth: "",
-      child_avatar: ""
+      child_avatar: "",
+      child_condition: "",
+      child_sleep_time: "",
+      child_eat_cereal: null,
+      child_eat_fruit: null,
+      child_eat_meat: null,
+      child_eat_milk: null,
+      child_eat_veg: null
     };
     var isOk = false;
     this.props.form.validateFields((err, values) => {
-      formData.account = values.account;
+      formData.account = this.props.user.account;
       formData.child_name = values.child_name;
       formData.child_gender = values.child_gender;
-      formData.child_birth = values.child_birth;
-      formData.child_avatar = values.child_avatar;
+      formData.child_birth = moment(values.child_birth).format("YYYY-MM-DD");
+      formData.child_avatar = this.state.child_avatar;
+      formData.child_condition = values.child_condition;
       if (!err) {
         isOk = true;
       }
     });
     console.log(formData);
-    if (isOk) {
-      await fetch("http://meracal.azurewebsites.net/api/Member/CdRegister", {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          Account: formData.account,
-          CdName: formData.child_name,
-          Birthday: formData.child_birth,
-          Gender: formData.child_gender,
-          Imageurl: formData.image
-        })
+    console.log("account:", this.props.user.account);
+    console.log("CdName", formData.child_name);
+    console.log("Birth", formData.child_birth);
+    console.log("Gender", formData.child_gender);
+    await fetch("http://meracal.azurewebsites.net/api/Member/CdRegister", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.props.user.authorization
+      },
+      body: JSON.stringify({
+        Account: this.props.user.account,
+        CdName: formData.child_name,
+        Birthday: formData.child_birth,
+        Gender: formData.child_gender
       })
-        .then(res => res.json())
-        .then(
-          function(responseJson) {
-            console.log(responseJson);
-          },
-          function(e) {
-            console.log(e);
+    })
+      .then(res => res.json())
+      .then(
+        function(responseJson) {
+          console.log(responseJson);
+          switch (responseJson.result) {
+            case "已達新增上限":
+              Modal.error({
+                title: "唉呀",
+                content: "學童數量已達新增上限"
+              });
+              break;
+            case "新增成功":
+              browserHistory.push("/profile");
+              break;
+            case "姓名重複":
+              Modal.error({
+                title: "唉呀",
+                content: "學童姓名不可重複！"
+              });
+              break;
           }
-        );
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+    if (this.state.child_avatar) {
+      await fetch(
+        "http://meracal.azurewebsites.net/api/Member/ReactPostImage",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: this.props.user.authorization
+          },
+          body: JSON.stringify({
+            Account: this.props.user.account,
+            CdName: formData.child_name,
+            FileStr: formData.child_avatar.substring(
+              formData.child_avatar.search(",") + 1
+            )
+          })
+        }
+      )
+        .then(res => res.json())
+        .then(responseJson => {}, function(e) {
+          console.log(e);
+        });
     }
+    await fetch("http://meracal.azurewebsites.net/api/Survey/Questionnaire", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.props.user.authorization
+      },
+      body: JSON.stringify({
+        Account: this.props.user.account,
+        CdName: formData.child_name,
+        Problem: formData.child_condition
+      })
+    })
+      .then(res => res.json())
+      .then(responseJson => {}, function(e) {
+        console.log(e);
+      });
   };
 
   //#region 暫存第1步驟data
@@ -174,7 +242,7 @@ class AddChild extends React.Component {
   };
   beforeUpload = file => {
     console.log("beforeUpload", file);
-    this.getBase64(file, imageUrl => this.setState({ imageUrl }));
+    this.getBase64(file, child_avatar => this.setState({ child_avatar }));
     const isJPG = file.type === "image/jpeg";
     if (!isJPG) {
       message.error("只接受JPG圖片！");
@@ -331,7 +399,7 @@ class AddChild extends React.Component {
       // Can not select days after today
       return current && current.valueOf() > Date.now();
     }
-    const imageUrl = this.state.imageUrl;
+    const child_avatar = this.state.child_avatar;
     const { current } = this.state;
     const steps = [
       {
@@ -401,12 +469,10 @@ class AddChild extends React.Component {
                 <Upload
                   className="avatar-uploader"
                   name="avatar"
-                  action="http://meracal.azurewebsites.net/api/Member/ReactPostImage"
                   beforeUpload={this.beforeUpload}
-                  onChange={this.handleChange}
                 >
-                  {imageUrl ? (
-                    <img src={imageUrl} alt="" className="avatar" />
+                  {child_avatar ? (
+                    <img src={child_avatar} alt="" className="avatar" />
                   ) : (
                     <Icon type="plus" className="avatar-uploader-trigger" />
                   )}
@@ -506,10 +572,7 @@ class AddChild extends React.Component {
           )}
 
           {this.state.current === steps.length - 1 && (
-            <Button
-              type="primary"
-              onClick={() => message.success("Processing complete!")}
-            >
+            <Button type="primary" onClick={this.handleSubmit}>
               送出
             </Button>
           )}

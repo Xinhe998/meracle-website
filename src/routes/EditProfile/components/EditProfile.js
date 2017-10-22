@@ -72,6 +72,9 @@ class EditProfile extends React.Component {
       }
     });
     if (isOk) {
+      this.setState({
+        isLoading: true
+      });
       await fetch(
         "http://meracal.azurewebsites.net/api/Member/EdlitPersonalPage",
         {
@@ -86,28 +89,49 @@ class EditProfile extends React.Component {
             Name: formData.name,
             Address: formData.address,
             Birthday: formData.birth,
-            Gender: formData.gender,
-            Imageurl: formData.avatar,
+            Gender: formData.gender
           })
         }
-      )
-        .then(
-          responseJson => {
-            const data = {
-              name: formData.name,
-              gender: formData.gender,
-              birth: formData.birth,
-              address: formData.address,
-              avatar: formData.avatar
-            };
-            console.log("data",data);
-            this.props.getUserData(data);
-            // browserHistory.push("/dashboard/profile");
-          },
-          function(e) {
-            console.log(e);
+      ).then(
+        responseJson => {
+          const data = {
+            name: formData.name,
+            gender: formData.gender,
+            birth: formData.birth,
+            address: formData.address
+          };
+          console.log("data", data);
+          this.props.getUserData(data);
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+      if (this.state.avatar) {
+        await fetch(
+          "http://meracal.azurewebsites.net/api/Member/ReactPostImage",
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: this.props.user.authorization
+            },
+            body: JSON.stringify({
+              Account: this.props.user.account,
+              FileStr: formData.avatar.substring(
+                formData.avatar.search(",") + 1
+              )
+            })
           }
-        );
+        )
+          .then(res => res.json())
+          .then(responseJson => {}, function(e) {
+            console.log(e);
+          });
+      }
+
+      browserHistory.push("/dashboard/profile");
     }
   };
   handleNameChange = event => {
@@ -148,18 +172,6 @@ class EditProfile extends React.Component {
     return false;
   };
 
-  handleChange = info => {
-    console.log("!!!!!!!handleChange");
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({ imageUrl })
-      );
-    } else if (info.file.status === "error") {
-      message.error("圖片上傳失敗 !");
-    }
-  };
-
   doOpen = event => {
     event = event || window.event;
     if (event.target.type !== "file") {
@@ -167,7 +179,6 @@ class EditProfile extends React.Component {
     }
   };
   //#endregion
-
 
   render() {
     const {
@@ -213,12 +224,24 @@ class EditProfile extends React.Component {
             <Upload
               className="avatar-uploader"
               name="avatar"
-              action="http://meracal.azurewebsites.net/api/Member/ReactPostImage"
               beforeUpload={this.beforeUpload}
               onChange={this.handleChange}
             >
-              {avatar ? (
-                <img src={avatar} alt="" className="avatar" />
+              {avatar || this.props.user_detail.avatar ? (
+                avatar ? (
+                  <img src={avatar} alt="" className="avatar" />
+                ) : (
+                  <img
+                    src={
+                      "http://meracal.azurewebsites.net/Filefolder/" +
+                      this.props.user_detail.avatar +
+                      "?time=" +
+                      new Date().getTime()
+                    }
+                    alt=""
+                    className="avatar"
+                  />
+                )
               ) : (
                 <Icon type="plus" className="avatar-uploader-trigger" />
               )}

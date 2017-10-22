@@ -15,7 +15,8 @@ const userDispatchToProps = {
 };
 const userStateToProps = state => ({
   user: state.user,
-  user_detail: state.user_detail
+  user_detail: state.user_detail,
+  child: state.child,
 });
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:

@@ -38,7 +38,7 @@ class ChangePassword extends React.Component {
     };
     var isOk = false;
     this.props.form.validateFields((err, values) => {
-      formData.account = values.account;
+      formData.account = this.props.user.account;
       formData.oldPassword = values.oldPassword;
       formData.newPassword = values.newPassword;
       if (!err) {
@@ -115,7 +115,6 @@ class ChangePassword extends React.Component {
       isFieldTouched
     } = this.props.form;
     const isLoading = this.state.isLoading;
-    const accountError = isFieldTouched("account") && getFieldError("account");
     const oldPasswordError =
       isFieldTouched("oldPassword") && getFieldError("oldPassword");
     const newPasswordError =
@@ -125,21 +124,6 @@ class ChangePassword extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         {isLoading && <Loading />}
-        <FormItem
-          label="E-mail"
-          validateStatus={accountError ? "error" : ""}
-          help={accountError || ""}
-        >
-          {getFieldDecorator("account", {
-            rules: [{ required: true, type: "email", message: "請輸入E-mail" }]
-          })(
-            <Input
-              className="form-control"
-              type="text"
-              onChange={this.handleAccountChange}
-            />
-          )}
-        </FormItem>
         <FormItem
           label="舊密碼"
           validateStatus={oldPasswordError ? "error" : ""}

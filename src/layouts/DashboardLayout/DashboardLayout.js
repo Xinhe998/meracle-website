@@ -94,7 +94,12 @@ class DashBoardLayout extends React.Component {
             {this.props.user_detail.avatar !== "" ? (
               <img
                 className="dashboard-avatar"
-                src={this.props.user_detail.avatar}
+                src={
+                  "http://meracal.azurewebsites.net/Filefolder/" +
+                  this.props.user_detail.avatar +
+                  "?time=" +
+                  new Date().getTime()
+                }
                 alt=""
               />
             ) : (

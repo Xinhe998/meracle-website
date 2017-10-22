@@ -84,11 +84,21 @@ export default class Dashboard extends React.Component {
               >
                 <ResponsiveContainer aspect={2.3}>
                   <BarChart data={personal_average_memory_data}>
-                    <XAxis dataKey="name" tickLine={false} />
-                    <YAxis tickLine={false} />
+                    <XAxis
+                      dataKey="name"
+                      tickLine={false}
+                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                    />
+                    <YAxis
+                      tickLine={false}
+                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                    />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend iconType="circle" />
+                    <Tooltip cursor={{ fill: "#F0F0F0" }} />
+                    <Legend
+                      iconType="circle"
+                      wrapperStyle={{ fontSize: 12, color: "#6D7084" }}
+                    />
                     {!isLoading ? (
                       <Bar
                         dataKey="val"
@@ -148,15 +158,30 @@ export default class Dashboard extends React.Component {
                     data={personal_average_memory_data}
                     layout="vertical"
                   >
-                    <XAxis dataKey="val" type="number" tickLine={false} />
-                    <YAxis dataKey="name" type="category" tickLine={false} />
+                    <XAxis
+                      dataKey="val"
+                      type="number"
+                      tickLine={false}
+                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                    />
+                    <YAxis
+                      dataKey="name"
+                      type="category"
+                      tickLine={false}
+                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                    />
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                    <Tooltip />
+                    <Tooltip cursor={{ fill: "#F0F0F0" }} />
                     {!isLoading ? (
                       <Bar
                         dataKey="val"
                         fill="#9ACBD9"
                         animationDuration={2000}
+                        label={{
+                          fontSize: 12,
+                          position: "right",
+                          fill: "#9ACBD9"
+                        }}
                       />
                     ) : null}
                   </BarChart>
@@ -171,11 +196,21 @@ export default class Dashboard extends React.Component {
               >
                 <ResponsiveContainer aspect={1.5}>
                   <LineChart data={best_memory_data} className="linechart">
-                    <XAxis dataKey="name" tickLine={false} />
-                    <YAxis tickLine={false} />
+                    <XAxis
+                      dataKey="name"
+                      tickLine={false}
+                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                    />
+                    <YAxis
+                      tickLine={false}
+                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                    />
                     <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
                     <Tooltip />
-                    <Legend iconType="circle" />
+                    <Legend
+                      iconType="circle"
+                      wrapperStyle={{ fontSize: 12, color: "#6D7084" }}
+                    />
                     {!isLoading ? (
                       <Line
                         type="monotone"
