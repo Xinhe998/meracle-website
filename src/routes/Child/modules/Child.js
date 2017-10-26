@@ -22,6 +22,7 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [GET_CHILD_DATA]: (state, action) => {
+    console.log("!!!", action.data);
     return {
       ...state,
       ...action.data

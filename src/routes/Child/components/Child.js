@@ -16,7 +16,7 @@ export default class Child extends React.Component {
   getChildData = async () => {
     //取得有哪些學童，存姓名至array
     await fetch(
-      "http://meracal.azurewebsites.net/api/Member/GetAccountCdName",
+      "http://meracle.azurewebsites.net/api/Member/GetAccountCdName",
       {
         method: "POST",
         headers: {
@@ -52,8 +52,9 @@ export default class Child extends React.Component {
     //依取得的學童姓名拿詳細資料
     var cdDetailArray = [];
     for (var index in this.props.child) {
+      console.log("!!!",this.props.child[index]);
       await fetch(
-        "http://meracal.azurewebsites.net/api/Member/CdPersonalPage",
+        "http://meracle.azurewebsites.net/api/Member/CdPersonalPage",
         {
           method: "POST",
           headers: {
@@ -86,13 +87,21 @@ export default class Child extends React.Component {
       this.props.getChildData(cdDetailArray);
     }
   };
+  test = () => {
+    var newWindow = window.open('../../../../../BakeryGame/game_first_page.html');
+    newWindow.my_special_setting = "Hello World";
+  }
   render() {
     const child = this.props.child
+    const name = (index) => child[index].name;
     return (
       <div>
+        <Button onClick={this.test}>Click</Button>
         {Object.keys(child).map(function(index) {
-          <Card style={{ width: "90%" }}>
-            <p>姓名：{child[index].name}</p>
+          console.log('index=>', index);
+          console.log('child[index].name=>', child[index].name);
+          return <Card style={{ width: "90%" }}>
+            <p>姓名：{name(index)}</p>
             <p>性別：{child[index].gender}</p>
             <p>生日：{child[index].birth}</p>
           </Card>;

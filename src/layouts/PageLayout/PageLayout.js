@@ -6,7 +6,8 @@ import "./PageLayout.scss";
 require("bootstrap");
 import "bootstrap/js/dist/util";
 import "bootstrap/js/dist/dropdown";
-import createStore from '../../store/createStore'
+import createStore from "../../store/createStore";
+import { userLogin } from "../../store/user";
 // const isLogin = this.props.user;
 class PageLayout extends React.Component {
   static propTypes = {
@@ -18,23 +19,29 @@ class PageLayout extends React.Component {
       isScrollTop: true
     };
     this.handleScroll = this.handleScroll.bind(this);
+    if (
+      localStorage.getItem("state_user") &&
+      localStorage.getItem("state_user") !== "undefined"
+    ) {
+      if (JSON.parse(localStorage.getItem("state_user")).account) {
+        let data = {
+          account: JSON.parse(localStorage.getItem("state_user")).account,
+          authorization: JSON.parse(localStorage.getItem("state_user"))
+            .authorization
+        };
+        this.props.userLogin(data);
+      }
+    }
   }
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
   }
-  componentWillMount () {
-    if (localStorage.getItem("state_user")) {
-      const store = createStore(localStorage.getItem("state_user"));
-      console.log("componentWillMount",store.getState());
-      store.subscribe(() => {
-          // user: store.getState().user
-      });
-    }
-  }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
-    console.log("componentWillUnmount",this.props.user);
-    localStorage.setItem("state_user", this.props.user);
+    var state_user = JSON.stringify(this.props.user);
+    state_user.createTime = new Date();
+    console.log(state_user);
+    localStorage.setItem("state_user", state_user);
   }
   handleScroll(event) {
     var y =
@@ -85,22 +92,26 @@ class PageLayout extends React.Component {
                 </a>
               </li> */}
               {!isLogin && (
-              <li className="nav-item">
-                <Link to="/login" className="nav-link" activeClassName="active">
-                  登入
-                </Link>
-              </li>
+                <li className="nav-item">
+                  <Link
+                    to="/login"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    登入
+                  </Link>
+                </li>
               )}
               {!isLogin && (
-              <li className="nav-item">
-                <Link
-                  to="/register"
-                  className="nav-link"
-                  activeClassName="active"
-                >
-                  註冊
-                </Link>
-              </li>
+                <li className="nav-item">
+                  <Link
+                    to="/register"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    註冊
+                  </Link>
+                </li>
               )}
               {isLogin && (
                 <li className="nav-item">
@@ -143,7 +154,9 @@ class PageLayout extends React.Component {
   }
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  userLogin
+};
 
 const mapStateToProps = state => ({
   user: state.user

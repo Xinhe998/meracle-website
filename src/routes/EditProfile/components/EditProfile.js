@@ -76,7 +76,7 @@ class EditProfile extends React.Component {
         isLoading: true
       });
       await fetch(
-        "http://meracal.azurewebsites.net/api/Member/EdlitPersonalPage",
+        "http://meracle.azurewebsites.net/api/Member/EdlitPersonalPage",
         {
           method: "POST",
           mode: "cors",
@@ -109,7 +109,7 @@ class EditProfile extends React.Component {
       );
       if (this.state.avatar) {
         await fetch(
-          "http://meracal.azurewebsites.net/api/Member/ReactPostImage",
+          "http://meracle.azurewebsites.net/api/Member/ReactPostImage",
           {
             method: "POST",
             mode: "cors",
@@ -173,6 +173,7 @@ class EditProfile extends React.Component {
   };
 
   doOpen = event => {
+    console.log("!!!!!!!!open");
     event = event || window.event;
     if (event.target.type !== "file") {
       event.preventDefault();
@@ -233,7 +234,7 @@ class EditProfile extends React.Component {
                 ) : (
                   <img
                     src={
-                      "http://meracal.azurewebsites.net/Filefolder/" +
+                      "http://meracle.azurewebsites.net/Filefolder/" +
                       this.props.user_detail.avatar +
                       "?time=" +
                       new Date().getTime()

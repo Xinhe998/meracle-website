@@ -6,7 +6,7 @@ import userDetailReducer from "./userDetail";
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     location: locationReducer,
-    // user: userReducer,
+    user: userReducer,
     user_detail: userDetailReducer,
     ...asyncReducers
   })

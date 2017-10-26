@@ -7,6 +7,7 @@ import { IndexLink, Link } from "react-router";
 import "./DashboardLayout.scss";
 import createStore from "../../store/createStore";
 import { getUserData } from "../../store/userDetail";
+import { userLogin } from "../../store/user";
 import { browserHistory } from "react-router";
 
 class DashBoardLayout extends React.Component {
@@ -16,6 +17,17 @@ class DashBoardLayout extends React.Component {
   constructor(props) {
     super(props);
     this.getProfileData = this.getProfileData.bind(this);
+    if (JSON.parse(localStorage.getItem("state_user")).account) {
+      let data = {
+        account: JSON.parse(localStorage.getItem("state_user")).account,
+        authorization: JSON.parse(localStorage.getItem("state_user"))
+          .authorization
+      };
+      this.props.userLogin(data);
+    } else {
+      this.preventAnonymousAccess();
+    }
+    this.getProfileData();
   }
   state = {
     collapsed: false
@@ -27,23 +39,7 @@ class DashBoardLayout extends React.Component {
       browserHistory.push("/Login");
     }
   };
-  componentWillUnmount() {
-    console.log(this.props.user);
-    localStorage.setItem("state_user", this.props.user);
-  }
-  componentWillMount() {
-    this.preventAnonymousAccess();
-    if (localStorage.getItem("state_user")) {
-      const store = createStore(localStorage.getItem("state_user"));
-      store.subscribe(() => {
-        // user: store.getState().user
-      });
-      console.log(this.props);
-    }
-  }
-  componentDidMount() {
-    this.getProfileData();
-  }
+
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed
@@ -51,7 +47,7 @@ class DashBoardLayout extends React.Component {
   };
   getProfileData = async () => {
     console.log(this.props.user);
-    await fetch("http://meracal.azurewebsites.net/api/Member/PersonalPage", {
+    await fetch("http://meracle.azurewebsites.net/api/Member/PersonalPage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +91,7 @@ class DashBoardLayout extends React.Component {
               <img
                 className="dashboard-avatar"
                 src={
-                  "http://meracal.azurewebsites.net/Filefolder/" +
+                  "http://meracle.azurewebsites.net/Filefolder/" +
                   this.props.user_detail.avatar +
                   "?time=" +
                   new Date().getTime()
@@ -205,7 +201,8 @@ class DashBoardLayout extends React.Component {
   }
 }
 const mapDispatchToProps = {
-  getUserData
+  getUserData,
+  userLogin
 };
 
 const mapStateToProps = state => ({

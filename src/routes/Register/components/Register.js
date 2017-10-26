@@ -62,7 +62,7 @@ class Register extends React.Component {
       }
     });
     if (isOk) {
-      await fetch("http://meracal.azurewebsites.net/api/Member/Register", {
+      await fetch("http://meracle.azurewebsites.net/api/Member/Register", {
         method: "POST",
         mode: "cors",
         headers: {

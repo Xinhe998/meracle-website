@@ -45,7 +45,7 @@ class Login extends React.Component {
     });
     if (isOk) {
       try {
-        await fetch("http://meracal.azurewebsites.net/api/Member/Login", {
+        await fetch("http://meracle.azurewebsites.net/api/Member/Login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

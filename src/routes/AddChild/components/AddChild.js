@@ -108,7 +108,7 @@ class AddChild extends React.Component {
     console.log("CdName", formData.child_name);
     console.log("Birth", formData.child_birth);
     console.log("Gender", formData.child_gender);
-    await fetch("http://meracal.azurewebsites.net/api/Member/CdRegister", {
+    await fetch("http://meracle.azurewebsites.net/api/Member/CdRegister", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -150,7 +150,7 @@ class AddChild extends React.Component {
       );
     if (this.state.child_avatar) {
       await fetch(
-        "http://meracal.azurewebsites.net/api/Member/ReactPostImage",
+        "http://meracle.azurewebsites.net/api/Member/ReactPostImage",
         {
           method: "POST",
           mode: "cors",
@@ -172,7 +172,7 @@ class AddChild extends React.Component {
           console.log(e);
         });
     }
-    await fetch("http://meracal.azurewebsites.net/api/Survey/Questionnaire", {
+    await fetch("http://meracle.azurewebsites.net/api/Survey/Questionnaire", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -287,7 +287,7 @@ class AddChild extends React.Component {
       child_eat_veg: this.state.child_eat_veg
     };
     console.log(formData);
-    await fetch("http://meracal.azurewebsites.net/api/Survey/Questionnaire", {
+    await fetch("http://meracle.azurewebsites.net/api/Survey/Questionnaire", {
       method: "POST",
       mode: "cors",
       headers: {

@@ -47,7 +47,7 @@ class ChangePassword extends React.Component {
     });
     console.log(formData);
     if (isOk) {
-      await fetch("http://meracal.azurewebsites.net/api/Member/EditPassword", {
+      await fetch("http://meracle.azurewebsites.net/api/Member/EditPassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
