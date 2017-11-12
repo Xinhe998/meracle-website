@@ -76,7 +76,7 @@ class EditProfile extends React.Component {
         isLoading: true
       });
       await fetch(
-        "http://meracle.azurewebsites.net/api/Member/EdlitPersonalPage",
+        "https://www.meracle.me/home/api/Member/EdlitPersonalPage",
         {
           method: "POST",
           mode: "cors",
@@ -109,7 +109,7 @@ class EditProfile extends React.Component {
       );
       if (this.state.avatar) {
         await fetch(
-          "http://meracle.azurewebsites.net/api/Member/ReactPostImage",
+          "https://www.meracle.me/home/api/Member/ReactPostImage",
           {
             method: "POST",
             mode: "cors",
@@ -131,7 +131,7 @@ class EditProfile extends React.Component {
           });
       }
 
-      browserHistory.push("/dashboard/profile");
+      browserHistory.push("/React/dashboard/profile");
     }
   };
   handleNameChange = event => {
@@ -234,7 +234,7 @@ class EditProfile extends React.Component {
                 ) : (
                   <img
                     src={
-                      "http://meracle.azurewebsites.net/Filefolder/" +
+                      "https://www.meracle.me/home/Filefolder/" +
                       this.props.user_detail.avatar +
                       "?time=" +
                       new Date().getTime()

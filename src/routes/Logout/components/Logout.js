@@ -29,7 +29,7 @@ class Logout extends React.Component {
     localStorage.setItem("authorization", userData.authorization);
     this.props.userLogout(userData);
     this.props.getUserData(userDeailData);
-    browserHistory.push("/");
+    browserHistory.push("/React/");
   };
   render() {
     return <div />;

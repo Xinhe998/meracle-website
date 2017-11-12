@@ -23,7 +23,11 @@ class DashBoardLayout extends React.Component {
         authorization: JSON.parse(localStorage.getItem("state_user"))
           .authorization
       };
+
+
       this.props.userLogin(data);
+
+      
     } else {
       this.preventAnonymousAccess();
     }
@@ -36,7 +40,7 @@ class DashBoardLayout extends React.Component {
   preventAnonymousAccess = () => {
     if (!this.props.user) {
       alert("請先登入");
-      browserHistory.push("/Login");
+      browserHistory.push("/React/Login");
     }
   };
 
@@ -47,7 +51,7 @@ class DashBoardLayout extends React.Component {
   };
   getProfileData = async () => {
     console.log(this.props.user);
-    await fetch("http://meracle.azurewebsites.net/api/Member/PersonalPage", {
+    await fetch("https://www.meracle.me/home/api/Member/PersonalPage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +95,7 @@ class DashBoardLayout extends React.Component {
               <img
                 className="dashboard-avatar"
                 src={
-                  "http://meracle.azurewebsites.net/Filefolder/" +
+                  "https://www.meracle.me/home/Filefolder/" +
                   this.props.user_detail.avatar +
                   "?time=" +
                   new Date().getTime()
@@ -113,7 +117,7 @@ class DashBoardLayout extends React.Component {
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1">
               <Link
-                to="/dashboard"
+                to="/React/dashboard"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -122,7 +126,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="2">
               <Link
-                to="/dashboard/addChild"
+                to="/React/dashboard/addChild"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -131,7 +135,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <Link
-                to="/dashboard/Child"
+                to="/React/dashboard/Child"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -140,7 +144,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="4">
               <Link
-                to="/dashboard/profile"
+                to="/React/dashboard/profile"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -149,7 +153,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="5">
               <Link
-                to="/dashboard/change_password"
+                to="/React/dashboard/change_password"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -158,7 +162,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="6">
               <Link
-                to="/dashboard/public_data"
+                to="/React/dashboard/public_data"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -167,7 +171,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="7">
               <Link
-                to="/logout"
+                to="/React/logout"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >

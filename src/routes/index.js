@@ -21,7 +21,7 @@ import PublicData from "./PublicData";
 
 export const createRoutes = store => ([
   {
-    path: '/',
+    path: '/React/',
     component: PageLayout,
     indexRoute: Home,
     childRoutes: [
@@ -32,7 +32,7 @@ export const createRoutes = store => ([
     ]
   },
   {
-    path: "/dashboard",
+    path: '/React/dashboard/',
     component: DashboardLayout,
     indexRoute: Dashboard(store),
     childRoutes: [

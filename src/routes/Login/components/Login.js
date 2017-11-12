@@ -45,7 +45,7 @@ class Login extends React.Component {
     });
     if (isOk) {
       try {
-        await fetch("http://meracle.azurewebsites.net/api/Member/Login", {
+        await fetch("https://www.meracle.me/home/api/Member/Login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -79,7 +79,7 @@ class Login extends React.Component {
                   localStorage.setItem("account", data.account);
                   localStorage.setItem("authorization", data.authorization);
                   this.props.userLogin(data);
-                  browserHistory.push("/dashboard");
+                  browserHistory.push("/React/dashboard/");
                   break;
               }
             },
@@ -167,7 +167,7 @@ class Login extends React.Component {
             登入
           </Button>
         </Form>
-        <Link to="/forget_password">忘記密碼？</Link>
+        <Link to="/React/forget_password">忘記密碼？</Link>
       </div>
     );
   }

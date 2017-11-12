@@ -108,7 +108,7 @@ class AddChild extends React.Component {
     console.log("CdName", formData.child_name);
     console.log("Birth", formData.child_birth);
     console.log("Gender", formData.child_gender);
-    await fetch("http://meracle.azurewebsites.net/api/Member/CdRegister", {
+    await fetch("https://www.meracle.me/home/api/Member/CdRegister", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -134,7 +134,7 @@ class AddChild extends React.Component {
               });
               break;
             case "新增成功":
-              browserHistory.push("/profile");
+              browserHistory.push("/React/profile");
               break;
             case "姓名重複":
               Modal.error({
@@ -150,7 +150,7 @@ class AddChild extends React.Component {
       );
     if (this.state.child_avatar) {
       await fetch(
-        "http://meracle.azurewebsites.net/api/Member/ReactPostImage",
+        "https://www.meracle.me/home/api/Member/ReactPostImage",
         {
           method: "POST",
           mode: "cors",
@@ -172,7 +172,7 @@ class AddChild extends React.Component {
           console.log(e);
         });
     }
-    await fetch("http://meracle.azurewebsites.net/api/Survey/Questionnaire", {
+    await fetch("https://www.meracle.me/home/api/Survey/Questionnaire", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -287,7 +287,7 @@ class AddChild extends React.Component {
       child_eat_veg: this.state.child_eat_veg
     };
     console.log(formData);
-    await fetch("http://meracle.azurewebsites.net/api/Survey/Questionnaire", {
+    await fetch("https://www.meracle.me/home/api/Survey/Questionnaire", {
       method: "POST",
       mode: "cors",
       headers: {

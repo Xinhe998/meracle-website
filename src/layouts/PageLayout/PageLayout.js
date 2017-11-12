@@ -39,8 +39,8 @@ class PageLayout extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
     var state_user = JSON.stringify(this.props.user);
-    state_user.createTime = new Date();
-    console.log(state_user);
+    // state_user.createTime = new Date();
+    // console.log(state_user.createTime);
     localStorage.setItem("state_user", state_user);
   }
   handleScroll(event) {
@@ -63,7 +63,7 @@ class PageLayout extends React.Component {
           className="navbar navbar-expand-md navbar-light bg-light"
           id="navbar"
         >
-          <IndexLink className="navbar-brand" to="#">
+          <IndexLink className="navbar-brand" to="/React/">
             <img
               src={require("../../components/assets/logo_no_background.png")}
               className="d-inline-block align-top meracle-navbar-logo"
@@ -94,7 +94,7 @@ class PageLayout extends React.Component {
               {!isLogin && (
                 <li className="nav-item">
                   <Link
-                    to="/login"
+                    to="/React/login"
                     className="nav-link"
                     activeClassName="active"
                   >
@@ -105,7 +105,7 @@ class PageLayout extends React.Component {
               {!isLogin && (
                 <li className="nav-item">
                   <Link
-                    to="/register"
+                    to="/React/register"
                     className="nav-link"
                     activeClassName="active"
                   >
@@ -116,18 +116,7 @@ class PageLayout extends React.Component {
               {isLogin && (
                 <li className="nav-item">
                   <Link
-                    to="/forget_password"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    忘記密碼
-                  </Link>
-                </li>
-              )}
-              {isLogin && (
-                <li className="nav-item">
-                  <Link
-                    to="/logout"
+                    to="/React/logout"
                     className="nav-link"
                     activeClassName="active"
                   >

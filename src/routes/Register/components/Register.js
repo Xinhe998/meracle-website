@@ -62,7 +62,7 @@ class Register extends React.Component {
       }
     });
     if (isOk) {
-      await fetch("http://meracle.azurewebsites.net/api/Member/Register", {
+      await fetch("https://www.meracle.me/home/api/Member/Register", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -86,7 +86,7 @@ class Register extends React.Component {
                 alert("註冊成功，請去登入");
                 // Clear form
                 // ReactDOM.findDOM Node(this.refs.textInput).value = "";
-                browserHistory.push("/Login");
+                browserHistory.push("/React/Login");
                 break;
               case "帳號重複":
                 alert("帳號重複");

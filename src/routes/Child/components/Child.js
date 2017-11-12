@@ -16,7 +16,7 @@ export default class Child extends React.Component {
   getChildData = async () => {
     //取得有哪些學童，存姓名至array
     await fetch(
-      "http://meracle.azurewebsites.net/api/Member/GetAccountCdName",
+      "https://www.meracle.me/home/api/Member/GetAccountCdName",
       {
         method: "POST",
         headers: {
@@ -54,7 +54,7 @@ export default class Child extends React.Component {
     for (var index in this.props.child) {
       console.log("!!!",this.props.child[index]);
       await fetch(
-        "http://meracle.azurewebsites.net/api/Member/CdPersonalPage",
+        "https://www.meracle.me/home/api/Member/CdPersonalPage",
         {
           method: "POST",
           headers: {
@@ -93,15 +93,13 @@ export default class Child extends React.Component {
   }
   render() {
     const child = this.props.child
-    const name = (index) => child[index].name;
     return (
       <div>
         <Button onClick={this.test}>Click</Button>
         {Object.keys(child).map(function(index) {
           console.log('index=>', index);
-          console.log('child[index].name=>', child[index].name);
           return <Card style={{ width: "90%" }}>
-            <p>姓名：{name(index)}</p>
+            <p>姓名：{child[index].name}</p>
             <p>性別：{child[index].gender}</p>
             <p>生日：{child[index].birth}</p>
           </Card>;

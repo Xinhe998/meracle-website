@@ -40,7 +40,7 @@ class ForgetPassword extends React.Component {
       }
     });
     if (isOk) {
-      await fetch("http://meracle.azurewebsites.net/api/Member/ForgetPassword", {
+      await fetch("https://www.meracle.me/home/api/Member/ForgetPassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -24,7 +24,7 @@ export default class Profile extends React.Component {
     }, 300);
   }
   getProfileData = async () => {
-    await fetch("http://meracle.azurewebsites.net/api/Member/PersonalPage", {
+    await fetch("https://www.meracle.me/home/api/Member/PersonalPage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
