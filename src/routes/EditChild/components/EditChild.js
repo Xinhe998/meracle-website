@@ -326,6 +326,17 @@ class EditChild extends React.Component {
           >
             送出
           </Button>
+          <Button
+            size="large"
+            onClick={() => {
+              browserHistory.push("/React/dashboard/Child");
+              sessionStorage.clear();
+            }}
+            htmlType="submit"
+            disabled={hasErrors(getFieldsError())}
+          >
+            取消
+          </Button>
         </Form>
       </div>
     );

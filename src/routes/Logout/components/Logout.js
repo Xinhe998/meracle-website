@@ -25,8 +25,7 @@ class Logout extends React.Component {
       avatar: "",
       address: "",
     }
-    localStorage.setItem("account", userData.account);
-    localStorage.setItem("authorization", userData.authorization);
+    localStorage.clear();
     this.props.userLogout(userData);
     this.props.getUserData(userDeailData);
     browserHistory.push("/React/");
