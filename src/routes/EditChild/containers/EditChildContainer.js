@@ -12,6 +12,7 @@ const userDispatchToProps = {
 }
 const addChildStateToProps = (state) => ({
     user : state.user,
+    user_detail: state.user_detail,
     child: state.child,
 })
 /*  Object of action creators (can also be function that returns object).

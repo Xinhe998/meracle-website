@@ -1,7 +1,7 @@
 import { injectReducer } from '../../store/reducers'
 
 export default (store) => ({
-  path : 'editChild',
+  path : 'edit_child',
   /*  Async getComponent is only invoked when route matches   */
   getComponent (nextState, cb) {
     /*  Webpack - use 'require.ensure' to create a split point
@@ -10,7 +10,7 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const EditChild = require('./containers/EditChildContainer').default
-      const reducer = require('./modules/EditChild').default
+      const reducer = require('../Child/modules/Child').default
 
       /*  Add the reducer to the store on key 'counter'  */
       injectReducer(store, { key: 'child', reducer })

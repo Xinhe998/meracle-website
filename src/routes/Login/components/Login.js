@@ -57,7 +57,7 @@ class Login extends React.Component {
         })
           .then(res => res.json())
           .then(
-            responseJson => {
+            async(responseJson) => {
               // console.log(responseJson);
               switch (responseJson.result) {
                 case "帳號錯誤":
@@ -78,13 +78,11 @@ class Login extends React.Component {
                   this.setState(data);
                   localStorage.setItem("account", data.account);
                   localStorage.setItem("authorization", data.authorization);
-                  const beforeLogin = async () => {
                     await this.props.userLogin(data);
                     var state_user = JSON.stringify(this.props.user);
+                    console.log("this.props.user", this.props.user);
                     await localStorage.setItem("state_user", state_user);
                     await browserHistory.push("/React/dashboard/");
-                  };
-                  beforeLogin();
                   break;
               }
             },

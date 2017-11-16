@@ -126,6 +126,11 @@ export default class Child extends React.Component {
       newWindow.child_name = cdName;
       //取用：window.account
     };
+    const editChild = async (cdName, cdBirth) => {
+      sessionStorage.child_editing_name = cdName;
+      sessionStorage.child_editing_birth = cdBirth;
+      await browserHistory.push("/React/dashboard/edit_child/");
+    };
     const isLoading = this.state.isLoading;
     var loopIndex = 0;
     return (
@@ -138,13 +143,22 @@ export default class Child extends React.Component {
               <Card
                 style={{ width: "90%", marginBottom: 20 }}
                 extra={
-                  <Button
-                    onClick={() => {
-                      startGame(child[index].name);
-                    }}
-                  >
-                    進入遊戲
-                  </Button>
+                  <div>
+                    <Button
+                      onClick={() => {
+                        editChild(child[index].name, child[index].birth);
+                      }}
+                    >
+                      編輯
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        startGame(child[index].name);
+                      }}
+                    >
+                      進入遊戲
+                    </Button>
+                  </div>
                 }
               >
                 <div>

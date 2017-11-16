@@ -1,7 +1,7 @@
 // import React from 'react';
 // import { Route, IndexRoute } from 'react-router';
-import PageLayout from '../layouts/PageLayout/PageLayout'
-import DashboardLayout from '../layouts/DashboardLayout/DashboardLayout'
+import PageLayout from "../layouts/PageLayout/PageLayout";
+import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 import NotFound from "./NotFound";
 import Home from "./Home";
 import Login from "./Login";
@@ -15,24 +15,25 @@ import AddChild from "./AddChild";
 import Dashboard from "./Dashboard";
 import Child from "./Child";
 import PublicData from "./PublicData";
+import EditChild from "./EditChild";
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
-export const createRoutes = store => ([
+export const createRoutes = store => [
   {
-    path: '/React/',
+    path: "/React/",
     component: PageLayout,
     indexRoute: Home,
     childRoutes: [
       Login(store),
       Register(store),
       ForgetPassword(store),
-      Logout(store),
+      Logout(store)
     ]
   },
   {
-    path: '/React/dashboard/',
+    path: "/React/dashboard/",
     component: DashboardLayout,
     indexRoute: Dashboard(store),
     childRoutes: [
@@ -41,16 +42,17 @@ export const createRoutes = store => ([
       Logout(store),
       AddChild(store),
       Child(store),
+      EditChild(store),
       EditProfile(store),
-      PublicData(store),
+      PublicData(store)
     ]
   },
   {
     path: "*",
     component: PageLayout,
     indexRoute: NotFound
-  },
-])
+  }
+];
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically
     using getChildRoutes with the following signature:
 
