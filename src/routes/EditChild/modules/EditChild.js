@@ -1,41 +1,45 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const GET_CHILD_DATA = "GET_CHILD_DATA";
+export const ADD_CHILD = 'ADD_CHILD'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function getChildData(data) {
+export function addChild (data) {
   return {
-    type: GET_CHILD_DATA,
+    type    : ADD_CHILD,
     data
-  };
+  }
 }
 
 export const actions = {
-  getChildData
-};
+  addChild,
+}
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [GET_CHILD_DATA]: (state, action) => {
+  [ADD_CHILD] : (state, action) => {
     return {
       ...state,
-      ...action.data
-    };
+      ...action.data,
+    }
   }
-};
+}
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = [{ name: "", gender: "", birth: "", avatar: "" }];
+const initialState = {
+  child_name: '',
+  child_gender: '',
+  child_birth: '',
+}
 
-export default function counterReducer(state = initialState, action) {
-  const handler = ACTION_HANDLERS[action.type];
+export default function counterReducer (state = initialState, action) {
+  const handler = ACTION_HANDLERS[action.type]
 
-  return handler ? handler(state, action) : state;
+  return handler ? handler(state, action) : state
 }

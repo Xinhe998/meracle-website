@@ -17,26 +17,41 @@ class DashBoardLayout extends React.Component {
   constructor(props) {
     super(props);
     this.getProfileData = this.getProfileData.bind(this);
-    if (JSON.parse(localStorage.getItem("state_user")).account) {
-      let data = {
-        account: JSON.parse(localStorage.getItem("state_user")).account,
-        authorization: JSON.parse(localStorage.getItem("state_user"))
-          .authorization
-      };
-
-
-      this.props.userLogin(data);
-
-      
-    } else {
-      this.preventAnonymousAccess();
+    if (localStorage.getItem("state_user") !== "undefined") {
+      if (JSON.parse(localStorage.getItem("state_user")).account) {
+        this.fetchUserData();
+      } else {
+        this.preventAnonymousAccess();
+      }
     }
-    this.getProfileData();
+    var widh = Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    );
+    this.state = {
+      collapsed: widh <= 768
+    };
   }
-  state = {
-    collapsed: false
+  windowResize = () => {
+    var widh = Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    );
+    if (widh <= 768) {
+      this.setState({
+        collapsed: true
+      });
+    }
   };
-
+  fetchUserData = async () => {
+    let data = {
+      account: JSON.parse(localStorage.getItem("state_user")).account,
+      authorization: JSON.parse(localStorage.getItem("state_user"))
+        .authorization
+    };
+    await this.props.userLogin(data);
+    await this.getProfileData();
+  };
   preventAnonymousAccess = () => {
     if (!this.props.user) {
       alert("請先登入");
@@ -117,7 +132,7 @@ class DashBoardLayout extends React.Component {
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1">
               <Link
-                to="/React/dashboard"
+                to="/React/dashboard/"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >

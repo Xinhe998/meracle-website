@@ -16,7 +16,7 @@ import {
   Steps
 } from "antd";
 import moment from "moment";
-import "./AddChild.scss";
+import "./EditChild.scss";
 
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -25,7 +25,7 @@ function hasErrors(fieldsError) {
 const RadioGroup = Radio.Group;
 const Step = Steps.Step;
 
-class AddChild extends React.Component {
+class EditChild extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
@@ -61,6 +61,7 @@ class AddChild extends React.Component {
     }
     if (current === 2) {
       this.step2(event);
+      console.log(this.state);
     }
     this.setState({ current: current });
   }
@@ -109,7 +110,7 @@ class AddChild extends React.Component {
       formData.child_sleep_time = this.state.child_sleep_time;
     });
     console.log("formData ==>", formData);
-    await fetch("https://www.meracle.me/home/api/Member/CdRegister", {
+    await fetch("https://www.meracle.me/home/api/Member/EdlitCdPersonalPage", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -233,6 +234,7 @@ class AddChild extends React.Component {
     reader.readAsDataURL(img);
   };
   beforeUpload = file => {
+    console.log("beforeUpload", file);
     this.getBase64(file, child_avatar => {
       this.setState({ child_avatar });
       sessionStorage.child_avatar = child_avatar;
@@ -269,6 +271,7 @@ class AddChild extends React.Component {
     this.setState({ child_sleep_time: event.target.value });
   };
   handleFoodChange = checkedValues => {
+    console.log(checkedValues);
     if (checkedValues.indexOf("全榖根莖類") > -1) {
       this.setState({ child_eat_cereal: true });
     } else {
@@ -544,4 +547,4 @@ var FileUpload = React.createClass({
     );
   }
 });
-export default Form.create()(AddChild);
+export default Form.create()(EditChild);

@@ -34,9 +34,11 @@
 .ant-layout-content {
   min-height: unset !important;
 }
-
+.ant-menu {
+  background: transparent !important;
+}
 .ant-layout-sider {
-  background: linear-gradient(-180deg, #9acbd9 0%, #144669 100%);
+  background: linear-gradient(-180deg, #9acbd9 0%, #144669 100%) !important;
   .logo {
     height: 60px;
     width: auto !important;

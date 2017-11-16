@@ -138,9 +138,17 @@ export default class Dashboard extends React.Component {
                     className="dashboard-index-card best-data-wrapper"
                   >
                     <span>
-                      <Icon type="calendar" /> 週五
+                      <img
+                        className="best-section-icon"
+                        src={require("../assets/calender_yellow.png")}
+                      />{" "}
+                      週五
                     </span>　　<span>
-                      <Icon type="user" /> 陳小花
+                      <img
+                        className="best-section-icon"
+                        src={require("../assets/person_pink.png")}
+                      />{" "}
+                      陳小花
                     </span>
                   </Card>
                 </div>

@@ -18,7 +18,7 @@ if (project.env === 'development') {
   logger.info('Enabling webpack development and HMR middleware')
   app.use(require('webpack-dev-middleware')(compiler, {
     publicPath  : webpackConfig.output.publicPath,
-    contentBase : path.resolve(project.basePath, project.srcDir),
+    contentBase : path.resolve(project.basePath + '/React', project.srcDir),
     hot         : true,
     quiet       : false,
     noInfo      : false,

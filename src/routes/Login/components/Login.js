@@ -78,8 +78,13 @@ class Login extends React.Component {
                   this.setState(data);
                   localStorage.setItem("account", data.account);
                   localStorage.setItem("authorization", data.authorization);
-                  this.props.userLogin(data);
-                  browserHistory.push("/React/dashboard/");
+                  const beforeLogin = async () => {
+                    await this.props.userLogin(data);
+                    var state_user = JSON.stringify(this.props.user);
+                    await localStorage.setItem("state_user", state_user);
+                    await browserHistory.push("/React/dashboard/");
+                  };
+                  beforeLogin();
                   break;
               }
             },
@@ -94,6 +99,7 @@ class Login extends React.Component {
       } catch (e) {}
     }
   };
+
   handleAccountChange = event => {
     this.setState({ account: event.target.value });
   };

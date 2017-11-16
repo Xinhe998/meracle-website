@@ -38,10 +38,6 @@ class PageLayout extends React.Component {
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
-    var state_user = JSON.stringify(this.props.user);
-    // state_user.createTime = new Date();
-    // console.log(state_user.createTime);
-    localStorage.setItem("state_user", state_user);
   }
   handleScroll(event) {
     var y =
@@ -116,6 +112,17 @@ class PageLayout extends React.Component {
               {isLogin && (
                 <li className="nav-item">
                   <Link
+                    to="/React/dashboard/"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    管理
+                  </Link>
+                </li>
+              )}
+              {isLogin && (
+                <li className="nav-item">
+                  <Link
                     to="/React/logout"
                     className="nav-link"
                     activeClassName="active"
@@ -124,6 +131,7 @@ class PageLayout extends React.Component {
                   </Link>
                 </li>
               )}
+
               {/* <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Dropdown link

@@ -16,10 +16,11 @@ class ChangePassword extends React.Component {
       account: "",
       oldPassword: "",
       newPassword: "",
-      confirmDirty: false
+      confirmDirty: false,
+      isLoading: true
     };
   }
-  componentWillMount() {}
+
   componentDidMount() {
     // document.title = this.state.title + " | 憶想奇機"
     setTimeout(() => {

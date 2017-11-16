@@ -58,7 +58,7 @@ export default class Profile extends React.Component {
         {isLoading && <Loading />}
         <Card
           style={{ width: "90%" }}
-          extra={<Link to="/dashboard/edit_profile">編輯</Link>}
+          extra={<Link to="/React/dashboard/edit_profile/">編輯</Link>}
         >
           帳號：{this.props.user.account} <br />
           姓名：{this.props.user_detail.name} <br />
