@@ -1,6 +1,5 @@
-
-::selection{
-	background: #2B5B7C;
+::selection {
+  background: #2b5b7c;
 }
 
 .dashboard-index-card {
@@ -49,6 +48,12 @@
           color: #6d7084;
           letter-spacing: 1px;
           margin-top: -12px;
+          @media screen and (min-width: 768px) and (max-width: 1270px) {
+            margin-top: unset;
+          }
+          @media screen and (min-width: 768px) and (max-width: 1100px) {
+            font-size: 20px;
+          }
         }
       }
     }
@@ -59,6 +64,9 @@
       line-height: 16px;
       position: relative;
       top: -5vh;
+      @media screen and (min-width: 768px) and (max-width: 1270px) {
+        display: none;
+      }
     }
   }
 }
@@ -67,5 +75,8 @@
   .best-section-icon {
     width: 15px;
     margin-right: 8px;
+  }
+  .info-text {
+    word-break: keep-all;
   }
 }

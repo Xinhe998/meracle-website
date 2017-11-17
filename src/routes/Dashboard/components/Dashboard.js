@@ -126,7 +126,7 @@ export default class Dashboard extends React.Component {
                       format={percent => `${percent}`}
                       strokeWidth={5}
                     />
-                    <p className="progress-gain">
+                    <p className="progress-gain hidden-md-down">
                       <Icon type="caret-up" /> 34
                     </p>
                   </Card>
@@ -137,19 +137,26 @@ export default class Dashboard extends React.Component {
                     style={{ width: "100%" }}
                     className="dashboard-index-card best-data-wrapper"
                   >
-                    <span>
-                      <img
-                        className="best-section-icon"
-                        src={require("../assets/calender_yellow.png")}
-                      />{" "}
-                      週五
-                    </span>　　<span>
-                      <img
-                        className="best-section-icon"
-                        src={require("../assets/person_pink.png")}
-                      />{" "}
-                      陳小花
-                    </span>
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <span className="info-text">
+                          <img
+                            className="best-section-icon"
+                            src={require("../assets/calender_yellow.png")}
+                          />{" "}
+                          週五
+                        </span>
+                      </div>
+                      <div className="col-lg-6">
+                        <span className="info-text">
+                          <img
+                            className="best-section-icon"
+                            src={require("../assets/person_pink.png")}
+                          />{" "}
+                          陳小花
+                        </span>
+                      </div>
+                    </div>
                   </Card>
                 </div>
               </div>
