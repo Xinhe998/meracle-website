@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-starter-kit",
-  "version": "3.0.1",
-  "description": "Get started with React, Redux, and React-Router!",
+  "name": "meracle-website",
+  "version": "1.0.0",
+  "description": "學童腦波記憶力訓練系統",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
+    "url": "git+https://github.com/Xinhe998/meracle-website.git"
   },
   "author": "Xinhe",
   "license": "MIT",
