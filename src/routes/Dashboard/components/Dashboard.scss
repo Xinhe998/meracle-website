@@ -1,7 +1,84 @@
 ::selection {
-  background: #2b5b7c;
+  background: #2b5b7c !important;
 }
-
+%meracle-button {
+  border: 2px solid #9acbd9 !important;
+  border-radius: 4px !important;
+  height: 40px !important;
+  line-height: 24px !important;
+  font-size: 14px !important;
+  color: #9acbd9 !important;
+  letter-spacing: 1.4px;
+  width: 100%;
+}
+.meracle-outline-btn {
+  @extend %meracle-button;
+  &:hover {
+    border: 1px solid #78bacc;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+.meracle-btn {
+  @extend %meracle-button;
+  background: #9acbd9 !important;
+  color: #ffffff !important;
+  &:hover {
+    color: #ffffff !important;
+    @extend %meracle-button;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    background: #78bacc !important;
+    border: 1px solid #78bacc !important;
+  }
+}
+.meracle-dropdown-btn {
+  button {
+    height: 40px;
+    font-size: 16px;
+    &:first-child:not(:last-child) {
+      padding: 0 25px 0 25px !important;
+      color: #555555;
+      letter-spacing: 1px;
+    }
+    &:last-child {
+      position: absolute;
+      padding-left: 15px;
+      background: rgba(109, 112, 132, 0.1);
+      color: rgba(109, 112, 132, 0.3);
+      .anticon-down {
+        font-size: 18px;
+        &:before {
+          content: "\25BE" !important;
+          font-family: unset !important;
+          zoom: 1.5;
+        }
+      }
+    }
+  }
+}
+.enter-game-wrapper {
+  .ant-card-body {
+    padding-bottom: 0 !important;
+  }
+  div {
+    margin-bottom: 10px;
+  }
+  .enter-game-title-wrapper {
+    @media screen and (max-width: 991px) {
+      text-align: center;
+    }
+    .enter-game-title {
+      font-size: 16px;
+      color: #555555;
+      letter-spacing: 1px;
+      line-height: 40px;
+    }
+  }
+  .cdname-dropdown-wrapper {
+    @media screen and (max-width: 991px) {
+      text-align: center;
+    }
+  }
+}
 .dashboard-index-card {
   margin-right: 20px;
   margin-bottom: 50px;

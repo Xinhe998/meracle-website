@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
 import { browserHistory } from "react-router";
-import { Card, Progress, Icon } from "antd";
+import { Card, Progress, Icon, Menu, Dropdown, Button } from "antd";
 import "./Dashboard.scss";
 
 import {
@@ -71,11 +71,47 @@ export default class Dashboard extends React.Component {
       { name: "9/11", 黃小明: 88, 陳小花: 100 },
       { name: "9/15", 黃小明: 120, 陳小花: 160 }
     ];
+    const dropdownMenu = (
+      <Menu>
+        <Menu.Item key="1">1st menu item</Menu.Item>
+        <Menu.Item key="2">2nd menu item</Menu.Item>
+        <Menu.Item key="3">3rd item</Menu.Item>
+      </Menu>
+    );
     return (
       <div>
         {isLoading && <Loading />}
         <div>
           <div className="row">
+            <div className="col-md-12">
+              <Card
+                style={{ width: "100%" }}
+                className="dashboard-index-card enter-game-wrapper"
+              >
+                <div className="row">
+                  <div className="col-md-12 col-lg-3 enter-game-title-wrapper">
+                    <span className="enter-game-title">選擇要進入憶想城市的孩童</span>
+                  </div>
+                  <div className="col-md-12 col-lg-3 cdname-dropdown-wrapper">
+                    <Dropdown.Button
+                      overlay={dropdownMenu}
+                      trigger={["click"]}
+                      className="meracle-dropdown-btn"
+                    >
+                      黃小明
+                    </Dropdown.Button>
+                  </div>
+                  <div className="col-md-5 col-lg-2">
+                    <Button className="meracle-outline-btn float-right">
+                      進入遊戲
+                    </Button>
+                  </div>
+                  <div className="col-md-7 col-lg-4">
+                    <Button className="meracle-btn">進入遊戲＆測量腦波</Button>
+                  </div>
+                </div>
+              </Card>
+            </div>
             <div className="col-md-9">
               <Card
                 title="個人平均狀態記憶力"
@@ -205,7 +241,7 @@ export default class Dashboard extends React.Component {
             </div>
             <div className="col-md-6">
               <Card
-                title="一天內記憶力最佳"
+                title="每週平均表現"
                 style={{ width: "100%" }}
                 className="dashboard-index-card"
               >

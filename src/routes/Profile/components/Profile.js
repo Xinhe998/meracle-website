@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { browserHistory, Link } from "react-router";
 import { Card, Icon, Button } from "antd";
 import Loading from "../../../components/Loading";
+import "./Profile.scss";
 // import './HomeView.scss'
 export default class Profile extends React.Component {
   static propTypes = {};
@@ -57,13 +58,48 @@ export default class Profile extends React.Component {
       <div>
         {isLoading && <Loading />}
         <Card
+          title="用戶資料"
+          className="profile-data-wrapper"
           style={{ width: "90%" }}
-          extra={<Link to="/React/dashboard/edit_profile/">編輯</Link>}
         >
-          帳號：{this.props.user.account} <br />
-          姓名：{this.props.user_detail.name} <br />
-          性別：{this.props.user_detail.gender} <br />
-          生日：{this.props.user_detail.birth} <br />
+          <div className="row">
+            <div>
+              <p>姓名</p>
+              <span className="profile-data">
+                {this.props.user_detail.name}
+              </span>
+            </div>
+            <div>
+              <p>性別</p>
+              <span className="profile-data">
+                {this.props.user_detail.gender}
+              </span>
+            </div>
+            <div>
+              <p>出生年月日</p>
+              <span className="profile-data">
+                {this.props.user_detail.birth}
+              </span>
+            </div>
+            <div>
+              <p>電子信箱</p>
+              <span className="profile-data">{this.props.user.account}</span>
+            </div>
+            <div className="link-wrapper">
+              <Link
+                to="/React/dashboard/edit_profile/"
+                className="profile-edit-link"
+              >
+                編輯資料
+              </Link>
+              <Link
+                to="/React/dashboard/change_password/"
+                className="change-password-link"
+              >
+                修改密碼
+              </Link>
+            </div>
+          </div>
         </Card>
         {/* <Button type="dashed" onClick={this.add} style={{ width: "90%", marginTop: "30px" }}>
           <Icon type="plus" /> Add field

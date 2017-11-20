@@ -151,15 +151,6 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <Link
-                to="/React/dashboard/change_password"
-                className="dashboard-left-link"
-                activeClassName="dashboare-left-link-active"
-              >
-                <Icon type="key" /> <span> 修改密碼 </span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Link
                 to="/React/dashboard/public_data"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
@@ -180,7 +171,7 @@ class DashBoardLayout extends React.Component {
                 </Link>
               }
             >
-              <Menu.Item key="5">
+              <Menu.Item key="4">
                 <Link
                   to="/React/dashboard/Child"
                   className="dashboard-left-link"
@@ -189,7 +180,7 @@ class DashBoardLayout extends React.Component {
                   <span> 學童資料 </span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="6">
+              <Menu.Item key="5">
                 <Link
                   to="/React/dashboard/profile"
                   className="dashboard-left-link"
@@ -198,7 +189,7 @@ class DashBoardLayout extends React.Component {
                   <span> 用戶資料 </span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="7">
+              <Menu.Item key="6">
                 <Link
                   to="/React/dashboard/addChild"
                   className="dashboard-left-link"
@@ -209,7 +200,7 @@ class DashBoardLayout extends React.Component {
               </Menu.Item>
             </SubMenu>
 
-            <Menu.Item key="8" className="logout-menu-item">
+            <Menu.Item key="7" className="logout-menu-item">
               <Link
                 to="/React/logout"
                 className="dashboard-left-link"
@@ -230,10 +221,10 @@ class DashBoardLayout extends React.Component {
             <span className="document-name">首頁</span>
           </Header>
           <Content
+            className="layout-content"
             style={{
               margin: "24px 16px",
               padding: 24,
-              background: "#fff",
               minHeight: 280
             }}
           >
