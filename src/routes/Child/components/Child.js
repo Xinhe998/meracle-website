@@ -119,13 +119,19 @@ export default class Child extends React.Component {
 
   render() {
     const child = this.props.child;
-    const startGame = cdName => {
-      var newWindow = window.open("../../Game/farmer.html");
+    const startFarmerGame = cdName => {
+      var newWindow = window.open("../../Game/FarmerGame/farmer.html");
       newWindow.account = this.props.user.account;
       newWindow.authorization = this.props.user.authorization;
       newWindow.child_name = cdName;
       //取用：window.account
     };
+    const startBackerGame = cdName => {
+      var newWindow = window.open("../../Game/BakeryGame/game_first_page.html");
+      newWindow.account = this.props.user.account;
+      newWindow.authorization = this.props.user.authorization;
+      newWindow.child_name = cdName;
+    }
     const editChild = async (cdName, cdBirth) => {
       sessionStorage.child_editing_name = cdName;
       sessionStorage.child_editing_birth = cdBirth;
@@ -153,10 +159,17 @@ export default class Child extends React.Component {
                     </Button>
                     <Button
                       onClick={() => {
-                        startGame(child[index].name);
+                        startFarmerGame(child[index].name);
                       }}
                     >
-                      進入遊戲
+                      農夫收耕
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        startBackerGame(child[index].name);
+                      }}
+                    >
+                      麵包翻翻樂
                     </Button>
                   </div>
                 }
