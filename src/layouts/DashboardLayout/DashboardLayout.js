@@ -9,6 +9,7 @@ import createStore from "../../store/createStore";
 import { getUserData } from "../../store/userDetail";
 import { userLogin } from "../../store/user";
 import { browserHistory } from "react-router";
+const SubMenu = Menu.SubMenu;
 
 class DashBoardLayout extends React.Component {
   static propTypes = {
@@ -141,32 +142,14 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="2">
               <Link
-                to="/React/dashboard/addChild"
-                className="dashboard-left-link"
-                activeClassName="dashboare-left-link-active"
-              >
-                <Icon type="user-add" /> <span> 新增孩子 </span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link
                 to="/React/dashboard/Child"
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
-                <Icon type="database" /> <span> 學童資料 </span>
+                <Icon type="database" /> <span> 測量結果 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="4">
-              <Link
-                to="/React/dashboard/profile"
-                className="dashboard-left-link"
-                activeClassName="dashboare-left-link-active"
-              >
-                <Icon type="file" /> <span> 個人資料 </span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="5">
+            <Menu.Item key="3">
               <Link
                 to="/React/dashboard/change_password"
                 className="dashboard-left-link"
@@ -175,7 +158,7 @@ class DashBoardLayout extends React.Component {
                 <Icon type="key" /> <span> 修改密碼 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="6">
+            <Menu.Item key="4">
               <Link
                 to="/React/dashboard/public_data"
                 className="dashboard-left-link"
@@ -184,7 +167,49 @@ class DashBoardLayout extends React.Component {
                 <Icon type="area-chart" /> <span> 大眾數據 </span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="7">
+            <SubMenu
+              key="sub1"
+              title={
+                <Link
+                  to="/React/dashboard/profile"
+                  className="dashboard-left-link"
+                  activeClassName="dashboare-left-link-active"
+                >
+                  <Icon type="file" />
+                  <span>會員專區</span>
+                </Link>
+              }
+            >
+              <Menu.Item key="5">
+                <Link
+                  to="/React/dashboard/Child"
+                  className="dashboard-left-link"
+                  activeClassName="dashboare-left-link-active"
+                >
+                  <span> 學童資料 </span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="6">
+                <Link
+                  to="/React/dashboard/profile"
+                  className="dashboard-left-link"
+                  activeClassName="dashboare-left-link-active"
+                >
+                  <span> 用戶資料 </span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="7">
+                <Link
+                  to="/React/dashboard/addChild"
+                  className="dashboard-left-link"
+                  activeClassName="dashboare-left-link-active"
+                >
+                  <span> 新增學童 </span>
+                </Link>
+              </Menu.Item>
+            </SubMenu>
+
+            <Menu.Item key="8" className="logout-menu-item">
               <Link
                 to="/React/logout"
                 className="dashboard-left-link"
