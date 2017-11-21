@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { browserHistory } from "react-router";
-import { Card, Icon, Button } from "antd";
+import { browserHistory, Link, History } from "react-router";
+import { Card, Icon, Button, Table, Modal } from "antd";
 import Loading from "../../../components/Loading";
 import "./Child.scss";
-
+const confirm = Modal.confirm;
 // import './HomeView.scss'
 export default class Child extends React.Component {
   static propTypes = {};
@@ -118,7 +118,124 @@ export default class Child extends React.Component {
   };
 
   render() {
+    const editChild = async (cdName, cdBirth) => {
+      sessionStorage.child_editing_name = cdName;
+      sessionStorage.child_editing_birth = cdBirth;
+      await browserHistory.push("/React/dashboard/edit_child/");
+    };
+    const deleteChild = async cdName => {
+      const user = this.props.user;
+      confirm({
+        title: "您確定刪除此位學童資料嗎？",
+        content: "刪除後學童的所有記憶力測量資料將無法復原",
+        okText: "確定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          fetch("https://www.meracle.me/home/api/Member/RmCdMember", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: user.authorization
+            },
+            body: JSON.stringify({
+              Account: user.account,
+              CdName: cdName
+            })
+          })
+            .then(res => res.json())
+            .then(
+              responseJson => {
+                if (responseJson.result === "success") {
+                  browserHistory.refresh();
+                }
+              },
+              function(e) {
+                console.log(e);
+              }
+            );
+        },
+        onCancel() {}
+      });
+    };
+    const columns = [
+      {
+        title: "頭像",
+        dataIndex: "avatar"
+      },
+      {
+        title: "姓名",
+        className: "column-name",
+        dataIndex: "name"
+      },
+      {
+        title: "性別",
+        dataIndex: "gender"
+      },
+      {
+        title: "出生年月日",
+        className: "column-birth",
+        dataIndex: "birth"
+      },
+      {
+        title: "編輯/刪除",
+        className: "column-edit",
+        dataIndex: "edit"
+      }
+    ];
+
+    var tableData = [];
     const child = this.props.child;
+    Object.keys(child).map(function(key, index) {
+      tableData.push({
+        key: index,
+        avatar: (
+          <div className="avatar-wrapper">
+            {child[index].avatar !== "" ? (
+              <img
+                className="dashboard-avatar"
+                src={
+                  "https://www.meracle.me/home/Filefolder/" +
+                  child[index].avatar +
+                  "?time=" +
+                  new Date().getTime()
+                }
+                alt=""
+              />
+            ) : (
+              <img
+                className="dashboard-avatar"
+                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                alt=""
+              />
+            )}
+          </div>
+        ),
+        name: child[index].name,
+        gender: child[index].gender,
+        birth: child[index].birth,
+        edit: (
+          <div className="link-wrapper">
+            <Link
+              className="child-edit-link"
+              onClick={() => {
+                editChild(child[index].name, child[index].birth);
+              }}
+            >
+              編輯
+            </Link>
+            <Link
+              className="delete-link"
+              onClick={() => {
+                deleteChild(child[index].name);
+              }}
+            >
+              刪除
+            </Link>
+          </div>
+        )
+      });
+    });
     const startFarmerGame = cdName => {
       var newWindow = window.open("../../Game/FarmerGame/farmer.html");
       newWindow.account = this.props.user.account;
@@ -131,84 +248,31 @@ export default class Child extends React.Component {
       newWindow.account = this.props.user.account;
       newWindow.authorization = this.props.user.authorization;
       newWindow.child_name = cdName;
-    }
-    const editChild = async (cdName, cdBirth) => {
-      sessionStorage.child_editing_name = cdName;
-      sessionStorage.child_editing_birth = cdBirth;
-      await browserHistory.push("/React/dashboard/edit_child/");
     };
     const isLoading = this.state.isLoading;
-    var loopIndex = 0;
     return (
       <div>
         {isLoading && <Loading />}
-        {Object.keys(child).map(function(index) {
-          loopIndex = loopIndex + 1;
-          if (child[index].name) {
-            return (
-              <Card
-                style={{ width: "90%", marginBottom: 20 }}
-                extra={
-                  <div>
-                    <Button
-                      onClick={() => {
-                        editChild(child[index].name, child[index].birth);
-                      }}
-                    >
-                      編輯
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        startFarmerGame(child[index].name);
-                      }}
-                    >
-                      農夫收耕
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        startBackerGame(child[index].name);
-                      }}
-                    >
-                      麵包翻翻樂
-                    </Button>
-                  </div>
-                }
-              >
-                <div>
-                  <div className="avatar-wrapper">
-                    {child[index].avatar !== "" ? (
-                      <img
-                        className="dashboard-avatar"
-                        src={
-                          "https://www.meracle.me/home/Filefolder/" +
-                          child[index].avatar +
-                          "?time=" +
-                          new Date().getTime()
-                        }
-                        alt=""
-                      />
-                    ) : (
-                      <img
-                        className="dashboard-avatar"
-                        src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                        alt=""
-                      />
-                    )}
-                  </div>
-                  <br />
-                  <p>姓名：{child[index].name}</p>
-                  <p>性別：{child[index].gender}</p>
-                  <p>生日：{child[index].birth}</p>
-                </div>
-              </Card>
-            );
-          } else {
-            if (loopIndex < 2) return <p>尚無學童資料</p>;
-          }
-        })}
-        {/* <Button type="dashed" onClick={this.add} style={{ width: "90%", marginTop: "30px" }}>
-          <Icon type="plus" /> Add field
-        </Button> */}
+        <Card
+          style={{ width: "90%", marginBottom: 20 }}
+          title="學童資料"
+          className="child-wrapper"
+        >
+          <Table
+            columns={columns}
+            dataSource={tableData}
+            bordered
+            pagination={false}
+            className="child-table"
+          />
+        </Card>
+        <div className="child-footer">
+          憶想奇蹟提供您可以管理五個孩童喔！<br />
+          還想讓更多孩童加入我們嗎？ 快來{"  "}
+          <Link to="/React/dashboard/addChild" className="child-edit-link">
+            新增學童
+          </Link>
+        </div>
       </div>
     );
   }
