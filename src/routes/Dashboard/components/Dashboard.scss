@@ -11,6 +11,7 @@
   letter-spacing: 1.4px;
   width: 100%;
 }
+
 .meracle-outline-btn {
   @extend %meracle-button;
   &:hover {
@@ -34,6 +35,9 @@
   button {
     height: 40px;
     font-size: 16px;
+    &:focus {
+      border: 1px solid #9acbd9 !important;
+    }
     &:first-child:not(:last-child) {
       padding: 0 25px 0 25px !important;
       color: #555555;
@@ -51,6 +55,9 @@
           font-family: unset !important;
           zoom: 1.5;
         }
+      }
+      &.ant-btn-clicked:after {
+        border: 1px solid #d9d9d9 !important;
       }
     }
   }
@@ -149,6 +156,9 @@
 }
 .best-data-wrapper {
   text-align: center;
+  .ant-card-head-title {
+    text-align: left;
+  }
   .best-section-icon {
     width: 15px;
     margin-right: 8px;

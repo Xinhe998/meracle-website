@@ -25,23 +25,73 @@ export default class Dashboard extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      latest_percentage: 0
+      latest_percentage: 0,
+      selectedCdName: ""
     };
   }
-  componentWillMount() {}
+  componentWillMount() {
+    this.getChildData();
+  }
   componentDidMount() {
     setTimeout(() => {
       this.setState({
         isLoading: false
       });
-    }, 800);
+    }, 1000);
     this.animatePercentage();
   }
   animatePercentage = () => {
     var percent = 89;
     setTimeout(() => {
       this.setState({ latest_percentage: percent });
-    }, 1000);
+    }, 2800);
+  };
+  getChildData = async () => {
+    //取得有哪些學童，存姓名至array
+    await fetch("https://www.meracle.me/home/api/Member/GetAccountCdName", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.props.user.authorization
+      },
+      body: JSON.stringify({
+        Account: this.props.user.account
+      })
+    })
+      .then(res => res.json())
+      .then(
+        responseJson => {
+          var cdArray = [];
+          console.log(responseJson);
+          if (responseJson.CdName.length) {
+            for (var index in responseJson.CdName) {
+              let cdData = {
+                name: responseJson.CdName[index],
+                gender: "",
+                birth: "",
+                avatar: ""
+              };
+              cdArray.push(cdData);
+            }
+            this.props.getChildData(cdArray);
+            this.setState({
+              selectedCdName: this.props.child[0].name
+            });
+          }
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+  };
+  handleDropdownClick = (event) => {
+    this.setState({
+      selectedCdName: event.item.props.children
+    });
+    // var newWindow = window.open("../../Game/FarmerGame/farmer.html");
+    // newWindow.account = this.props.user.account;
+    // newWindow.authorization = this.props.user.authorization;
+    // newWindow.child_name = event.item.props.children;
   };
   render() {
     const isMobile =
@@ -71,11 +121,20 @@ export default class Dashboard extends React.Component {
       { name: "9/11", 黃小明: 88, 陳小花: 100 },
       { name: "9/15", 黃小明: 120, 陳小花: 160 }
     ];
+    var dropdownIndex = 0;
+    const child = this.props.child;
     const dropdownMenu = (
-      <Menu>
-        <Menu.Item key="1">1st menu item</Menu.Item>
-        <Menu.Item key="2">2nd menu item</Menu.Item>
-        <Menu.Item key="3">3rd item</Menu.Item>
+      <Menu selectable defaultActiveFirst onSelect={this.handleDropdownClick}>
+        {Object.keys(child).map(function(index) {
+          dropdownIndex = dropdownIndex + 1;
+          return (
+            <Menu.Item
+              key={dropdownIndex}
+            >
+              {child[index].name}
+            </Menu.Item>
+          );
+        })}
       </Menu>
     );
     return (
@@ -98,7 +157,9 @@ export default class Dashboard extends React.Component {
                       trigger={["click"]}
                       className="meracle-dropdown-btn"
                     >
-                      黃小明
+                      {this.state.selectedCdName
+                        ? this.state.selectedCdName
+                        : this.props.child[0].name}
                     </Dropdown.Button>
                   </div>
                   <div className="col-md-5 col-lg-2">

@@ -1,4 +1,4 @@
-// import { injectReducer } from '../../store/reducers'
+import { injectReducer } from '../../store/reducers'
 
 export default (store) => ({
   /*  Async getComponent is only invoked when route matches   */
@@ -7,8 +7,8 @@ export default (store) => ({
         and embed an async module loader (jsonp) when bundling   */
     require.ensure([], (require) => {
       const Dashboard = require('./containers/DashboardContainer').default
-      // const reducer = require('./modules/counter').default
-      // injectReducer(store, { key: 'login', reducer })
+      const reducer = require('../../store/child').default
+      injectReducer(store, { key: 'child', reducer })
       cb(null, Dashboard)
 
     /* Webpack named bundle   */
