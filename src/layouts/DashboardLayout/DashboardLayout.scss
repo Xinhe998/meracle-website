@@ -45,6 +45,10 @@
 }
 .ant-menu {
   background: transparent !important;
+  .sider-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
 .ant-layout-sider {
   background: linear-gradient(-180deg, #9acbd9 0%, #144669 100%) !important;
@@ -161,6 +165,9 @@
       .dashboard-left-link {
         padding-left: 16px !important;
         transition: all 0.5s;
+      }
+      .link-sub-title {
+        display: none !important;
       }
     }
   }

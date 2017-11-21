@@ -166,15 +166,15 @@ class DashBoardLayout extends React.Component {
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <Icon type="file" />
-                  <span>會員專區</span>
+                  <img className="sider-icon" src={require("./assets/person_white.png")} />
+                  <span className="link-sub-title">會員專區</span>
                 </Link>
               }
             >
               <Menu.Item key="4">
                 <Link
                   to="/React/dashboard/Child"
-                  className="dashboard-left-link"
+                  className="dashboard-left-link link-sub-item"
                   activeClassName="dashboare-left-link-active"
                 >
                   <span> 學童資料 </span>
@@ -183,7 +183,7 @@ class DashBoardLayout extends React.Component {
               <Menu.Item key="5">
                 <Link
                   to="/React/dashboard/profile"
-                  className="dashboard-left-link"
+                  className="dashboard-left-link link-sub-item"
                   activeClassName="dashboare-left-link-active"
                 >
                   <span> 用戶資料 </span>
@@ -192,7 +192,7 @@ class DashBoardLayout extends React.Component {
               <Menu.Item key="6">
                 <Link
                   to="/React/dashboard/addChild"
-                  className="dashboard-left-link"
+                  className="dashboard-left-link link-sub-item"
                   activeClassName="dashboare-left-link-active"
                 >
                   <span> 新增學童 </span>
