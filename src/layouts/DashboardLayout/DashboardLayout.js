@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Layout, Menu, Icon, Tooltip } from "antd";
+import { Layout, Menu, Icon, Tooltip, Modal, Button } from "antd";
 import PropTypes from "prop-types";
 const { Header, Sider, Content } = Layout;
 import { IndexLink, Link } from "react-router";
@@ -10,6 +10,7 @@ import { getUserData } from "../../store/userDetail";
 import { userLogin } from "../../store/user";
 import { browserHistory } from "react-router";
 const SubMenu = Menu.SubMenu;
+const confirm = Modal.confirm;
 
 class DashBoardLayout extends React.Component {
   static propTypes = {
@@ -94,6 +95,18 @@ class DashBoardLayout extends React.Component {
         }
       );
   };
+  confirmLogout = () => {
+    confirm({
+      title: "確定登出嘛？",
+      content: "再見掰掰",
+      okText: "確定",
+      cancelText: "取消",
+      onOk() {
+        browserHistory.push("/React/Logout");
+      },
+      onCancel() {}
+    });
+  };
   render() {
     return (
       <Layout style={{ height: "100%" }}>
@@ -166,7 +179,10 @@ class DashBoardLayout extends React.Component {
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <img className="sider-icon" src={require("./assets/person_white.png")} />
+                  <img
+                    className="sider-icon"
+                    src={require("./assets/person_white.png")}
+                  />
                   <span className="link-sub-title">會員專區</span>
                 </Link>
               }
@@ -202,9 +218,8 @@ class DashBoardLayout extends React.Component {
 
             <Menu.Item key="7" className="logout-menu-item">
               <Link
-                to="/React/logout"
+                onClick={this.confirmLogout}
                 className="dashboard-left-link"
-                activeClassName="dashboare-left-link-active"
               >
                 <Icon type="logout" /> <span> 登出 </span>
               </Link>

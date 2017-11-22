@@ -8,6 +8,11 @@
       background: rgba(255, 255, 255, 0.25);
       border-radius: 4px;
     }
+    &.logout-menu-item {
+      .dashboard-left-link {
+        background: transparent !important;
+      }
+    }
   }
 }
 .trigger {
