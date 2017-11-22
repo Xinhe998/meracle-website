@@ -16,13 +16,14 @@ import Dashboard from "./Dashboard";
 import Child from "./Child";
 import PublicData from "./PublicData";
 import EditChild from "./EditChild";
+const project = require("../../project.config");
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
 export const createRoutes = store => [
   {
-    path: "/React/",
+    path: project.directory,
     component: PageLayout,
     indexRoute: Home,
     childRoutes: [
@@ -33,7 +34,7 @@ export const createRoutes = store => [
     ]
   },
   {
-    path: "/React/dashboard/",
+    path: project.directory + "dashboard/",
     component: DashboardLayout,
     indexRoute: Dashboard(store),
     childRoutes: [

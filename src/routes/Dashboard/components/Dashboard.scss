@@ -62,6 +62,18 @@
     }
   }
 }
+.ant-dropdown-menu {
+  width: 100px;
+  li {
+    font-size: 13px;
+    text-align: center;
+    &.ant-dropdown-menu-item-selected {
+      color: #144669;
+      font-weight: bold;
+      background: rgba(154,203,217, 0.3)
+    }
+  }
+}
 .enter-game-wrapper {
   .ant-card-body {
     padding-bottom: 0 !important;

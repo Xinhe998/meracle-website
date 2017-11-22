@@ -5,6 +5,7 @@ import { Card, Icon, Button, Table, Modal } from "antd";
 import Loading from "../../../components/Loading";
 import "./Child.scss";
 const confirm = Modal.confirm;
+const project = require("../../../../project.config");
 // import './HomeView.scss'
 export default class Child extends React.Component {
   static propTypes = {};
@@ -121,7 +122,7 @@ export default class Child extends React.Component {
     const editChild = async (cdName, cdBirth) => {
       sessionStorage.child_editing_name = cdName;
       sessionStorage.child_editing_birth = cdBirth;
-      await browserHistory.push("/React/dashboard/edit_child/");
+      await browserHistory.push(project.directory + "dashboard/edit_child/");
     };
     const deleteChild = async cdName => {
       const user = this.props.user;
@@ -236,19 +237,7 @@ export default class Child extends React.Component {
         )
       });
     });
-    const startFarmerGame = cdName => {
-      var newWindow = window.open("../../Game/FarmerGame/farmer.html");
-      newWindow.account = this.props.user.account;
-      newWindow.authorization = this.props.user.authorization;
-      newWindow.child_name = cdName;
-      //取用：window.account
-    };
-    const startBackerGame = cdName => {
-      var newWindow = window.open("../../Game/BakeryGame/game_first_page.html");
-      newWindow.account = this.props.user.account;
-      newWindow.authorization = this.props.user.authorization;
-      newWindow.child_name = cdName;
-    };
+
     const isLoading = this.state.isLoading;
     return (
       <div>
@@ -269,7 +258,10 @@ export default class Child extends React.Component {
         <div className="child-footer">
           憶想奇蹟提供您可以管理五個孩童喔！<br />
           還想讓更多孩童加入我們嗎？ 快來{"  "}
-          <Link to="/React/dashboard/addChild" className="child-edit-link">
+          <Link
+            to={project.directory + "dashboard/addChild"}
+            className="child-edit-link"
+          >
             新增學童
           </Link>
         </div>

@@ -84,7 +84,7 @@ export default class Dashboard extends React.Component {
         }
       );
   };
-  handleDropdownClick = (event) => {
+  handleDropdownClick = event => {
     this.setState({
       selectedCdName: event.item.props.children
     });
@@ -127,16 +127,23 @@ export default class Dashboard extends React.Component {
       <Menu selectable defaultActiveFirst onSelect={this.handleDropdownClick}>
         {Object.keys(child).map(function(index) {
           dropdownIndex = dropdownIndex + 1;
-          return (
-            <Menu.Item
-              key={dropdownIndex}
-            >
-              {child[index].name}
-            </Menu.Item>
-          );
+          return <Menu.Item key={dropdownIndex}>{child[index].name}</Menu.Item>;
         })}
       </Menu>
     );
+    const startFarmerGame = () => {
+      var newWindow = window.open("../../Game/FarmerGame/farmer.html");
+      newWindow.account = this.props.user.account;
+      newWindow.authorization = this.props.user.authorization;
+      newWindow.child_name = this.state.selectedCdName;
+      //取用：window.account
+    };
+    const startBackerGame = () => {
+      var newWindow = window.open("../../Game/BakeryGame/game_first_page.html");
+      newWindow.account = this.props.user.account;
+      newWindow.authorization = this.props.user.authorization;
+      newWindow.child_name = this.state.selectedCdName;
+    };
     return (
       <div>
         {isLoading && <Loading />}
@@ -155,6 +162,7 @@ export default class Dashboard extends React.Component {
                     <Dropdown.Button
                       overlay={dropdownMenu}
                       trigger={["click"]}
+                      placement="bottomRight"
                       className="meracle-dropdown-btn"
                     >
                       {this.state.selectedCdName
@@ -163,12 +171,20 @@ export default class Dashboard extends React.Component {
                     </Dropdown.Button>
                   </div>
                   <div className="col-md-5 col-lg-2">
-                    <Button className="meracle-outline-btn float-right">
+                    <Button
+                      className="meracle-outline-btn float-right"
+                      onClick={() => startFarmerGame()}
+                    >
                       進入遊戲
                     </Button>
                   </div>
                   <div className="col-md-7 col-lg-4">
-                    <Button className="meracle-btn">進入遊戲＆測量腦波</Button>
+                    <Button
+                      className="meracle-btn"
+                      onClick={() => startBackerGame()}
+                    >
+                      進入遊戲＆測量腦波
+                    </Button>
                   </div>
                 </div>
               </Card>

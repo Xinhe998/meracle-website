@@ -4,6 +4,7 @@ import { browserHistory, Link } from "react-router";
 import { Card, Icon, Button } from "antd";
 import Loading from "../../../components/Loading";
 import "./Profile.scss";
+const project = require("../../../../project.config");
 // import './HomeView.scss'
 export default class Profile extends React.Component {
   static propTypes = {};
@@ -87,13 +88,13 @@ export default class Profile extends React.Component {
             </div>
             <div className="link-wrapper">
               <Link
-                to="/React/dashboard/edit_profile/"
+                to={project.directory + "dashboard/edit_profile/"}
                 className="profile-edit-link"
               >
                 編輯資料
               </Link>
               <Link
-                to="/React/dashboard/change_password/"
+                to={project.directory + "dashboard/change_password/"}
                 className="change-password-link"
               >
                 修改密碼

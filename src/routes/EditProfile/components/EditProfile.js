@@ -15,6 +15,7 @@ import {
 } from "antd";
 import moment from "moment";
 import "./EditProfile.scss";
+const project = require("../../../../project.config");
 
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -75,24 +76,21 @@ class EditProfile extends React.Component {
       this.setState({
         isLoading: true
       });
-      await fetch(
-        "https://www.meracle.me/home/api/Member/EdlitPersonalPage",
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: this.props.user.authorization
-          },
-          body: JSON.stringify({
-            Account: this.props.user.account,
-            Name: formData.name,
-            Address: formData.address,
-            Birthday: formData.birth,
-            Gender: formData.gender
-          })
-        }
-      ).then(
+      await fetch("https://www.meracle.me/home/api/Member/EdlitPersonalPage", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.props.user.authorization
+        },
+        body: JSON.stringify({
+          Account: this.props.user.account,
+          Name: formData.name,
+          Address: formData.address,
+          Birthday: formData.birth,
+          Gender: formData.gender
+        })
+      }).then(
         responseJson => {
           const data = {
             name: formData.name,
@@ -108,30 +106,25 @@ class EditProfile extends React.Component {
         }
       );
       if (this.state.avatar) {
-        await fetch(
-          "https://www.meracle.me/home/api/Member/ReactPostImage",
-          {
-            method: "POST",
-            mode: "cors",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: this.props.user.authorization
-            },
-            body: JSON.stringify({
-              Account: this.props.user.account,
-              FileStr: formData.avatar.substring(
-                formData.avatar.search(",") + 1
-              )
-            })
-          }
-        )
+        await fetch("https://www.meracle.me/home/api/Member/ReactPostImage", {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: this.props.user.authorization
+          },
+          body: JSON.stringify({
+            Account: this.props.user.account,
+            FileStr: formData.avatar.substring(formData.avatar.search(",") + 1)
+          })
+        })
           .then(res => res.json())
           .then(responseJson => {}, function(e) {
             console.log(e);
           });
       }
 
-      browserHistory.push("/React/dashboard/profile");
+      browserHistory.push(project.directory + "dashboard/profile");
     }
   };
   handleNameChange = event => {

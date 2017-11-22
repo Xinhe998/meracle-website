@@ -10,10 +10,10 @@ export default (store) => ({
       /*  Webpack - use require callback to define
           dependencies for bundling   */
       const PublicData = require('./containers/PublicDataContainer').default
-      const reducer = require('./modules/PublicData').default
+      // const reducer = require('./modules/PublicData').default
 
       /*  Add the reducer to the store on key 'counter'  */
-      injectReducer(store, { key: 'user_detail', reducer })
+      // injectReducer(store, { key: 'user_detail', reducer })
 
       /*  Return getComponent   */
       cb(null, PublicData)

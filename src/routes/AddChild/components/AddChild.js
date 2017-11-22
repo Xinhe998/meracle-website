@@ -13,10 +13,12 @@ import {
   message,
   Modal,
   Checkbox,
-  Steps
+  Steps,
+  Card
 } from "antd";
 import moment from "moment";
 import "./AddChild.scss";
+const project = require("../../../../project.config");
 
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -192,7 +194,7 @@ class AddChild extends React.Component {
           Eat_Veg: formData.child_eat_veg,
           Eat_Cereal: formData.child_eat_cereal,
           Eat_Meat: formData.child_eat_meat,
-          Eat_Milk: formData.child_eat_milk,
+          Eat_Milk: formData.child_eat_milk
         })
       })
         .then(res => res.json())
@@ -204,7 +206,7 @@ class AddChild extends React.Component {
         content: "新增學童資料完成"
       });
       await sessionStorage.clear();
-      await browserHistory.push("/React/dashboard/child/");
+      await browserHistory.push(project.directory + "dashboard/child/");
     }
   };
   //#region 暫存第1步驟data
@@ -340,7 +342,7 @@ class AddChild extends React.Component {
     const current = this.state.current;
     const steps = [
       {
-        title: "First",
+        title: "基本資料",
         content: (
           <Form name="step1">
             <FormItem
@@ -391,7 +393,7 @@ class AddChild extends React.Component {
         )
       },
       {
-        title: "Second",
+        title: "上傳頭像",
         content: (
           <Form name="step2">
             <FormItem
@@ -420,7 +422,7 @@ class AddChild extends React.Component {
         )
       },
       {
-        title: "Last",
+        title: "填寫問卷",
         content: (
           <div>
             <h4>填寫問卷</h4>
@@ -491,35 +493,39 @@ class AddChild extends React.Component {
     return (
       <div>
         {isLoading && <Loading />}
-        <Steps progressDot current={current}>
-          {steps.map(item => (
-            <Step
-              key={item.title}
-              title={item.title}
-              status={this.stepStatus}
-            />
-          ))}
-        </Steps>
-        <div className="steps-content">{steps[this.state.current].content}</div>
-        <div className="steps-action">
-          {this.state.current > 0 && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-              上一步
-            </Button>
-          )}
+        <Card title="新增學童">
+          <Steps progressDot current={current}>
+            {steps.map(item => (
+              <Step
+                key={item.title}
+                title={item.title}
+                status={this.stepStatus}
+              />
+            ))}
+          </Steps>
+          <div className="steps-content">
+            {steps[this.state.current].content}
+          </div>
+          <div className="steps-action">
+            {this.state.current > 0 && (
+              <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+                上一步
+              </Button>
+            )}
 
-          {this.state.current === steps.length - 1 && (
-            <Button type="primary" onClick={() => this.handleSubmit()}>
-              送出
-            </Button>
-          )}
+            {this.state.current === steps.length - 1 && (
+              <Button type="primary" onClick={() => this.handleSubmit()}>
+                送出
+              </Button>
+            )}
 
-          {this.state.current < steps.length - 1 && (
-            <Button type="primary" onClick={() => this.next()}>
-              下一步
-            </Button>
-          )}
-        </div>
+            {this.state.current < steps.length - 1 && (
+              <Button type="primary" onClick={() => this.next()}>
+                下一步
+              </Button>
+            )}
+          </div>
+        </Card>
       </div>
     );
   }

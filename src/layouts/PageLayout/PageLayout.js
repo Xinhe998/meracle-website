@@ -8,6 +8,7 @@ import "bootstrap/js/dist/util";
 import "bootstrap/js/dist/dropdown";
 import createStore from "../../store/createStore";
 import { userLogin } from "../../store/user";
+const project = require("../../../project.config");
 // const isLogin = this.props.user;
 class PageLayout extends React.Component {
   static propTypes = {
@@ -59,7 +60,7 @@ class PageLayout extends React.Component {
           className="navbar navbar-expand-md navbar-light bg-light"
           id="navbar"
         >
-          <IndexLink className="navbar-brand" to="/React/">
+          <IndexLink className="navbar-brand" to={project.directory}>
             <img
               src={require("../../components/assets/logo_no_background.png")}
               className="d-inline-block align-top meracle-navbar-logo"
@@ -90,7 +91,7 @@ class PageLayout extends React.Component {
               {!isLogin && (
                 <li className="nav-item">
                   <Link
-                    to="/React/login"
+                    to={project.directory + "login"}
                     className="nav-link"
                     activeClassName="active"
                   >
@@ -101,7 +102,7 @@ class PageLayout extends React.Component {
               {!isLogin && (
                 <li className="nav-item">
                   <Link
-                    to="/React/register"
+                    to={project.directory + "register"}
                     className="nav-link"
                     activeClassName="active"
                   >
@@ -112,7 +113,7 @@ class PageLayout extends React.Component {
               {isLogin && (
                 <li className="nav-item">
                   <Link
-                    to="/React/dashboard/"
+                    to={project.directory + "dashboard/"}
                     className="nav-link"
                     activeClassName="active"
                   >
@@ -123,7 +124,7 @@ class PageLayout extends React.Component {
               {isLogin && (
                 <li className="nav-item">
                   <Link
-                    to="/React/logout"
+                    to={project.directory + "logout"}
                     className="nav-link"
                     activeClassName="active"
                   >

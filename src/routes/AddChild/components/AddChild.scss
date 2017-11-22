@@ -29,6 +29,24 @@
   text-align: center;
   padding: 20px;
 }
+.ant-steps {
+  color: white;
+  .ant-steps-tail {
+    margin-top: 5%;
+  }
+  .ant-steps-step {
+    background: #9acbd9;
+    border: 2px solid #f0f0f0;
+    border-radius: 100px;
+    color: white;
+    .ant-steps-head-inner {
+      display: none;
+      .ant-steps-icon-dot {
+        display: none;
+      }
+    }
+  }
+}
 
 .steps-action {
   margin-top: 24px;
@@ -43,7 +61,7 @@
   margin-left: auto;
   margin-right: auto;
   border: 4px solid rgba(246, 246, 246, 0.3);
-  transition: all .5s;
+  transition: all 0.5s;
   img {
     object-fit: cover;
     width: 100%;

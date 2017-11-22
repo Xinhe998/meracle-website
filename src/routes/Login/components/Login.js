@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
 import { Button, Input, Form, Alert, Modal, Icon } from "antd";
 import { Link, browserHistory } from "react-router";
+const project = require("../../../../project.config");
 // import './Login.scss'
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -57,7 +58,7 @@ class Login extends React.Component {
         })
           .then(res => res.json())
           .then(
-            async(responseJson) => {
+            async responseJson => {
               // console.log(responseJson);
               switch (responseJson.result) {
                 case "帳號錯誤":
@@ -78,11 +79,11 @@ class Login extends React.Component {
                   this.setState(data);
                   localStorage.setItem("account", data.account);
                   localStorage.setItem("authorization", data.authorization);
-                    await this.props.userLogin(data);
-                    var state_user = JSON.stringify(this.props.user);
-                    console.log("this.props.user", this.props.user);
-                    await localStorage.setItem("state_user", state_user);
-                    await browserHistory.push("/React/dashboard/");
+                  await this.props.userLogin(data);
+                  var state_user = JSON.stringify(this.props.user);
+                  console.log("this.props.user", this.props.user);
+                  await localStorage.setItem("state_user", state_user);
+                  await browserHistory.push(project.directory + "dashboard/");
                   break;
               }
             },
@@ -171,7 +172,7 @@ class Login extends React.Component {
             登入
           </Button>
         </Form>
-        <Link to="/React/forget_password">忘記密碼？</Link>
+        <Link to={project.directory + "forget_password"}>忘記密碼？</Link>
       </div>
     );
   }

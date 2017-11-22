@@ -9,6 +9,7 @@ import createStore from "../../store/createStore";
 import { getUserData } from "../../store/userDetail";
 import { userLogin } from "../../store/user";
 import { browserHistory } from "react-router";
+const project = require("../../../project.config");
 const SubMenu = Menu.SubMenu;
 const confirm = Modal.confirm;
 
@@ -57,7 +58,7 @@ class DashBoardLayout extends React.Component {
   preventAnonymousAccess = () => {
     if (!this.props.user) {
       alert("請先登入");
-      browserHistory.push("/React/Login");
+      browserHistory.push(project.directory + "Login");
     }
   };
 
@@ -102,7 +103,7 @@ class DashBoardLayout extends React.Component {
       okText: "確定",
       cancelText: "取消",
       onOk() {
-        browserHistory.push("/React/Logout");
+        browserHistory.push(project.directory + "Logout");
       },
       onCancel() {}
     });
@@ -146,7 +147,7 @@ class DashBoardLayout extends React.Component {
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item key="1">
               <Link
-                to="/React/dashboard/"
+                to={project.directory + "dashboard/"}
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -155,7 +156,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="2">
               <Link
-                to="/React/dashboard/Child"
+                to={project.directory + "dashboard/Child"}
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -164,7 +165,7 @@ class DashBoardLayout extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <Link
-                to="/React/dashboard/public_data"
+                to={project.directory + "dashboard/public_data"}
                 className="dashboard-left-link"
                 activeClassName="dashboare-left-link-active"
               >
@@ -175,7 +176,6 @@ class DashBoardLayout extends React.Component {
               key="sub1"
               title={
                 <Link
-                  to="/React/dashboard/profile"
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
@@ -189,7 +189,7 @@ class DashBoardLayout extends React.Component {
             >
               <Menu.Item key="4">
                 <Link
-                  to="/React/dashboard/Child"
+                  to={project.directory + "dashboard/Child"}
                   className="dashboard-left-link link-sub-item"
                   activeClassName="dashboare-left-link-active"
                 >
@@ -198,7 +198,7 @@ class DashBoardLayout extends React.Component {
               </Menu.Item>
               <Menu.Item key="5">
                 <Link
-                  to="/React/dashboard/profile"
+                  to={project.directory + "dashboard/profile"}
                   className="dashboard-left-link link-sub-item"
                   activeClassName="dashboare-left-link-active"
                 >
@@ -207,7 +207,7 @@ class DashBoardLayout extends React.Component {
               </Menu.Item>
               <Menu.Item key="6">
                 <Link
-                  to="/React/dashboard/addChild"
+                  to={project.directory + "dashboard/addChild"}
                   className="dashboard-left-link link-sub-item"
                   activeClassName="dashboare-left-link-active"
                 >

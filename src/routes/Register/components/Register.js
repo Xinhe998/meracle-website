@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
 import { DatePicker, Button, Input, AutoComplete, Radio, Form } from "antd";
+const project = require("../../../../project.config");
 // import './HomeView.scss'
 const FormItem = Form.Item;
 function hasErrors(fieldsError) {
@@ -49,7 +50,7 @@ class Register extends React.Component {
       confirmDirty: false
     };
     var isOk = false;
-    console.log(formData)
+    console.log(formData);
     this.props.form.validateFields((err, values) => {
       formData.account = values.account;
       formData.password = values.password;
@@ -86,7 +87,7 @@ class Register extends React.Component {
                 alert("註冊成功，請去登入");
                 // Clear form
                 // ReactDOM.findDOM Node(this.refs.textInput).value = "";
-                browserHistory.push("/React/Login");
+                browserHistory.push(project.directory + "Login");
                 break;
               case "帳號重複":
                 alert("帳號重複");

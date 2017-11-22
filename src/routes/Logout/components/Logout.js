@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { browserHistory } from "react-router";
+const project = require("../../../../project.config");
 
 class Logout extends React.Component {
   static propTypes = {};
@@ -23,12 +24,12 @@ class Logout extends React.Component {
       gender: "",
       birth: "",
       avatar: "",
-      address: "",
-    }
+      address: ""
+    };
     localStorage.clear();
     this.props.userLogout(userData);
     this.props.getUserData(userDeailData);
-    browserHistory.push("/React/");
+    browserHistory.push(project.directory);
   };
   render() {
     return <div />;

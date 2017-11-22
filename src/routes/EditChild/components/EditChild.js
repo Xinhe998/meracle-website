@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDom from "react-dom";
 import { browserHistory } from "react-router";
 import Loading from "../../../components/Loading";
+const project = require("../../../../project.config");
 import {
   DatePicker,
   Button,
@@ -42,7 +43,7 @@ class EditChild extends React.Component {
   }
   async componentWillMount() {
     if (!sessionStorage.child_editing_name) {
-      await browserHistory.push("/React/dashboard/Child");
+      await browserHistory.push(project.directory + "dashboard/Child");
     } else {
       await this.fetchChildData();
       await setTimeout(() => {
@@ -84,7 +85,6 @@ class EditChild extends React.Component {
               child_gender: responseJson[0].Gender,
               child_avatar: responseJson[0].Imageurl
             });
-            console.log("this.state=> ", this.state);
           }
         },
         function(e) {
@@ -167,7 +167,7 @@ class EditChild extends React.Component {
       content: "修改學童資料完成"
     });
     await sessionStorage.clear();
-    await browserHistory.push("/React/dashboard/child/");
+    await browserHistory.push(project.directory + "dashboard/child/");
   };
 
   //#region 上傳avatar方法
@@ -329,7 +329,7 @@ class EditChild extends React.Component {
           <Button
             size="large"
             onClick={() => {
-              browserHistory.push("/React/dashboard/Child");
+              browserHistory.push(project.directory + "dashboard/Child");
               sessionStorage.clear();
             }}
             htmlType="submit"
