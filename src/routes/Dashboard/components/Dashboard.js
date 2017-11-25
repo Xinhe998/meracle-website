@@ -342,7 +342,11 @@ export default class Dashboard extends React.Component {
                     <XAxis
                       dataKey="status"
                       tickLine={false}
-                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                      tick={{
+                        fill: "#6D7084",
+                        fontSize: 12,
+                        opacity: 0.8
+                      }}
                     />
                     <YAxis
                       tickLine={false}
@@ -358,6 +362,7 @@ export default class Dashboard extends React.Component {
                       ? Object.keys(child).map(function(key) {
                           return (
                             <Bar
+                              key={key}
                               dataKey={child[key].name}
                               fill={child_color[key]}
                               animationDuration={2000}

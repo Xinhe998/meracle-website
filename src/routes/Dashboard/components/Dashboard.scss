@@ -70,7 +70,7 @@
     &.ant-dropdown-menu-item-selected {
       color: #144669;
       font-weight: bold;
-      background: rgba(154,203,217, 0.3)
+      background: rgba(154, 203, 217, 0.3);
     }
   }
 }
@@ -110,6 +110,16 @@
 .recharts-default-legend {
   text-align: left !important;
   padding-left: 10% !important;
+  .recharts-legend-item {
+    margin-right: 16px !important;
+  }
+  .recharts-legend-item-text {
+    font-size: 12px;
+    color: #6d7084;
+    letter-spacing: 0;
+    line-height: 12px;
+    margin-left: 10px;
+  }
 }
 .avg-data-wrapper {
   width: 100%;
