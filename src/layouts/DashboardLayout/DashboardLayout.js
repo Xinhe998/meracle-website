@@ -108,123 +108,133 @@ class DashBoardLayout extends React.Component {
       onCancel() {}
     });
   };
+  reloadToIndex = () => {
+    browserHistory.push(project.directory);
+  };
   render() {
     return (
       <Layout style={{ height: "100%" }}>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div className="logo">
-            <img
-              className="logo-img"
-              src={require("../../components/assets/logo_no_background.png")}
-              alt=""
-            />
-            <span>eracle</span>
-          </div>
-          <div className="avatar-wrapper">
-            {this.props.user_detail.avatar !== "" ? (
+        <Sider
+          trigger={null}
+          collapsible
+          collapsed={this.state.collapsed}
+          className="meracle-sider"
+        >
+          <div className="sider-wrapper">
+            <div className="logo" onClick={this.reloadToIndex}>
               <img
-                className="dashboard-avatar"
-                src={
-                  "https://www.meracle.me/home/Filefolder/" +
-                  this.props.user_detail.avatar +
-                  "?time=" +
-                  new Date().getTime()
-                }
+                className="logo-img"
+                src={require("../../components/assets/logo_no_background.png")}
                 alt=""
               />
-            ) : (
-              <img
-                className="dashboard-avatar"
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                alt=""
-              />
-            )}
-          </div>
-          <p className="user-name">
-            {this.props.user_detail ? this.props.user_detail.name : ""}
-          </p>
-          <hr />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1">
-              <Link
-                to={project.directory + "dashboard/"}
-                className="dashboard-left-link"
-                activeClassName="dashboare-left-link-active"
-              >
-                <Icon type="home" /> <span> 首頁 </span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link
-                to={project.directory + "dashboard/Child"}
-                className="dashboard-left-link"
-                activeClassName="dashboare-left-link-active"
-              >
-                <Icon type="database" /> <span> 測量結果 </span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link
-                to={project.directory + "dashboard/public_data"}
-                className="dashboard-left-link"
-                activeClassName="dashboare-left-link-active"
-              >
-                <Icon type="area-chart" /> <span> 大眾數據 </span>
-              </Link>
-            </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={
+              <span>eracle</span>
+            </div>
+            <div className="avatar-wrapper">
+              {this.props.user_detail.avatar !== "" ? (
+                <img
+                  className="dashboard-avatar"
+                  src={
+                    "https://www.meracle.me/home/Filefolder/" +
+                    this.props.user_detail.avatar +
+                    "?time=" +
+                    new Date().getTime()
+                  }
+                  alt=""
+                />
+              ) : (
+                <img
+                  className="dashboard-avatar"
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  alt=""
+                />
+              )}
+            </div>
+            <p className="user-name">
+              {this.props.user_detail ? this.props.user_detail.name : ""}
+            </p>
+            <hr />
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+              <Menu.Item key="1">
                 <Link
+                  to={project.directory + "dashboard/"}
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <img
-                    className="sider-icon"
-                    src={require("./assets/person_white.png")}
-                  />
-                  <span className="link-sub-title">會員專區</span>
+                  <Icon type="home" /> <span> 首頁 </span>
                 </Link>
-              }
-            >
-              <Menu.Item key="4">
+              </Menu.Item>
+              <Menu.Item key="2">
                 <Link
                   to={project.directory + "dashboard/Child"}
-                  className="dashboard-left-link link-sub-item"
+                  className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <span> 學童資料 </span>
+                  <Icon type="database" /> <span> 測量結果 </span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="5">
+              <Menu.Item key="3">
                 <Link
-                  to={project.directory + "dashboard/profile"}
-                  className="dashboard-left-link link-sub-item"
+                  to={project.directory + "dashboard/public_data"}
+                  className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <span> 用戶資料 </span>
+                  <Icon type="area-chart" /> <span> 大眾數據 </span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="6">
-                <Link
-                  to={project.directory + "dashboard/addChild"}
-                  className="dashboard-left-link link-sub-item"
-                  activeClassName="dashboare-left-link-active"
-                >
-                  <span> 新增學童 </span>
-                </Link>
-              </Menu.Item>
-            </SubMenu>
-
-            <Menu.Item key="7" className="logout-menu-item">
-              <Link
-                onClick={this.confirmLogout}
-                className="dashboard-left-link"
+              <SubMenu
+                key="sub1"
+                title={
+                  <Link
+                    className="dashboard-left-link"
+                    activeClassName="dashboare-left-link-active"
+                  >
+                    <img
+                      className="sider-icon"
+                      src={require("./assets/person_white.png")}
+                    />
+                    <span className="link-sub-title">會員專區</span>
+                  </Link>
+                }
               >
-                <Icon type="logout" /> <span> 登出 </span>
-              </Link>
-            </Menu.Item>
-          </Menu>
+                <Menu.Item key="4">
+                  <Link
+                    to={project.directory + "dashboard/Child"}
+                    className="dashboard-left-link link-sub-item"
+                    activeClassName="dashboare-left-link-active"
+                  >
+                    <span> 學童資料 </span>
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="5">
+                  <Link
+                    to={project.directory + "dashboard/profile"}
+                    className="dashboard-left-link link-sub-item"
+                    activeClassName="dashboare-left-link-active"
+                  >
+                    <span> 用戶資料 </span>
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="6">
+                  <Link
+                    to={project.directory + "dashboard/addChild"}
+                    className="dashboard-left-link link-sub-item"
+                    activeClassName="dashboare-left-link-active"
+                  >
+                    <span> 新增學童 </span>
+                  </Link>
+                </Menu.Item>
+              </SubMenu>
+
+              <Menu.Item key="7" className="logout-menu-item">
+                <Link
+                  onClick={this.confirmLogout}
+                  className="dashboard-left-link"
+                >
+                  <Icon type="logout" /> <span> 登出 </span>
+                </Link>
+              </Menu.Item>
+            </Menu>
+          </div>
         </Sider>
         <Layout>
           <Header style={{ background: "#fff", padding: 0 }}>

@@ -1,6 +1,9 @@
 ::selection {
   background: #2b5b7c !important;
 }
+.meracle-sider {
+ 
+}
 .ant-menu.ant-menu-dark {
   .ant-menu-item-selected {
     background-color: transparent !important;
@@ -64,6 +67,7 @@
     margin: 16px;
     text-align: center;
     transition: all 0.5s;
+    cursor: pointer;
     .logo-img {
       width: 50px;
       height: 50px;
@@ -90,7 +94,7 @@
     margin-right: auto;
     border: 4px solid rgba(246, 246, 246, 0.3);
     transition: all 0.5s;
-    background-color: #9ACBD9;
+    background-color: #9acbd9;
     img {
       object-fit: cover;
       width: 100%;
@@ -115,8 +119,7 @@
     padding-left: 8px !important;
     padding-right: 8px !important;
     &.logout-menu-item {
-      position: absolute;
-      bottom: 40px;
+      // margin-top: 150px;
     }
   }
   .ant-menu-submenu-title {
