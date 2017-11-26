@@ -37,6 +37,7 @@ export default class MemoryResult extends React.Component {
         isLoading: false
       });
     }, 300);
+    await this.getTheChildAllMemoryData();
   }
   checkHavaChild = async () => {
     await fetch("https://www.meracle.me/home/api/Member/isAccHaveChild", {
@@ -142,10 +143,71 @@ export default class MemoryResult extends React.Component {
       this.props.getChildData(cdDetailArray);
     }
   };
-  handleCdNameDropdownClick = event => {
-    this.setState({
+
+  getTheChildAllMemoryData = async () => {
+    var resultArray = [];
+    if (this.state.selectedCdName) {
+      await fetch("https://www.meracle.me/home/api/Survey/GetCdAllTestData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.props.user.authorization
+        },
+        body: JSON.stringify({
+          Account: this.props.user.account,
+          CdName: this.state.selectedCdName
+        })
+      })
+        .then(res => res.json())
+        .then(
+          responseJson => {
+            if (responseJson && responseJson.CdAllTestData.length) {
+              Object.keys(responseJson.CdAllTestData).map(function(index) {
+                resultArray.push({
+                  name: responseJson.CdAllTestData[index].CdName,
+                  createTime: responseJson.CdAllTestData[index].Column1,
+                  status: responseJson.CdAllTestData[index].StatusName,
+                  score: responseJson.CdAllTestData[index].Score
+                });
+              });
+            }
+            this.setState({
+              MemoryData: resultArray,
+              best_time: responseJson.OptimalTimer.m_Item1
+            });
+          },
+          function(e) {
+            console.log(e);
+          }
+        );
+      const child = this.props.child;
+      const selectedCdName = this.state.selectedCdName;
+      var selectedCdColor = "",
+        selectedCdAvatar = "";
+      await Object.keys(child).map(function(index) {
+        if (selectedCdName === child[index].name) {
+          selectedCdColor = child[index].color;
+          selectedCdAvatar = child[index].avatar;
+        }
+      });
+      await this.setState({
+        selectedCdColor: selectedCdColor,
+        selectedCdAvatar: selectedCdAvatar
+      });
+    }
+  };
+
+  handleCdNameDropdownClick = async event => {
+    await this.setState({
+      isLoading: true
+    });
+    await this.setState({
       selectedCdName: event.item.props.children.props.children[1],
       selectedSymbol: event.item.props.children.props.children[0]
+    });
+    await this.getTheChildAllMemoryData();
+    await this.setState({
+      isLoading: false
     });
   };
   handleStatusDropdownClick = event => {
@@ -195,67 +257,47 @@ export default class MemoryResult extends React.Component {
         })}
       </Menu>
     );
+    const MemoryData = this.state.MemoryData;
+    var memory_data = [];
+    var memoryDataSource = [];
 
-    const memory_data = [
-      { name: "週一", 黃小明: 90 },
-      { name: "週二", 黃小明: 65 },
-      { name: "週三", 黃小明: 80 },
-      { name: "週四", 黃小明: 95 },
-      { name: "週五", 黃小明: 88 },
-      { name: "週六", 黃小明: 95 },
-      { name: "週日", 黃小明: 50 }
-    ];
-
-    const memoryDataSource = [
-      {
-        key: "1",
-        time: "2017/10/30（一）  18:00",
-        status: "睡覺前",
-        score: 80
-      },
-      {
-        key: "2",
-        time: "2017/10/30（一）  18:00",
-        status: "睡覺前",
-        score: 80
-      },
-      {
-        key: "3",
-        time: "2017/10/30（一）  18:00",
-        status: "睡覺前",
-        score: 80
-      },
-      {
-        key: "4",
-        time: "2017/10/30（一）  18:00",
-        status: "睡覺前",
-        score: 80
-      },
-      {
-        key: "5",
-        time: "2017/10/30（一）  18:00",
-        status: "睡覺前",
-        score: 80
-      }
-    ];
+    if (this.state.MemoryData) {
+      Object.keys(MemoryData).map(function(index) {
+        memoryDataSource.push({
+          key: index,
+          time: MemoryData[index].createTime,
+          status: MemoryData[index].status,
+          score: MemoryData[index].score
+        });
+        memory_data.push({
+          name: MemoryData[index].createTime + "  " + MemoryData[index].status
+        });
+        memory_data[index][MemoryData[index].name] = MemoryData[index].score;
+      });
+    }
     const memoryInfoSource = [
       {
         key: "1",
         avatar: (
           <div
             className="avatar-wrapper"
-            style={{ borderColor: child[0].color }}
+            style={{
+              borderColor: this.state.selectedCdColor,
+              backgroundColor: this.state.selectedCdColor
+            }}
           >
-            <img
-              className="dashboard-avatar"
-              src={
-                "https://www.meracle.me/home/Filefolder/" +
-                child[0].avatar +
-                "?time=" +
-                new Date().getTime()
-              }
-              alt=""
-            />
+            {this.state.selectedCdAvatar ? (
+              <img
+                className="dashboard-avatar"
+                src={
+                  "https://www.meracle.me/home/Filefolder/" +
+                  this.state.selectedCdAvatar +
+                  "?time=" +
+                  new Date().getTime()
+                }
+                alt=""
+              />
+            ) : null}
           </div>
         ),
         detail: (
@@ -273,11 +315,11 @@ export default class MemoryResult extends React.Component {
         status: "睡覺前"
       }
     ];
-    const bestTimeDataSource = [
+    var bestTimeDataSource = [
       {
         key: "1",
-        title: "最佳狀態",
-        time: "週三"
+        title: "最佳時間",
+        time: this.state.best_time
       }
     ];
     const memoryDataColumns = [
@@ -413,12 +455,12 @@ export default class MemoryResult extends React.Component {
                   {!isLoading ? (
                     <Line
                       type="monotone"
-                      dataKey="黃小明"
-                      stroke="#9ACBD9"
+                      dataKey={this.state.selectedCdName}
+                      stroke={this.state.selectedCdColor}
                       strokeWidth="4"
                       dot={{
-                        stroke: "#9ACBD9",
-                        fill: "#9ACBD9",
+                        stroke: this.state.selectedCdColor,
+                        fill: this.state.selectedCdColor,
                         strokeWidth: 4
                       }}
                       animationDuration={2000}
