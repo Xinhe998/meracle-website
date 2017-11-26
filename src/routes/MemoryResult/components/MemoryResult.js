@@ -161,19 +161,23 @@ export default class MemoryResult extends React.Component {
         .then(res => res.json())
         .then(
           responseJson => {
-            if (responseJson && responseJson.CdAllTestData.length) {
-              Object.keys(responseJson.CdAllTestData).map(function(index) {
-                resultArray.push({
-                  name: responseJson.CdAllTestData[index].CdName,
-                  createTime: responseJson.CdAllTestData[index].Column1,
-                  status: responseJson.CdAllTestData[index].StatusName,
-                  score: responseJson.CdAllTestData[index].Score
+            if (responseJson) {
+              if (responseJson.CdAllTestData) {
+                Object.keys(responseJson.CdAllTestData).map(function(index) {
+                  resultArray.push({
+                    name: responseJson.CdAllTestData[index].CdName,
+                    createTime: responseJson.CdAllTestData[index].Column1,
+                    status: responseJson.CdAllTestData[index].StatusName,
+                    score: responseJson.CdAllTestData[index].Score
+                  });
                 });
-              });
+              }
             }
             this.setState({
               MemoryData: resultArray,
-              best_time: responseJson.OptimalTimer.m_Item1
+              best_time: responseJson.OptimalTimer
+                ? responseJson.OptimalTimer.m_Item1
+                : null
             });
           },
           function(e) {
@@ -478,6 +482,7 @@ export default class MemoryResult extends React.Component {
                   bordered
                   showHeader={false}
                   className="memory_info_table"
+                  locale={{ emptyText: "無數據" }}
                 />
                 <Table
                   dataSource={bestStatusDataSource}
@@ -486,6 +491,7 @@ export default class MemoryResult extends React.Component {
                   bordered
                   showHeader={false}
                   className="best_status_table"
+                  locale={{ emptyText: "無數據" }}
                 />
                 <Table
                   dataSource={bestTimeDataSource}
@@ -494,6 +500,7 @@ export default class MemoryResult extends React.Component {
                   bordered
                   showHeader={false}
                   className="best_time_table"
+                  locale={{ emptyText: "無數據" }}
                 />
               </div>
               <div className="col-sm-7 col-md-7 col-lg-8">
@@ -504,6 +511,7 @@ export default class MemoryResult extends React.Component {
                   bordered
                   scroll={{ y: 200 }}
                   className="memory_table"
+                  locale={{ emptyText: "無數據" }}
                 />
               </div>
             </div>

@@ -6,7 +6,6 @@ import "./PageLayout.scss";
 require("bootstrap");
 import "bootstrap/js/dist/util";
 import "bootstrap/js/dist/dropdown";
-import createStore from "../../store/createStore";
 import { userLogin } from "../../store/user";
 const project = require("../../../project.config");
 // const isLogin = this.props.user;
@@ -30,7 +29,7 @@ class PageLayout extends React.Component {
           authorization: JSON.parse(localStorage.getItem("state_user"))
             .authorization
         };
-        this.props.userLogin(data);
+        // this.props.userLogin(data);
       }
     }
   }

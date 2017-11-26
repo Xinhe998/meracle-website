@@ -31,16 +31,16 @@ export default class Dashboard extends React.Component {
       isHaveChild: false
     };
   }
-  componentWillMount() {
-    this.getChildData();
-  }
+  componentWillMount() {}
   async componentDidMount() {
+    await this.getChildData();
     await this.checkHavaChild();
     await this.getAvgStatusScore();
     await this.getLatestData();
     await this.animatePercentage();
     await this.getBestDataOfThisWeek();
     await this.getChildBestMemory();
+
     await setTimeout(() => {
       this.setState({
         isLoading: false

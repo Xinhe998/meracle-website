@@ -78,7 +78,7 @@ class DashBoardLayout extends React.Component {
       authorization: localStorage.getItem("authorization")
     };
     await this.props.userLogin(data);
-    await this.getProfileData();
+    await this.getProfileData(data);
   };
   preventAnonymousAccess = () => {
     if (!this.props.user) {
@@ -92,15 +92,15 @@ class DashBoardLayout extends React.Component {
       collapsed: !this.state.collapsed
     });
   };
-  getProfileData = async () => {
+  getProfileData = async user => {
     await fetch("https://www.meracle.me/home/api/Member/PersonalPage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: this.props.user.authorization
+        Authorization: user.authorization
       },
       body: JSON.stringify({
-        Account: this.props.user.account
+        Account: user.account
       })
     })
       .then(res => res.json())
