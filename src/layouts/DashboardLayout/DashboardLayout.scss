@@ -2,7 +2,6 @@
   background: #2b5b7c !important;
 }
 .meracle-sider {
- 
 }
 .ant-menu.ant-menu-dark {
   .ant-menu-item-selected {
@@ -56,6 +55,8 @@
   .sider-icon {
     width: 20px;
     height: 20px;
+    margin-top: -4px;
+    margin-right: 24px;
   }
 }
 .ant-layout-sider {
@@ -136,7 +137,7 @@
   }
   .ant-menu-sub {
     span {
-      padding-left: 24px;
+      padding-left: 46px;
     }
   }
   .dashboard-left-link {
@@ -146,6 +147,11 @@
     font-size: 14px;
   }
   &.ant-layout-sider-collapsed {
+    .ant-menu-submenu-title {
+      .dashboard-left-link {
+        padding-left: 0px !important;
+      }
+    }
     .logo {
       word-break: keep-all;
       width: max-content !important;
@@ -174,9 +180,6 @@
       .dashboard-left-link {
         padding-left: 16px !important;
         transition: all 0.5s;
-      }
-      .link-sub-title {
-        display: none !important;
       }
     }
   }

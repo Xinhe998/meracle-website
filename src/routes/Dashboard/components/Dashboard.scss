@@ -1,3 +1,9 @@
+$child_color_1: #9acbd9;
+$child_color_2: #f5808b;
+$child_color_3: #f2992e;
+$child_color_4: #2f9a9e;
+$child_color_5: #a77dc2;
+
 ::selection {
   background: #2b5b7c !important;
 }
@@ -30,6 +36,12 @@
     background: #78bacc !important;
     border: 1px solid #78bacc !important;
   }
+}
+.child-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 16px;
 }
 .meracle-dropdown-btn {
   button {
@@ -78,7 +90,7 @@
   .ant-card-body {
     padding-bottom: 0 !important;
   }
-  div {
+  div:not(.child-circle) {
     margin-bottom: 10px;
   }
   .enter-game-title-wrapper {
@@ -110,6 +122,7 @@
 .recharts-default-legend {
   text-align: left !important;
   padding-left: 10% !important;
+  padding-top: 16px !important;
   .recharts-legend-item {
     margin-right: 16px !important;
   }
@@ -143,17 +156,40 @@
       margin: auto;
       margin-top: 16px;
       width: 100%;
+      &.child_color_1 {
+        .ant-progress-circle-path {
+          stroke: $child_color_1;
+        }
+      }
+      &.child_color_2 {
+        .ant-progress-circle-path {
+          stroke: $child_color_2;
+        }
+      }
+      &.child_color_3 {
+        .ant-progress-circle-path {
+          stroke: $child_color_3;
+        }
+      }
+      &.child_color_4 {
+        .ant-progress-circle-path {
+          stroke: $child_color_4;
+        }
+      }
+      &.child_color_5 {
+        .ant-progress-circle-path {
+          stroke: $child_color_5;
+        }
+      }
       .ant-progress-inner {
         width: 60% !important;
         height: auto !important;
-        .ant-progress-circle-path {
-          stroke: #9acbd9;
-        }
         .ant-progress-text {
           font-size: 34px;
           color: #6d7084;
           letter-spacing: 1px;
           margin-top: -12px;
+          font-weight: 300;
           @media screen and (min-width: 768px) and (max-width: 1270px) {
             margin-top: unset;
           }
@@ -165,7 +201,7 @@
     }
     .progress-gain {
       font-size: 14px;
-      color: #9acbd9;
+      // color: #9acbd9;
       letter-spacing: 0.17px;
       line-height: 16px;
       position: relative;
@@ -187,5 +223,42 @@
   }
   .info-text {
     word-break: keep-all;
+  }
+}
+.every_child_best_momory_table {
+  .ant-table-tbody {
+    .child_best_momory_data_name {
+      color: #555555;
+      font-size: 18px;
+      font-weight: 400;
+    }
+    .child_best_momory_data_detail {
+      opacity: 0.8;
+      color: #6D7084;
+      font-size: 16px;
+      font-weight: 300;
+    }
+    tr {
+      td {
+        border-bottom: 1px solid #e7e7e9 !important;
+        &:first-child {
+          border-right: 1px solid #e7e7e9 !important;
+          text-align: center;
+          font-size: 30px;
+          letter-spacing: 0;
+          line-height: 40px;
+        }
+        &:last-child {
+          letter-spacing: 0.6px;
+          line-height: 22px;
+          padding-left: 24px;
+        }
+      }
+      &:last-child {
+        td {
+          border-bottom: none !important;
+        }
+      }
+    }
   }
 }

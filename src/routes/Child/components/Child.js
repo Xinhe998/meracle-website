@@ -148,7 +148,7 @@ export default class Child extends React.Component {
             .then(
               responseJson => {
                 if (responseJson.result === "success") {
-                  browserHistory.refresh();
+                  this.getChildData();
                 }
               },
               function(e) {

@@ -31,9 +31,30 @@ class DashBoardLayout extends React.Component {
       document.documentElement.clientWidth,
       window.innerWidth || 0
     );
+    function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+    const menuKey = ["首頁", "測量結果", "大眾數據", "學童資料", "用戶資料", "新增學童"];
     this.state = {
-      collapsed: widh <= 768
+      collapsed: widh <= 768,
+      selectedTitle: getCookie("selectedKey")
+        ? menuKey[getCookie("selectedKey") - 1]
+        : "首頁",
+      selectedKey: getCookie("selectedKey") ? getCookie("selectedKey") : 0
     };
+    document.cookie = "selectedKey=" + this.state.selectedKey;
   }
   windowResize = () => {
     var widh = Math.max(
@@ -111,6 +132,17 @@ class DashBoardLayout extends React.Component {
   reloadToIndex = () => {
     browserHistory.push(project.directory);
   };
+
+  handleSiderSelect = async event => {
+    const menuKey = ["首頁", "測量結果", "大眾數據", "學童資料", "用戶資料", "新增學童"];
+    if (event.key < 7) {
+      await this.setState({
+        selectedKey: event.key,
+        selectedTitle: menuKey[event.key - 1]
+      });
+    }
+    document.cookie = "selectedKey=" + this.state.selectedKey;
+  };
   render() {
     return (
       <Layout style={{ height: "100%" }}>
@@ -153,14 +185,25 @@ class DashBoardLayout extends React.Component {
               {this.props.user_detail ? this.props.user_detail.name : ""}
             </p>
             <hr />
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={
+                this.state.selectedKey ? [this.state.selectedKey] : ["1"]
+              }
+              onSelect={this.handleSiderSelect}
+            >
               <Menu.Item key="1">
                 <Link
                   to={project.directory + "dashboard/"}
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <Icon type="home" /> <span> 首頁 </span>
+                  <img
+                    className="sider-icon"
+                    src={require("./assets/home.png")}
+                  />{" "}
+                  <span> 首頁 </span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
@@ -169,7 +212,11 @@ class DashBoardLayout extends React.Component {
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <Icon type="database" /> <span> 測量結果 </span>
+                  <img
+                    className="sider-icon"
+                    src={require("./assets/graph.png")}
+                  />{" "}
+                  <span> 測量結果 </span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="3">
@@ -178,7 +225,11 @@ class DashBoardLayout extends React.Component {
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >
-                  <Icon type="area-chart" /> <span> 大眾數據 </span>
+                  <img
+                    className="sider-icon"
+                    src={require("./assets/chart.png")}
+                  />
+                  <span> 大眾數據 </span>
                 </Link>
               </Menu.Item>
               <SubMenu
@@ -230,7 +281,11 @@ class DashBoardLayout extends React.Component {
                   onClick={this.confirmLogout}
                   className="dashboard-left-link"
                 >
-                  <Icon type="logout" /> <span> 登出 </span>
+                  <img
+                    className="sider-icon"
+                    src={require("./assets/signout.png")}
+                  />
+                  <span> 登出 </span>
                 </Link>
               </Menu.Item>
             </Menu>
@@ -243,7 +298,9 @@ class DashBoardLayout extends React.Component {
               type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
               onClick={this.toggle}
             />
-            <span className="document-name">首頁</span>
+            <span className="document-name">
+              {this.state.selectedTitle ? this.state.selectedTitle : null}
+            </span>
           </Header>
           <Content
             className="layout-content"
