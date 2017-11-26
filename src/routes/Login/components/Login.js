@@ -59,7 +59,6 @@ class Login extends React.Component {
           .then(res => res.json())
           .then(
             async responseJson => {
-              // console.log(responseJson);
               switch (responseJson.result) {
                 case "帳號錯誤":
                   this.setState({
@@ -76,12 +75,14 @@ class Login extends React.Component {
                     account: responseJson.Account,
                     authorization: responseJson.Authorization
                   };
-                  this.setState(data);
-                  localStorage.setItem("account", data.account);
-                  localStorage.setItem("authorization", data.authorization);
+                  await this.setState(data);
+                  await localStorage.setItem("account", data.account);
+                  await localStorage.setItem(
+                    "authorization",
+                    data.authorization
+                  );
                   await this.props.userLogin(data);
                   var state_user = JSON.stringify(this.props.user);
-                  console.log("this.props.user", this.props.user);
                   await localStorage.setItem("state_user", state_user);
                   await browserHistory.push(project.directory + "dashboard/");
                   break;

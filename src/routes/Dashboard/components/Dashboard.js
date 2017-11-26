@@ -715,7 +715,11 @@ export default class Dashboard extends React.Component {
                       tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
                       axisLine={false}
                     />
-                    <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="#6D7084"
+                      opacity="0.2"
+                    />
                     <Tooltip />
                     <Legend
                       iconType="circle"

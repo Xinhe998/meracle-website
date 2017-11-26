@@ -212,9 +212,74 @@ export default class MemoryResult extends React.Component {
         time: "2017/10/30（一）  18:00",
         status: "睡覺前",
         score: 80
+      },
+      {
+        key: "2",
+        time: "2017/10/30（一）  18:00",
+        status: "睡覺前",
+        score: 80
+      },
+      {
+        key: "3",
+        time: "2017/10/30（一）  18:00",
+        status: "睡覺前",
+        score: 80
+      },
+      {
+        key: "4",
+        time: "2017/10/30（一）  18:00",
+        status: "睡覺前",
+        score: 80
+      },
+      {
+        key: "5",
+        time: "2017/10/30（一）  18:00",
+        status: "睡覺前",
+        score: 80
+      }
+    ];
+    const memoryInfoSource = [
+      {
+        key: "1",
+        avatar: (
+          <div
+            className="avatar-wrapper"
+            style={{ borderColor: child[0].color }}
+          >
+            <img
+              className="dashboard-avatar"
+              src={
+                "https://www.meracle.me/home/Filefolder/" +
+                child[0].avatar +
+                "?time=" +
+                new Date().getTime()
+              }
+              alt=""
+            />
+          </div>
+        ),
+        detail: (
+          <div className="memory_info_detail">
+            <p>2017/10/24</p>為最佳時間！
+          </div>
+        )
       }
     ];
 
+    const bestStatusDataSource = [
+      {
+        key: "1",
+        title: "最佳狀態",
+        status: "睡覺前"
+      }
+    ];
+    const bestTimeDataSource = [
+      {
+        key: "1",
+        title: "最佳狀態",
+        time: "週三"
+      }
+    ];
     const memoryDataColumns = [
       {
         title: "時間",
@@ -233,6 +298,48 @@ export default class MemoryResult extends React.Component {
         dataIndex: "score",
         key: "score",
         width: 150
+      }
+    ];
+    const memoryInfoColumns = [
+      {
+        title: "頭像",
+        dataIndex: "avatar",
+        key: "avatar",
+        width: 64
+      },
+      {
+        title: "狀態",
+        dataIndex: "detail",
+        key: "detail",
+        width: 135
+      }
+    ];
+    const bestStatusDataColumns = [
+      {
+        title: "標題",
+        dataIndex: "title",
+        key: "title",
+        width: 64
+      },
+      {
+        title: "狀態",
+        dataIndex: "status",
+        key: "status",
+        width: 135
+      }
+    ];
+    const bestTimeDataColumns = [
+      {
+        title: "標題",
+        dataIndex: "title",
+        key: "title",
+        width: 64
+      },
+      {
+        title: "時間",
+        dataIndex: "time",
+        key: "time",
+        width: 135
       }
     ];
     return (
@@ -297,7 +404,11 @@ export default class MemoryResult extends React.Component {
                     tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
                     axisLine={false}
                   />
-                  <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#6D7084"
+                    opacity="0.2"
+                  />
                   <Tooltip />
                   {!isLoading ? (
                     <Line
@@ -305,7 +416,11 @@ export default class MemoryResult extends React.Component {
                       dataKey="黃小明"
                       stroke="#9ACBD9"
                       strokeWidth="4"
-                      dot={{ stroke: "#9ACBD9", strokeWidth: 4 }}
+                      dot={{
+                        stroke: "#9ACBD9",
+                        fill: "#9ACBD9",
+                        strokeWidth: 4
+                      }}
                       animationDuration={2000}
                     />
                   ) : null}
@@ -313,30 +428,33 @@ export default class MemoryResult extends React.Component {
               </ResponsiveContainer>
             </div>
             <div className="row memory_table_wrapper">
-              <div className="col-md-3">
+              <div className="col-sm-5 col-md-5 col-lg-4">
                 <Table
-                  dataSource={memoryDataSource}
-                  columns={memoryDataColumns}
+                  dataSource={memoryInfoSource}
+                  columns={memoryInfoColumns}
                   pagination={false}
                   bordered
                   showHeader={false}
+                  className="memory_info_table"
                 />
                 <Table
-                  dataSource={memoryDataSource}
-                  columns={memoryDataColumns}
+                  dataSource={bestStatusDataSource}
+                  columns={bestStatusDataColumns}
                   pagination={false}
                   bordered
                   showHeader={false}
+                  className="best_status_table"
                 />
                 <Table
-                  dataSource={memoryDataSource}
-                  columns={memoryDataColumns}
+                  dataSource={bestTimeDataSource}
+                  columns={bestTimeDataColumns}
                   pagination={false}
                   bordered
                   showHeader={false}
+                  className="best_time_table"
                 />
               </div>
-              <div className="col-md-9">
+              <div className="col-sm-7 col-md-7 col-lg-8">
                 <Table
                   dataSource={memoryDataSource}
                   columns={memoryDataColumns}

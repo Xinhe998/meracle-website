@@ -20,12 +20,17 @@ class DashBoardLayout extends React.Component {
   constructor(props) {
     super(props);
     this.getProfileData = this.getProfileData.bind(this);
-    if (localStorage.getItem("state_user") !== "undefined") {
-      if (JSON.parse(localStorage.getItem("state_user")).account) {
+    if (
+      localStorage.getItem("account") !== "undefined" &&
+      localStorage.getItem("authorization") !== "undefined"
+    ) {
+      if (localStorage.getItem("account")) {
         this.fetchUserData();
       } else {
         this.preventAnonymousAccess();
       }
+    } else {
+      this.preventAnonymousAccess();
     }
     var widh = Math.max(
       document.documentElement.clientWidth,
@@ -69,9 +74,8 @@ class DashBoardLayout extends React.Component {
   };
   fetchUserData = async () => {
     let data = {
-      account: JSON.parse(localStorage.getItem("state_user")).account,
-      authorization: JSON.parse(localStorage.getItem("state_user"))
-        .authorization
+      account: localStorage.getItem("account"),
+      authorization: localStorage.getItem("authorization")
     };
     await this.props.userLogin(data);
     await this.getProfileData();
@@ -89,7 +93,6 @@ class DashBoardLayout extends React.Component {
     });
   };
   getProfileData = async () => {
-    console.log(this.props.user);
     await fetch("https://www.meracle.me/home/api/Member/PersonalPage", {
       method: "POST",
       headers: {
@@ -119,10 +122,10 @@ class DashBoardLayout extends React.Component {
   };
   confirmLogout = () => {
     confirm({
-      title: "確定登出嘛？",
-      content: "再見掰掰",
+      title: "您確定要登出嗎？",
       okText: "確定",
       cancelText: "取消",
+      wrapClassName: "confirm_logout_modal",
       onOk() {
         browserHistory.push(project.directory + "Logout");
       },

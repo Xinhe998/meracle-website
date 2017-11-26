@@ -7,28 +7,34 @@ $child_color_5: #a77dc2;
 ::selection {
   background: #2b5b7c !important;
 }
+.ant-btn:hover {
+  border-color: #78bacc;
+}
 %meracle-button {
-  border: 2px solid #9acbd9 !important;
+  border: 2px solid #9acbd9;
   border-radius: 4px !important;
   height: 40px !important;
   line-height: 24px !important;
   font-size: 14px !important;
-  color: #9acbd9 !important;
+  color: #9acbd9;
   letter-spacing: 1.4px;
   width: 100%;
 }
 
 .meracle-outline-btn {
   @extend %meracle-button;
+  font-weight: 500;
   &:hover {
-    border: 1px solid #78bacc;
+    border: 2px solid #78bacc;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    color: #78BACC;
   }
 }
 .meracle-btn {
   @extend %meracle-button;
   background: #9acbd9 !important;
   color: #ffffff !important;
+  font-weight: 500;
   &:hover {
     color: #ffffff !important;
     @extend %meracle-button;
@@ -53,6 +59,7 @@ $child_color_5: #a77dc2;
   button {
     height: 40px;
     font-size: 16px;
+    font-weight: 400;
     &:focus {
       border: 1px solid #9acbd9 !important;
     }
@@ -108,6 +115,7 @@ $child_color_5: #a77dc2;
       color: #555555;
       letter-spacing: 1px;
       line-height: 40px;
+      font-weight: 300;
     }
   }
   .cdname-dropdown-wrapper {
@@ -133,6 +141,7 @@ $child_color_5: #a77dc2;
     letter-spacing: 0;
     line-height: 12px;
     margin-left: 10px;
+    font-weight: 300;
   }
 }
 .avg-data-wrapper {
@@ -207,6 +216,7 @@ $child_color_5: #a77dc2;
       line-height: 16px;
       position: relative;
       top: -5vh;
+      font-weight: 400;
       @media screen and (min-width: 768px) and (max-width: 1270px) {
         display: none;
       }
@@ -224,6 +234,9 @@ $child_color_5: #a77dc2;
   }
   .info-text {
     word-break: keep-all;
+  }
+  .ant-card-body {
+    font-weight: 400;
   }
 }
 .every_child_best_momory_table {
@@ -260,6 +273,37 @@ $child_color_5: #a77dc2;
           border-bottom: none !important;
         }
       }
+    }
+  }
+}
+.ant-confirm-confirm {
+  .ant-confirm-body > .anticon {
+    color: #144669;
+  }
+  .ant-btn {
+    @extend %meracle-button;
+    font-weight: 500;
+    width: initial !important;
+    &:hover {
+      width: initial !important;
+      border: 2px solid #78bacc;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      color: #78BACC;
+    }
+  }
+  .ant-btn-primary {
+    @extend %meracle-button;
+    width: 70px !important;
+    background: #9acbd9 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    &:hover {
+      color: #ffffff !important;
+      @extend %meracle-button;
+      width: 70px !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      background: #78bacc !important;
+      border: 1px solid #78bacc !important;
     }
   }
 }
