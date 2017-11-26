@@ -32,7 +32,9 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-const initialState = [{ name: "", gender: "", birth: "", avatar: "" }];
+const initialState = [
+  { name: "", gender: "", birth: "", avatar: "", color: "" }
+];
 
 export default function counterReducer(state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type];

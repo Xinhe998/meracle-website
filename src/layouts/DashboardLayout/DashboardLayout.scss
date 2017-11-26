@@ -126,7 +126,7 @@
   .ant-menu-submenu-title {
     &:after {
       content: "\25BE" !important;
-      right: 5px;
+      right: 5px !important;
       font-family: unset !important;
       zoom: 2.5 !important;
     }

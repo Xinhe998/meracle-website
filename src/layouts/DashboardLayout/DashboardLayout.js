@@ -208,7 +208,7 @@ class DashBoardLayout extends React.Component {
               </Menu.Item>
               <Menu.Item key="2">
                 <Link
-                  to={project.directory + "dashboard/Child"}
+                  to={project.directory + "dashboard/memory_result"}
                   className="dashboard-left-link"
                   activeClassName="dashboare-left-link-active"
                 >

@@ -37,6 +37,12 @@ $child_color_5: #a77dc2;
     border: 1px solid #78bacc !important;
   }
 }
+.ant-card-head-title {
+  font-size: 14px;
+  color: #555555;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
 .child-circle {
   width: 8px;
   height: 8px;
@@ -113,11 +119,6 @@ $child_color_5: #a77dc2;
 .dashboard-index-card {
   margin-right: 20px;
   margin-bottom: 50px;
-  .ant-card-head-title {
-    font-size: 14px;
-    color: #555555;
-    letter-spacing: 1px;
-  }
 }
 .recharts-default-legend {
   text-align: left !important;
@@ -234,7 +235,7 @@ $child_color_5: #a77dc2;
     }
     .child_best_momory_data_detail {
       opacity: 0.8;
-      color: #6D7084;
+      color: #6d7084;
       font-size: 16px;
       font-weight: 300;
     }

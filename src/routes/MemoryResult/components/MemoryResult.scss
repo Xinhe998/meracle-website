@@ -1,0 +1,110 @@
+.memory_result_wrapper {
+  .ant-card-head-title {
+    font-size: 14px;
+    color: #555555;
+    letter-spacing: 1px;
+    font-weight: 300;
+  }
+  .memory_table_wrapper {
+    margin-top: 37px;
+    .memory_table {
+      th {
+        text-align: center;
+        font-size: 12px;
+        color: #6D7084;
+        letter-spacing: 0.5px;
+        line-height: 18px;
+        font-weight: 300;
+      }
+      td {
+        text-align: center;
+        font-size: 16px;
+        color: #555555;
+        letter-spacing: 1px;
+        line-height: 22px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+.ant-table-scroll {
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px  !important;
+    background-color: #f5f5f5  !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ffffff !important;
+    border: 2px solid #555555 !important;
+  }
+}
+.child-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+.dropdown-wrapper {
+  p {
+    font-size: 14px;
+    color: #6d7084;
+    letter-spacing: 0.4px;
+    line-height: 22px;
+    margin-bottom: 8px;
+    font-weight: 300;
+  }
+}
+.meracle-dropdown-btn {
+  button {
+    height: 40px;
+    font-size: 16px;
+    &:focus {
+      border: 1px solid #9acbd9 !important;
+    }
+    &:first-child:not(:last-child) {
+      padding: 0 25px 0 25px !important;
+      color: #555555;
+      letter-spacing: 1px;
+    }
+    &:last-child {
+      position: absolute;
+      padding-left: 15px;
+      background: rgba(109, 112, 132, 0.1);
+      color: rgba(109, 112, 132, 0.3);
+      .anticon-down {
+        font-size: 18px;
+        &:before {
+          content: "\25BE" !important;
+          font-family: unset !important;
+          zoom: 1.5;
+        }
+      }
+      &.ant-btn-clicked:after {
+        border: 1px solid #d9d9d9 !important;
+      }
+    }
+  }
+}
+.ant-dropdown-menu {
+  width: 100px;
+  li {
+    font-size: 13px;
+    text-align: center;
+    &.ant-dropdown-menu-item-selected {
+      color: #144669;
+      font-weight: bold;
+      background: rgba(154, 203, 217, 0.3);
+    }
+  }
+}
+.memory_result_chart_wrapper {
+  padding-right: 48px;
+  .memory_result_chart {
+    margin-top: 48px;
+  }
+}

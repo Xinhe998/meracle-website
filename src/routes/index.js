@@ -16,6 +16,7 @@ import Dashboard from "./Dashboard";
 import Child from "./Child";
 import PublicData from "./PublicData";
 import EditChild from "./EditChild";
+import MemoryResult from "./MemoryResult";
 const project = require("../../project.config");
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -45,7 +46,8 @@ export const createRoutes = store => [
       Child(store),
       EditChild(store),
       EditProfile(store),
-      PublicData(store)
+      PublicData(store),
+      MemoryResult(store)
     ]
   },
   {
