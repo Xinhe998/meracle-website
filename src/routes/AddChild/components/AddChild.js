@@ -240,8 +240,10 @@ class AddChild extends React.Component {
       sessionStorage.child_avatar = child_avatar;
     });
     const isJPG = file.type === "image/jpeg";
-    if (!isJPG) {
-      message.error("只接受JPG圖片！");
+    const isPNG = file.type === "image/png";
+    const isGIF = file.type === "image/gif";
+    if (!isJPG && !isPNG && !isGIF) {
+      message.error("只接受JPG、PNG、GIF圖片！");
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
@@ -397,7 +399,7 @@ class AddChild extends React.Component {
         content: (
           <Form name="step2">
             <FormItem
-              label="孩子大頭貼"
+              label={"專屬於 " + this.state.child_name + " 的頭像"}
               extra=""
               validateStatus={avatarError ? "error" : ""}
               help={avatarError || ""}
@@ -425,8 +427,7 @@ class AddChild extends React.Component {
         title: "填寫問卷",
         content: (
           <div>
-            <h4>填寫問卷</h4>
-            <p>幫助我們更了解您的孩童</p>
+            <p>幫助我們更了解您的孩童吧！</p>
             <br />
             <Form name="step3">
               <FormItem
@@ -493,7 +494,7 @@ class AddChild extends React.Component {
     return (
       <div>
         {isLoading && <Loading />}
-        <Card title="新增學童">
+        <Card title="新增學童" style={{ zIndex: 0 }}>
           <Steps progressDot current={current}>
             {steps.map(item => (
               <Step
@@ -508,19 +509,31 @@ class AddChild extends React.Component {
           </div>
           <div className="steps-action">
             {this.state.current > 0 && (
-              <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => this.prev()}
+                className="meracle-outline-btn float-left"
+              >
                 上一步
               </Button>
             )}
 
             {this.state.current === steps.length - 1 && (
-              <Button type="primary" onClick={() => this.handleSubmit()}>
-                送出
+              <Button
+                type="primary"
+                onClick={() => this.handleSubmit()}
+                className="meracle-btn float-right"
+              >
+                完成
               </Button>
             )}
 
             {this.state.current < steps.length - 1 && (
-              <Button type="primary" onClick={() => this.next()}>
+              <Button
+                type="primary"
+                onClick={() => this.next()}
+                className="meracle-btn float-right"
+              >
                 下一步
               </Button>
             )}

@@ -43,19 +43,29 @@ body {
 }
 .meracle-navbar {
   .navbar {
+    display: none;
+    visibility: hidden;
     width: 100%;
-    background-color: #222838!important;
-    transition: .2s background;
+    background-color: #102847 !important;
+    transition: 0.5s all;
     z-index: 100;
     a {
-      color: white!important;
+      color: white !important;
     }
     &.not-in-top {
+      display: unset;
+      visibility: visible;
       position: fixed;
-      background: #FBEFEF!important;
-      transition: .2s background;
+      opacity: 0.91;
+      background-color: #ffffff !important;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1) !important;
+      transition: 0.5s all;
       a {
-        color: initial!important;
+        color: #144669 !important;
+        font-size: 16px;
+        letter-spacing: 1.6px;
+        line-height: 26px;
+        font-weight: 400;
       }
     }
   }
@@ -63,11 +73,14 @@ body {
     @media (min-width: $mobileWidh) {
       position: absolute;
       right: 50px;
+      top: 24px;
     }
   }
   .navbar-toggler {
     outline: none;
     cursor: pointer;
+    float: right;
+    margin-top: 15px;
   }
 }
 .navbar-brand {

@@ -31,15 +31,23 @@ export default class Dashboard extends React.Component {
       isHaveChild: false
     };
   }
-  componentWillMount() {}
   async componentDidMount() {
-    await this.getChildData();
-    await this.checkHavaChild();
-    await this.getAvgStatusScore();
-    await this.getLatestData();
-    await this.animatePercentage();
-    await this.getBestDataOfThisWeek();
-    await this.getChildBestMemory();
+    if (
+      localStorage.getItem("account") &&
+      localStorage.getItem("authorization") &&
+      localStorage.getItem("account") !== "undefined" &&
+      localStorage.getItem("authorization") !== "undefined"
+    ) {
+      await this.checkHavaChild();
+      await this.getChildData();
+      await this.getAvgStatusScore();
+      await this.getLatestData();
+      await this.animatePercentage();
+      await this.getBestDataOfThisWeek();
+      await this.getChildBestMemory();
+    } else {
+      this.preventAnonymousAccess();
+    }
 
     await setTimeout(() => {
       this.setState({
@@ -47,7 +55,17 @@ export default class Dashboard extends React.Component {
       });
     }, 1000);
   }
-
+  preventAnonymousAccess = () => {
+    if (!this.props.user) {
+      alert("請先登入");
+      browserHistory.push(project.directory + "Login");
+    } else {
+      if (!this.props.user.account) {
+        alert("請先登入");
+        browserHistory.push(project.directory + "Login");
+      }
+    }
+  };
   animatePercentage = () => {
     var percent = this.state.latestData_score;
     setTimeout(() => {
@@ -109,17 +127,19 @@ export default class Dashboard extends React.Component {
               cdArray.push(cdData);
             }
             this.props.getChildData(cdArray);
-            this.setState({
-              selectedCdName: this.props.child[0].name,
-              selectedSymbol: (
-                <div
-                  className="child-circle d-inline-block"
-                  style={{
-                    backgroundColor: this.props.child[0].color
-                  }}
-                />
-              )
-            });
+            if (this.state.isHaveChild) {
+              this.setState({
+                selectedCdName: this.props.child[0].name,
+                selectedSymbol: (
+                  <div
+                    className="child-circle d-inline-block"
+                    style={{
+                      backgroundColor: this.props.child[0].color
+                    }}
+                  />
+                )
+              });
+            }
           }
         },
         function(e) {
@@ -326,13 +346,13 @@ export default class Dashboard extends React.Component {
       navigator.userAgent.match(/Windows Phone/i);
     const isLoading = this.state.isLoading;
     const best_memory_data = [
-      { name: "週一", 黃小明: 90, 陳小花: 150 },
-      { name: "週二", 黃小明: 65, 陳小花: 130 },
-      { name: "週三", 黃小明: 80, 陳小花: 70 },
-      { name: "週四", 黃小明: 95, 陳小花: 68 },
-      { name: "週五", 黃小明: 88, 陳小花: 100 },
-      { name: "週六", 黃小明: 120, 陳小花: 160 },
-      { name: "週日", 黃小明: 50, 陳小花: 200 }
+      { name: "週一", 俊豪: 20, 珮瑄: 90, 家妤: 100, 若翔: 50 },
+      { name: "週二", 俊豪: 83, 珮瑄: 44, 家妤: 65, 若翔: 77 },
+      { name: "週三", 俊豪: 67, 珮瑄: 65, 家妤: 55, 若翔: 66 },
+      { name: "週四", 俊豪: 46, 珮瑄: 90, 家妤: 25, 若翔: 56 },
+      { name: "週五", 俊豪: 89, 珮瑄: 50, 家妤: 40, 若翔: 53 },
+      { name: "週六", 俊豪: 56, 珮瑄: 87, 家妤: 88, 若翔: 30 },
+      { name: "週日", 俊豪: 16, 珮瑄: 28, 家妤: 45, 若翔: 95 }
     ];
     var dropdownIndex = 0;
     const child = this.props.child;
@@ -697,6 +717,7 @@ export default class Dashboard extends React.Component {
               </Card>
             </div>
             <div className="col-md-6">
+              {/* 目前是假的 */}
               <Card
                 title="每日平均記憶力"
                 style={{ width: "100%" }}
@@ -728,7 +749,17 @@ export default class Dashboard extends React.Component {
                     {!isLoading ? (
                       <Line
                         type="monotone"
-                        dataKey="黃小明"
+                        dataKey="俊豪"
+                        stroke="#9ACBD9"
+                        strokeWidth="4"
+                        dot={{ stroke: "#9ACBD9", strokeWidth: 4 }}
+                        animationDuration={2000}
+                      />
+                    ) : null}
+                    {!isLoading ? (
+                      <Line
+                        type="monotone"
+                        dataKey="珮瑄"
                         stroke="#F2992E"
                         strokeWidth="4"
                         dot={{ stroke: "#F2992E", strokeWidth: 4 }}
@@ -738,10 +769,20 @@ export default class Dashboard extends React.Component {
                     {!isLoading ? (
                       <Line
                         type="monotone"
-                        dataKey="陳小花"
+                        dataKey="家妤"
                         stroke="#F5808B"
                         strokeWidth="4"
                         dot={{ stroke: "#F5808B", strokeWidth: 4 }}
+                        animationDuration={2000}
+                      />
+                    ) : null}
+                    {!isLoading ? (
+                      <Line
+                        type="monotone"
+                        dataKey="若翔"
+                        stroke="#2F9A9E"
+                        strokeWidth="4"
+                        dot={{ stroke: "#2F9A9E", strokeWidth: 4 }}
                         animationDuration={2000}
                       />
                     ) : null}

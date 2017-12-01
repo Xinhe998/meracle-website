@@ -1,6 +1,27 @@
 ::selection {
   background: #2b5b7c !important;
 }
+.ant-btn {
+  &:hover {
+    border-color: #78bacc;
+  }
+  &:active {
+    border-color: #78bacc;
+    color: #78bacc;
+  }
+  &:focus {
+    border-color: #78bacc;
+  }
+}
+%meracle-button {
+  border: 2px solid #9acbd9;
+  border-radius: 4px !important;
+  height: 40px !important;
+  line-height: 24px !important;
+  font-size: 14px !important;
+  color: #9acbd9;
+  letter-spacing: 1.4px;
+}
 .meracle-sider {
 }
 .ant-menu.ant-menu-dark {
@@ -189,4 +210,41 @@
 .ant-menu-dark .ant-menu-sub {
   opacity: 0.9;
   background: transparent;
+}
+.ant-confirm-confirm {
+  .ant-confirm-body > .anticon {
+    color: #144669 !important;
+  }
+  .ant-btn {
+    @extend %meracle-button;
+    font-weight: 500;
+    width: initial !important;
+    &:hover {
+      width: initial !important;
+      border: 2px solid #78bacc !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      color: #78bacc;
+    }
+    &:active {
+      border: 2px solid #78bacc !important;
+    }
+  }
+  .ant-btn-primary {
+    @extend %meracle-button;
+    width: 70px !important;
+    background: #9acbd9 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    &:hover {
+      color: #ffffff !important;
+      @extend %meracle-button;
+      width: 70px !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      background: #78bacc !important;
+      border: 1px solid #78bacc !important;
+    }
+    &:active {
+      border: 2px solid #78bacc !important;
+    }
+  }
 }

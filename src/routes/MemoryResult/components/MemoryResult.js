@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Card, Icon, Button, Table, Modal, Menu, Dropdown } from "antd";
 import Loading from "../../../components/Loading";
 import "./MemoryResult.scss";
+import moment from "moment";
 import {
   LineChart,
   Line,
@@ -166,7 +167,7 @@ export default class MemoryResult extends React.Component {
                 Object.keys(responseJson.CdAllTestData).map(function(index) {
                   resultArray.push({
                     name: responseJson.CdAllTestData[index].CdName,
-                    createTime: responseJson.CdAllTestData[index].Column1,
+                    createTime: responseJson.CdAllTestData[index].CreateTime,
                     status: responseJson.CdAllTestData[index].StatusName,
                     score: responseJson.CdAllTestData[index].Score
                   });
@@ -264,17 +265,32 @@ export default class MemoryResult extends React.Component {
     const MemoryData = this.state.MemoryData;
     var memory_data = [];
     var memoryDataSource = [];
-
+    var weekday = new Array(7);
+    weekday[0] = "日";
+    weekday[1] = "一";
+    weekday[2] = "二";
+    weekday[3] = "三";
+    weekday[4] = "四";
+    weekday[5] = "五";
+    weekday[6] = "六";
     if (this.state.MemoryData) {
       Object.keys(MemoryData).map(function(index) {
         memoryDataSource.push({
           key: index,
-          time: MemoryData[index].createTime,
+          time:
+            moment(MemoryData[index].createTime).format("YYYY/MM/DD") +
+            " ( " +
+            weekday[moment(MemoryData[index].createTime).format("E")] +
+            " ) " +
+            moment(MemoryData[index].createTime).format("HH:mm"),
           status: MemoryData[index].status,
           score: MemoryData[index].score
         });
         memory_data.push({
-          name: MemoryData[index].createTime + "  " + MemoryData[index].status
+          name:
+            moment(MemoryData[index].createTime).format("MM/DD") +
+            "  " +
+            MemoryData[index].status
         });
         memory_data[index][MemoryData[index].name] = MemoryData[index].score;
       });
@@ -323,7 +339,8 @@ export default class MemoryResult extends React.Component {
       {
         key: "1",
         title: "最佳時間",
-        time: this.state.best_time
+        //time: this.state.best_time
+        time: "10:00-11:00"
       }
     ];
     const memoryDataColumns = [
@@ -398,7 +415,7 @@ export default class MemoryResult extends React.Component {
             className="memory_result_wrapper"
           >
             <div className="row dropdown-wrapper">
-              <div className="col-md-12 col-lg-3 cdname-dropdown-wrapper">
+              <div className="col-md-6 col-lg-3 cdname-dropdown-wrapper">
                 <p>顯示學童</p>
                 <Dropdown.Button
                   overlay={dropdownCdName}
@@ -424,7 +441,7 @@ export default class MemoryResult extends React.Component {
                   )}
                 </Dropdown.Button>
               </div>
-              <div className="col-md-12 col-lg-3 status-dropdown-wrapper">
+              <div className="col-md-6 col-lg-3 status-dropdown-wrapper">
                 <p>顯示狀態</p>
                 <Dropdown.Button
                   overlay={dropdownStatus}
@@ -433,6 +450,17 @@ export default class MemoryResult extends React.Component {
                   className="meracle-dropdown-btn"
                 >
                   {this.state.selectedStatus ? this.state.selectedStatus : "全部"}
+                </Dropdown.Button>
+              </div>
+              <div className="col-md-12 col-lg-6 status-dropdown-wrapper">
+                <p>顯示日期</p>
+                <Dropdown.Button
+                  overlay={dropdownStatus}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                  className="meracle-dropdown-btn"
+                >
+                  {"2017/10/23 - 2017/10/30"}
                 </Dropdown.Button>
               </div>
             </div>

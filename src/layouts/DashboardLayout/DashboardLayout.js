@@ -21,6 +21,8 @@ class DashBoardLayout extends React.Component {
     super(props);
     this.getProfileData = this.getProfileData.bind(this);
     if (
+      localStorage.getItem("account") &&
+      localStorage.getItem("authorization") &&
       localStorage.getItem("account") !== "undefined" &&
       localStorage.getItem("authorization") !== "undefined"
     ) {
@@ -84,6 +86,11 @@ class DashBoardLayout extends React.Component {
     if (!this.props.user) {
       alert("請先登入");
       browserHistory.push(project.directory + "Login");
+    } else {
+      if (!this.props.user.account) {
+        alert("請先登入");
+        browserHistory.push(project.directory + "Login");
+      }
     }
   };
 

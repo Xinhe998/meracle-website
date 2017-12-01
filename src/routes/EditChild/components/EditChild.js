@@ -183,8 +183,10 @@ class EditChild extends React.Component {
       sessionStorage.child_avatar = child_avatar;
     });
     const isJPG = file.type === "image/jpeg";
-    if (!isJPG) {
-      message.error("只接受JPG圖片！");
+    const isPNG = file.type === "image/png";
+    const isGIF = file.type === "image/gif";
+    if (!isJPG && !isPNG && !isGIF) {
+      message.error("只接受JPG、PNG、GIF圖片！");
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {

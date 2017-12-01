@@ -65,9 +65,6 @@ class PageLayout extends React.Component {
               className="d-inline-block align-top meracle-navbar-logo"
               alt=""
             />
-            <span>
-              <text className="notice">M</text>eracle
-            </span>
           </IndexLink>
           <button
             className="navbar-toggler"
@@ -95,17 +92,6 @@ class PageLayout extends React.Component {
                     activeClassName="active"
                   >
                     登入
-                  </Link>
-                </li>
-              )}
-              {!isLogin && (
-                <li className="nav-item">
-                  <Link
-                    to={project.directory + "register"}
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    註冊
                   </Link>
                 </li>
               )}
