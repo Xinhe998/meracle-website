@@ -82,6 +82,27 @@ body {
     float: right;
     margin-top: 15px;
   }
+  .joinus-btn {
+    border: none;
+    font-size: 16px;
+    letter-spacing: 1.6px;
+    line-height: 26px;
+    font-weight: 500;
+    padding-left: 0;
+    @media (min-width: $mobileWidh) {
+      padding-left: initial;
+      background: #50c9c3;
+      border-radius: 4px;
+      width: 170px;
+      height: 48px;
+      font-size: 16px;
+      color: #ffffff;
+      letter-spacing: 1.6px;
+      line-height: 26px;
+      font-weight: 500;
+      margin-left: 16px;
+    }
+  }
 }
 .navbar-brand {
   .meracle-navbar-logo {

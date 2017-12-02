@@ -8,14 +8,13 @@ import {
   Line,
   XAxis,
   YAxis,
-  ReferenceLine,
   CartesianGrid,
-  Tooltip,
-  Legend,
   ComposedChart,
-  Area
+  Area,
+  ResponsiveContainer
 } from "recharts";
 import { Button } from "antd";
+import Slider from "react-slick";
 
 class HomeView extends React.Component {
   constructor(props) {
@@ -55,7 +54,7 @@ class HomeView extends React.Component {
     return elemBottom <= docViewBottom && elemTop <= docViewTop;
   }
   handleChartScroll(event) {
-    if (this.isScrolledIntoView(document.getElementById("welcome-section"))) {
+    if (this.isScrolledIntoView(document.getElementById("features-section"))) {
       this.setState({
         isScrollToChart: true
       });
@@ -72,6 +71,13 @@ class HomeView extends React.Component {
       navigator.userAgent.match(/Windows Phone/i);
     const isLoading = this.state.isLoading;
     const isScrollToChart = this.state.isScrollToChart;
+    var settings = {
+      dots: false,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1
+    };
     return (
       <div>
         {isLoading && <Loading />}
@@ -89,12 +95,12 @@ class HomeView extends React.Component {
               <div className="demo-device-wrapper">
                 <img
                   src={require("../assets/cellphone.png")}
-                  className="d-inline-block align-top meracle-index-cellphone"
+                  className="d-inline-block align-top meracle-index-cellphone img-fluid"
                   alt=""
                 />
                 <img
                   src={require("../assets/laptop.png")}
-                  className="d-inline-block align-top meracle-index-laptop"
+                  className="d-inline-block align-top meracle-index-laptop img-fluid"
                   alt=""
                 />
               </div>
@@ -107,95 +113,155 @@ class HomeView extends React.Component {
               憶想奇蹟打造完善的系統<br />讓孩童開心成長
             </h1>
             <div className="row">
-              <img
-                src={require("../assets/map.png")}
-                className="d-inline-block align-top meracle-index-map float-left"
-                alt=""
-              />
-              <div className="meracle-feature-wrapper-border" />
-              <div className="meracle-feature-wrapper float-right">
-                <h2>憶想城市</h2>
-                <h3>
-                  加入孩子最喜歡的多種遊戲 一邊開心玩樂 一邊增加記憶力
-                  並且我們將更努力建造豐富的憶想城市
-                </h3>
+              <div className="col-md-4 col-lg-6">
+                <img
+                  src={require("../assets/map.png")}
+                  className="d-inline-block align-top float-left img-fluid"
+                  alt=""
+                />
+              </div>
+              <div className="col-md-8 col-lg-6">
+                <div
+                  className="meracle-feature-wrapper-border"
+                  style={{ marginLeft: 120, background: "#9acbd9" }}
+                />
+                <div
+                  className="meracle-feature-wrapper float-right"
+                  style={{ marginTop: -75 }}
+                >
+                  <h2>憶想城市</h2>
+                  <h3>
+                    加入孩子最喜歡的多種遊戲 一邊開心玩樂 一邊增加記憶力
+                    並且我們將更努力建造豐富的憶想城市
+                  </h3>
+                </div>
               </div>
             </div>
             <div className="row">
-              <div className="meracle-feature-wrapper-border" />
-              <div className="meracle-feature-wrapper float-right">
-                <h2>
-                  測量腦波<br />量化為記憶力
-                </h2>
-                <h3>
-                  加入孩子最喜歡的多種遊戲 一邊開心玩樂 一邊增加記憶力
-                  並且我們將更努力建造豐富的憶想城市
-                </h3>
-              </div>
-              <img
-                src={require("../assets/girlAndPhone.png")}
-                className="d-inline-block align-top meracle-index-map float-left"
-                alt=""
+              <div
+                className="meracle-feature-wrapper-border float-right"
+                style={{
+                  marginRight: 115,
+                  background: "#F5808B",
+                  position: "absolute",
+                  marginTop: -5,
+                  marginLeft: 355
+                }}
               />
+              <div className="col-md-8 col-lg-6">
+                <div
+                  className="meracle-feature-wrapper"
+                  style={{ textAlign: "right" }}
+                >
+                  <h2>
+                    測量腦波<br />量化為記憶力
+                  </h2>
+                  <h3>
+                    加入孩子最喜歡的多種遊戲 一邊開心玩樂 一邊增加記憶力
+                    並且我們將更努力建造豐富的憶想城市
+                  </h3>
+                </div>
+              </div>
+              <div className="col-md-4 col-lg-6">
+                <img
+                  src={require("../assets/girlAndPhone.png")}
+                  className="d-inline-block align-top float-right img-fluid"
+                  alt=""
+                />
+              </div>
             </div>
             <div className="row">
-              <img
-                src={require("../assets/img_cards.png")}
-                className="d-inline-block align-top meracle-index-map float-left"
-                alt=""
-              />
-              <div className="meracle-feature-wrapper-border" />
-              <div className="meracle-feature-wrapper float-right">
-                <h2>多元統計數據</h2>
-                <h3>
-                  提供您每個孩童的個人紀錄、綜合圖表
-                  並且持續更新大眾孩童的統計數據 還想知道什麼？告訴我們！
-                </h3>
+              <div className="col-md-4 col-lg-6">
+                <img
+                  src={require("../assets/img_cards.png")}
+                  className="d-inline-block align-top meracle-index-map float-left img-fluid"
+                  alt=""
+                />
+              </div>
+              <div className="col-md-8 col-lg-6">
+                <div
+                  className="meracle-feature-wrapper-border"
+                  style={{ marginLeft: 120, background: "#F2992E" }}
+                />
+                <div
+                  className="meracle-feature-wrapper float-right"
+                  style={{ marginTop: -75 }}
+                >
+                  <h2>多元統計數據</h2>
+                  <h3>
+                    提供您每個孩童的個人紀錄、綜合圖表
+                    並且持續更新大眾孩童的統計數據 還想知道什麼？告訴我們！
+                  </h3>
+                </div>
               </div>
             </div>
             <div className="row">
-              <div className="meracle-feature-wrapper-border" />
-              <div className="meracle-feature-wrapper float-right">
-                <h2>提升記憶力</h2>
-                <h3>
-                  我們根據理論、調查訪談、實際測試 確實幫助孩童提升工作記憶力了
-                  超級棒吧！
-                </h3>
+              <div
+                className="meracle-feature-wrapper-border float-right"
+                style={{
+                  marginLeft: 355,
+                  background: "#2F9A9E",
+                  position: "absolute",
+                  marginTop: -5
+                }}
+              />
+              <div className="col-md-8 col-lg-6">
+                <div
+                  className="meracle-feature-wrapper"
+                  style={{ textAlign: "right" }}
+                >
+                  <h2>提升記憶力</h2>
+                  <h3>
+                    我們根據理論、調查訪談、實際測試
+                    確實幫助孩童提升工作記憶力了 超級棒吧！
+                  </h3>
+                </div>
               </div>
-              <ComposedChart
-                width={366}
-                height={223}
-                data={this.state.data}
-                className="linechart"
-              >
-                <XAxis dataKey="name" axisLine={false} />
-                <YAxis axisLine={false} />
-                <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
-                {isScrollToChart ? (
-                  <Line
-                    type="monotone"
-                    dataKey="黃小明"
-                    stroke="#2F9A9E"
-                    strokeWidth="4"
-                    dot={{ stroke: "#2F9A9E", strokeWidth: 4, fill: "#2F9A9E" }}
-                  />
-                ) : null}
-                <defs>
-                  <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#2F9A9E" stopOpacity={0.6} />
-                    <stop offset="100%" stopColor="#2F9A9E" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                {isScrollToChart ? (
-                  <Area
-                    type="monotone"
-                    dataKey="黃小明"
-                    stroke="#2F9A9E"
-                    fillOpacity={1}
-                    fill="url(#colorPv)"
-                  />
-                ) : null}
-              </ComposedChart>
+              <div className="col-md-4 col-lg-6">
+                <ResponsiveContainer aspect={2.2}>
+                  <ComposedChart data={this.state.data} className="linechart">
+                    <XAxis dataKey="name" axisLine={false} />
+                    <YAxis axisLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#B4DAE5" />
+                    {isScrollToChart ? (
+                      <Line
+                        type="monotone"
+                        dataKey="黃小明"
+                        stroke="#2F9A9E"
+                        strokeWidth="4"
+                        dot={{
+                          stroke: "#2F9A9E",
+                          strokeWidth: 4,
+                          fill: "#2F9A9E"
+                        }}
+                      />
+                    ) : null}
+                    <defs>
+                      <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                        <stop
+                          offset="0%"
+                          stopColor="#2F9A9E"
+                          stopOpacity={0.6}
+                        />
+                        <stop
+                          offset="100%"
+                          stopColor="#2F9A9E"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    </defs>
+                    {isScrollToChart ? (
+                      <Area
+                        type="monotone"
+                        dataKey="黃小明"
+                        stroke="#2F9A9E"
+                        fillOpacity={1}
+                        fill="url(#colorPv)"
+                      />
+                    ) : null}
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
         </div>
@@ -204,19 +270,22 @@ class HomeView extends React.Component {
             <h1>期待您的加入 跟我們一起成長</h1>
             <div className="row">
               <div className="col-md-4 ">
-                <div className="data-item-wrapper-left">
+                <div className="data-item-wrapper-left" />
+                <div className="data-content">
                   <p>96</p>人<br />
                   加入憶想奇機
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="data-item-wrapper-middle">
+                <div className="data-item-wrapper-middle" />
+                <div className="data-content">
                   <p>196</p>位學童<br />
                   提升了記憶力
                 </div>
               </div>
               <div className="col-md-4">
-                <div className="data-item-wrapper-right">
+                <div className="data-item-wrapper-right" />
+                <div className="data-content" style={{ marginLeft: 70 }}>
                   <p>79</p>%<br />
                   的上升幅度
                 </div>
@@ -228,44 +297,57 @@ class HomeView extends React.Component {
           <div className="container">
             <h1>如何簡單測驗腦波？</h1>
             <div className="row">
-              <div className="col-md-5">
-                <img
-                  src={require("../assets/cellphone_connect_bluetooth.png")}
-                  className="d-inline-block align-top meracle-index-map float-right"
-                  alt=""
-                />
+              <div className="col-md-5" style={{ background: "red" }}>
+                <div className="demo-wrapper">
+                  <video width="320" height="240" controls>
+                    <source
+                      src="../assets/mindwave_demo.mp4"
+                      type="video/mp4"
+                    />
+                    <source
+                      src="../assets/mindwave_demo.ogg"
+                      type="video/ogg"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                  <img
+                    src={require("../assets/cellphone_frame.png")}
+                    className="d-inline-block align-top img-fluid"
+                    alt=""
+                  />
+                </div>
               </div>
               <div className="col-md-7 qa-steps">
                 <div className="row">
-                  <div className="col-md-1">
+                  <div className="col-md-2">
                     <span className="active">1</span>
                   </div>
-                  <div className="col-md-11">
+                  <div className="col-md-10">
                     <h3 className="active">按下開始 偵測藍芽</h3>
                     <h4 className="active">
                       下載App後 按下開始測量 系統會自動偵測附近的藍芽裝置
                     </h4>
                   </div>
-                  <div className="col-md-1">
+                  <div className="col-md-2">
                     <span>2</span>
                   </div>
-                  <div className="col-md-11">
+                  <div className="col-md-10">
                     <h3>調整至訊號歸零</h3>
                     <h4>成功連結腦波耳機後 調整手機位置 直到訊號歸零</h4>
                   </div>
-                  <div className="col-md-1">
+                  <div className="col-md-2">
                     <span>3</span>
                   </div>
-                  <div className="col-md-11">
+                  <div className="col-md-10">
                     <h3>開始測量腦波</h3>
                     <h4>
                       在您網站的遊戲按下開始並測量腦波後 系統會自動測量腦波
                     </h4>
                   </div>
-                  <div className="col-md-1">
+                  <div className="col-md-2">
                     <span>4</span>
                   </div>
-                  <div className="col-md-11">
+                  <div className="col-md-10">
                     <h3>選擇狀態</h3>
                     <h4>
                       測量完成！選擇您的孩童測量當時狀態 我們將為您做記錄和統計
@@ -279,6 +361,28 @@ class HomeView extends React.Component {
         <div id="user-experience-section">
           <div className="container">
             <h1>聽聽我們用戶的使用心得</h1>
+            <Slider {...settings}>
+              <div>
+                <div className="row">
+                  <div className="col-md-4">
+                    <div className="user-photo-wrapper">
+                      <img
+                        src={require("../assets/user-1.jpg")}
+                        className="d-inline-block align-top"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    我家小朋友很喜歡玩憶想城市的房間大變身這個遊戲，而且越玩越有成就感，我也發現他的記憶力指數有逐漸上升，非常開心可以使用這個產品！
+                    <br />
+                    <p className="user-experience-name float-right align-bottom">
+                      張小姐
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Slider>
           </div>
         </div>
         <div id="aboutus-section">
@@ -290,6 +394,7 @@ class HomeView extends React.Component {
                   src={require("../assets/cloud.png")}
                   className="d-inline-block align-top"
                   alt=""
+                  draggable="false"
                 />
               </div>
             </div>
@@ -299,10 +404,11 @@ class HomeView extends React.Component {
                   src={require("../assets/cloud.png")}
                   className="d-inline-block align-top"
                   alt=""
+                  draggable="false"
                 />
               </div>
             </div>
-            
+
             <div className="row">
               <div className="team-member col-md-4">
                 <Link
@@ -354,6 +460,18 @@ class HomeView extends React.Component {
                   <p className="team-member-position">App Developer</p>
                 </Link>
               </div>
+            </div>
+            <div className="x4">
+              <div className="cloud">
+                <img
+                  src={require("../assets/cloud.png")}
+                  className="d-inline-block align-top"
+                  alt=""
+                  draggable="false"
+                />
+              </div>
+            </div>
+            <div className="row">
               <div className="team-member col-md-4">
                 <Link
                   to={
@@ -413,6 +531,7 @@ class HomeView extends React.Component {
                   src={require("../assets/cloud.png")}
                   className="d-inline-block align-top"
                   alt=""
+                  draggable="false"
                 />
               </div>
             </div>
@@ -422,6 +541,7 @@ class HomeView extends React.Component {
                   src={require("../assets/cloud.png")}
                   className="d-inline-block align-top"
                   alt=""
+                  draggable="false"
                 />
               </div>
             </div>

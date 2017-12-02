@@ -2,6 +2,8 @@ import React from "react";
 import { IndexLink, Link } from "react-router";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { Button } from "antd";
+
 import "./PageLayout.scss";
 require("bootstrap");
 import "bootstrap/js/dist/util";
@@ -93,6 +95,11 @@ class PageLayout extends React.Component {
                   >
                     登入
                   </Link>
+                </li>
+              )}
+              {!isLogin && (
+                <li className="nav-item">
+                  <Button className="joinus-btn">加入我們</Button>
                 </li>
               )}
               {isLogin && (
