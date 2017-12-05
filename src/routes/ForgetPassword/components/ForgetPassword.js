@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
 import { Button, Input, Form } from "antd";
 import { Link } from "react-router";
+import "./ForgetPassword.scss";
 // import './HomeView.scss'
 const FormItem = Form.Item;
 
@@ -90,7 +91,11 @@ class ForgetPassword extends React.Component {
         >
           {getFieldDecorator("account", {
             rules: [
-              { required: true, type: "email", message: "請輸入您註冊時申請的E-mail" }
+              {
+                required: true,
+                type: "email",
+                message: "請輸入您註冊時申請的E-mail"
+              }
             ]
           })(
             <Input
@@ -100,15 +105,17 @@ class ForgetPassword extends React.Component {
             />
           )}
         </FormItem>
-        <Button
-          type="primary"
-          size="large"
-          onClick={this.handleSubmit}
-          htmlType="submit"
-          disabled={hasErrors(getFieldsError())}
-        >
-          送出
-        </Button>
+        <div className="bottom-btn-wrapper">
+          <Button
+            size="large"
+            onClick={this.handleSubmit}
+            htmlType="submit"
+            disabled={hasErrors(getFieldsError())}
+            className="meracle-outline-btn"
+          >
+            送出
+          </Button>
+        </div>
       </Form>
     );
   }

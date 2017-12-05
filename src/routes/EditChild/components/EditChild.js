@@ -14,7 +14,8 @@ import {
   message,
   Modal,
   Checkbox,
-  Steps
+  Steps,
+  Card
 } from "antd";
 import moment from "moment";
 import "./EditChild.scss";
@@ -35,7 +36,8 @@ class EditChild extends React.Component {
       child_gender: "",
       child_birth: sessionStorage.child_editing_birth,
       child_avatar: "",
-      isLoading: true
+      isLoading: true,
+      new_child_avatar: ""
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -179,8 +181,8 @@ class EditChild extends React.Component {
   beforeUpload = file => {
     console.log("beforeUpload", file);
     this.getBase64(file, child_avatar => {
-      this.setState({ child_avatar });
-      sessionStorage.child_avatar = child_avatar;
+      this.setState({ new_child_avatar: child_avatar });
+      sessionStorage.child_avatar = this.state.new_child_avatar;
     });
     const isJPG = file.type === "image/jpeg";
     const isPNG = file.type === "image/png";
@@ -244,102 +246,119 @@ class EditChild extends React.Component {
     return (
       <div>
         {isLoading && <Loading />}
-        <Form>
-          <FormItem
-            label="孩子大頭貼"
-            extra=""
-            validateStatus={avatarError ? "error" : ""}
-            help={avatarError || ""}
-          >
-            {getFieldDecorator("upload", {
-              valuePropName: "fileList"
-            })(
-              <Upload
-                className="avatar-uploader"
-                name="avatar"
-                beforeUpload={this.beforeUpload}
+        <Card
+          style={{ width: "90%", marginBottom: 20 }}
+          title="修改會員資料"
+          className="edit-wrapper"
+        >
+          <Form>
+            <FormItem
+              label="孩子大頭貼"
+              extra=""
+              validateStatus={avatarError ? "error" : ""}
+              help={avatarError || ""}
+            >
+              {getFieldDecorator("upload", {
+                valuePropName: "fileList"
+              })(
+                <Upload
+                  className="avatar-uploader"
+                  name="avatar"
+                  beforeUpload={this.beforeUpload}
+                >
+                  {child_avatar ? (
+                    this.state.new_child_avatar ? (
+                      <img
+                        src={this.state.new_child_avatar}
+                        alt=""
+                        className="avatar"
+                      />
+                    ) : (
+                      <img
+                        src={
+                          "https://www.meracle.me/home/Filefolder/" +
+                          child_avatar
+                        }
+                        alt=""
+                        className="avatar"
+                      />
+                    )
+                  ) : (
+                    <Icon type="plus" className="avatar-uploader-trigger" />
+                  )}
+                </Upload>
+              )}
+            </FormItem>
+            <FormItem
+              label="孩童姓名"
+              validateStatus={childNameError ? "error" : ""}
+              help={childNameError || ""}
+            >
+              {getFieldDecorator("child_name", {
+                rules: [{ required: true, message: "請輸入孩童姓名" }],
+                initialValue: this.state.child_name
+              })(
+                <Input
+                  className="form-control"
+                  type="text"
+                  onChange={this.handleNameChange}
+                  disabled={true}
+                />
+              )}
+            </FormItem>
+            <FormItem
+              label="孩童性別"
+              validateStatus={childGenderError ? "error" : ""}
+              help={childGenderError || ""}
+            >
+              {getFieldDecorator("child_gender", {
+                rules: [{ required: true, message: "請選擇孩童性別" }],
+                initialValue: this.state.child_gender
+              })(
+                <RadioGroup onChange={this.handleGenderChange}>
+                  <Radio value="男">男</Radio>
+                  <Radio value="女">女</Radio>
+                </RadioGroup>
+              )}
+            </FormItem>
+            <FormItem
+              label="孩童生日"
+              validateStatus={childBirthError ? "error" : ""}
+              help={childBirthError || ""}
+            >
+              {getFieldDecorator("child_birth", config)(
+                <DatePicker
+                  onChange={this.handleBirthChange}
+                  placeholder="請選擇生日"
+                  disabledDate={disabledDate}
+                />
+              )}
+            </FormItem>
+            <div className="bottom-btn-wrapper">
+              <Button
+                size="large"
+                onClick={this.handleSubmit}
+                htmlType="submit"
+                disabled={hasErrors(getFieldsError())}
+                className="meracle-btn"
               >
-                {child_avatar ? (
-                  <img
-                    src={
-                      "https://www.meracle.me/home/Filefolder/" + child_avatar
-                    }
-                    alt=""
-                    className="avatar"
-                  />
-                ) : (
-                  <Icon type="plus" className="avatar-uploader-trigger" />
-                )}
-              </Upload>
-            )}
-          </FormItem>
-          <FormItem
-            label="孩童姓名"
-            validateStatus={childNameError ? "error" : ""}
-            help={childNameError || ""}
-          >
-            {getFieldDecorator("child_name", {
-              rules: [{ required: true, message: "請輸入孩童姓名" }],
-              initialValue: this.state.child_name
-            })(
-              <Input
-                className="form-control"
-                type="text"
-                onChange={this.handleNameChange}
-                disabled={true}
-              />
-            )}
-          </FormItem>
-          <FormItem
-            label="孩童性別"
-            validateStatus={childGenderError ? "error" : ""}
-            help={childGenderError || ""}
-          >
-            {getFieldDecorator("child_gender", {
-              rules: [{ required: true, message: "請選擇孩童性別" }],
-              initialValue: this.state.child_gender
-            })(
-              <RadioGroup onChange={this.handleGenderChange}>
-                <Radio value="男">男</Radio>
-                <Radio value="女">女</Radio>
-              </RadioGroup>
-            )}
-          </FormItem>
-          <FormItem
-            label="孩童生日"
-            validateStatus={childBirthError ? "error" : ""}
-            help={childBirthError || ""}
-          >
-            {getFieldDecorator("child_birth", config)(
-              <DatePicker
-                onChange={this.handleBirthChange}
-                placeholder="請選擇生日"
-                disabledDate={disabledDate}
-              />
-            )}
-          </FormItem>
-
-          <Button
-            type="primary"
-            size="large"
-            onClick={this.handleSubmit}
-            htmlType="submit"
-            disabled={hasErrors(getFieldsError())}
-          >
-            送出
-          </Button>
-          <Button
-            size="large"
-            onClick={() => {
-              browserHistory.push(project.directory + "dashboard/Child");
-              sessionStorage.clear();
-            }}
-            htmlType="submit"
-            disabled={hasErrors(getFieldsError())}
-          >
-            取消
-          </Button>
-        </Form>
+                送出
+              </Button>
+              <Button
+                size="large"
+                onClick={() => {
+                  browserHistory.push(project.directory + "dashboard/Child");
+                  sessionStorage.clear();
+                }}
+                htmlType="submit"
+                disabled={hasErrors(getFieldsError())}
+                className="meracle-outline-btn"
+              >
+                取消
+              </Button>
+            </div>
+          </Form>
+        </Card>
       </div>
     );
   }

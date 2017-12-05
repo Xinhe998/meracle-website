@@ -48,7 +48,8 @@ class AddChild extends React.Component {
       isLoading: true,
       imageUrl: null,
       current: 0,
-      stepStatus: "wait"
+      stepStatus: "wait",
+      child_count: 0
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.step1 = this.step1.bind(this);
@@ -74,7 +75,33 @@ class AddChild extends React.Component {
       child_avatar: sessionStorage.child_avatar
     });
   }
-
+  getChildData = async () => {
+    //取得有哪些學童，存姓名至array
+    await fetch("https://www.meracle.me/home/api/Member/GetAccountCdName", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.props.user.authorization
+      },
+      body: JSON.stringify({
+        Account: this.props.user.account
+      })
+    })
+      .then(res => res.json())
+      .then(
+        responseJson => {
+          if (responseJson.CdName.length) {
+            this.setState({
+              child_count: responseJson.CdName.length
+            });
+            console.log(this.state.child_count);
+          }
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+  };
   componentDidMount() {
     // document.title = this.state.title + " | 憶想奇機"
     setTimeout(() => {
@@ -83,6 +110,7 @@ class AddChild extends React.Component {
       });
     }, 300);
     this.props.form.validateFields();
+    this.getChildData();
   }
 
   handleSubmit = async e => {
@@ -313,6 +341,7 @@ class AddChild extends React.Component {
     } = this.props.form;
 
     const isLoading = this.state.isLoading;
+    const child_color = ["#9ACBD9", "#F5808B", "#F2992E", "#2F9A9E", "#A77DC2"];
     const config = {
       rules: [{ type: "object", required: true, message: "請選擇生日" }],
       initialValue: this.state.child_birth
@@ -408,14 +437,29 @@ class AddChild extends React.Component {
                 valuePropName: "fileList"
               })(
                 <Upload
-                  className="avatar-uploader"
+                  className={
+                    "avatar-uploader" +
+                    " " +
+                    "child-color-" +
+                    this.state.child_count
+                  }
                   name="avatar"
                   beforeUpload={this.beforeUpload}
                 >
                   {child_avatar ? (
                     <img src={child_avatar} alt="" className="avatar" />
+                  ) : this.state.child_gender == "女" ? (
+                    <img
+                      src={require("../assets/girl.png")}
+                      className="avatar"
+                      alt=""
+                    />
                   ) : (
-                    <Icon type="plus" className="avatar-uploader-trigger" />
+                    <img
+                      src={require("../assets/boy.png")}
+                      className="avatar"
+                      alt=""
+                    />
                   )}
                 </Upload>
               )}
@@ -523,12 +567,35 @@ class AddChild extends React.Component {
                 type="primary"
                 onClick={() => this.handleSubmit()}
                 className="meracle-btn float-right"
+                disabled={
+                  !(
+                    this.state.child_conditions &&
+                    this.state.child_food &&
+                    this.state.child_sleep_time
+                  )
+                }
               >
                 完成
               </Button>
             )}
 
-            {this.state.current < steps.length - 1 && (
+            {this.state.current == 0 && (
+              <Button
+                type="primary"
+                onClick={() => this.next()}
+                className="meracle-btn float-right"
+                disabled={
+                  !(
+                    this.state.child_name &&
+                    this.state.child_gender &&
+                    this.state.child_birth
+                  )
+                }
+              >
+                下一步
+              </Button>
+            )}
+            {this.state.current == 1 && (
               <Button
                 type="primary"
                 onClick={() => this.next()}

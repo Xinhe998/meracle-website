@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Loading from "../../../components/Loading";
 import { Button, Input, Form, Alert, Modal, Icon } from "antd";
 import { Link, browserHistory } from "react-router";
+import "./Login.scss";
 const project = require("../../../../project.config");
 // import './Login.scss'
 const FormItem = Form.Item;
@@ -121,7 +122,6 @@ class Login extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit} className="login-form">
-          {isLoading && <Loading />}
           {isLoginError ? (
             <Alert
               message="帳號或密碼錯誤"
@@ -137,7 +137,11 @@ class Login extends React.Component {
           >
             {getFieldDecorator("account", {
               rules: [
-                { required: true, type: "email", message: "請輸入您註冊時申請的E-mail" }
+                {
+                  required: true,
+                  type: "email",
+                  message: "請輸入您註冊時申請的E-mail"
+                }
               ]
             })(
               <Input
@@ -163,17 +167,18 @@ class Login extends React.Component {
             )}
           </FormItem>
           <br />
-          <Button
-            type="primary"
-            size="large"
-            onClick={this.handleSubmit}
-            htmlType="submit"
-            disabled={hasErrors(getFieldsError())}
-          >
-            登入
-          </Button>
+          <div className="bottom-btn-wrapper">
+            <Button
+              size="large"
+              onClick={this.handleSubmit}
+              htmlType="submit"
+              disabled={hasErrors(getFieldsError())}
+              className="meracle-outline-btn"
+            >
+              登入
+            </Button>
+          </div>
         </Form>
-        <Link to={project.directory + "forget_password"}>忘記密碼？</Link>
       </div>
     );
   }

@@ -53,7 +53,14 @@ class DashBoardLayout extends React.Component {
       }
       return "";
     }
-    const menuKey = ["首頁", "測量結果", "大眾數據", "學童資料", "用戶資料", "新增學童"];
+    const menuKey = [
+      "首頁",
+      "測量結果",
+      "大眾數據",
+      "學童資料",
+      "用戶資料",
+      "新增學童"
+    ];
     this.state = {
       collapsed: widh <= 768,
       selectedTitle: getCookie("selectedKey")
@@ -144,7 +151,14 @@ class DashBoardLayout extends React.Component {
   };
 
   handleSiderSelect = async event => {
-    const menuKey = ["首頁", "測量結果", "大眾數據", "學童資料", "用戶資料", "新增學童"];
+    const menuKey = [
+      "首頁",
+      "測量結果",
+      "大眾數據",
+      "學童資料",
+      "用戶資料",
+      "新增學童"
+    ];
     if (event.key < 7) {
       await this.setState({
         selectedKey: event.key,

@@ -11,7 +11,8 @@ import {
   Form,
   Upload,
   Icon,
-  message
+  message,
+  Card
 } from "antd";
 import moment from "moment";
 import "./EditProfile.scss";
@@ -168,7 +169,6 @@ class EditProfile extends React.Component {
   };
 
   doOpen = event => {
-    console.log("!!!!!!!!open");
     event = event || window.event;
     if (event.target.type !== "file") {
       event.preventDefault();
@@ -205,115 +205,129 @@ class EditProfile extends React.Component {
       return current && current.valueOf() > Date.now();
     }
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        {isLoading && <Loading />}
-        {this.props.user.account}
-        <FormItem
-          label="大頭貼"
-          extra=""
-          validateStatus={avatarError ? "error" : ""}
-          help={avatarError || ""}
-        >
-          {getFieldDecorator("upload", {
-            valuePropName: "fileList"
-          })(
-            <Upload
-              className="avatar-uploader"
-              name="avatar"
-              beforeUpload={this.beforeUpload}
-              onChange={this.handleChange}
-            >
-              {avatar || this.props.user_detail.avatar ? (
-                avatar ? (
-                  <img src={avatar} alt="" className="avatar" />
+      <Card
+        style={{ width: "90%", marginBottom: 20 }}
+        title="修改會員資料"
+        className="edit-wrapper"
+      >
+        <Form onSubmit={this.handleSubmit} className="login-form">
+          {isLoading && <Loading />}
+          <FormItem
+            extra=""
+            validateStatus={avatarError ? "error" : ""}
+            help={avatarError || ""}
+          >
+            {getFieldDecorator("upload", {
+              valuePropName: "fileList"
+            })(
+              <Upload
+                className="avatar-uploader"
+                name="avatar"
+                beforeUpload={this.beforeUpload}
+                onChange={this.handleChange}
+              >
+                {avatar || this.props.user_detail.avatar ? (
+                  avatar ? (
+                    <img src={avatar} alt="" className="avatar" />
+                  ) : (
+                    <img
+                      src={
+                        "https://www.meracle.me/home/Filefolder/" +
+                        this.props.user_detail.avatar +
+                        "?time=" +
+                        new Date().getTime()
+                      }
+                      alt=""
+                      className="avatar"
+                    />
+                  )
                 ) : (
-                  <img
-                    src={
-                      "https://www.meracle.me/home/Filefolder/" +
-                      this.props.user_detail.avatar +
-                      "?time=" +
-                      new Date().getTime()
-                    }
-                    alt=""
-                    className="avatar"
-                  />
-                )
-              ) : (
-                <Icon type="plus" className="avatar-uploader-trigger" />
-              )}
-            </Upload>
-          )}
-        </FormItem>
-        <FormItem
-          label="姓名"
-          validateStatus={nameError ? "error" : ""}
-          help={nameError || ""}
-        >
-          {getFieldDecorator("name", {
-            rules: [{ required: true, message: "請輸入姓名" }],
-            initialValue: this.props.user_detail.name
-          })(
-            <Input
-              className="form-control"
-              type="text"
-              onChange={this.handleNameChange}
-            />
-          )}
-        </FormItem>
-        <FormItem
-          label="性別"
-          validateStatus={genderError ? "error" : ""}
-          help={genderError || ""}
-        >
-          {getFieldDecorator("gender", {
-            initialValue: this.props.user_detail.gender
-          })(
-            <RadioGroup onChange={this.handleGenderChange}>
-              <Radio value="男">男</Radio>
-              <Radio value="女">女</Radio>
-            </RadioGroup>
-          )}
-        </FormItem>
-        <FormItem
-          label="地址"
-          validateStatus={addressError ? "error" : ""}
-          help={addressError || ""}
-        >
-          {getFieldDecorator("address", {
-            rules: [{ required: false }],
-            initialValue: this.props.user_detail.address
-          })(
-            <Input
-              className="form-control"
-              type="text"
-              onChange={this.handleAddressChange}
-            />
-          )}
-        </FormItem>
-        <FormItem
-          label="生日"
-          validateStatus={birthError ? "error" : ""}
-          help={birthError || ""}
-        >
-          {getFieldDecorator("birth", config)(
-            <DatePicker
-              onChange={this.handleBirthChange}
-              placeholder="請選擇生日"
-              disabledDate={disabledDate}
-            />
-          )}
-        </FormItem>
-
-        <Button
-          type="primary"
-          size="large"
-          onClick={this.handleSubmit}
-          htmlType="submit"
-          disabled={hasErrors(getFieldsError())}
-        >
-          送出
-        </Button>
-      </Form>
+                  <Icon type="plus" className="avatar-uploader-trigger" />
+                )}
+              </Upload>
+            )}
+          </FormItem>
+          <FormItem
+            label="E-mail"
+            validateStatus={nameError ? "error" : ""}
+            help={nameError || ""}
+          >
+            {getFieldDecorator("account", {
+              initialValue: this.props.user.account
+            })(<Input className="form-control" type="text" disabled={true} />)}
+          </FormItem>
+          <FormItem
+            label="姓名"
+            validateStatus={nameError ? "error" : ""}
+            help={nameError || ""}
+          >
+            {getFieldDecorator("name", {
+              rules: [{ required: true, message: "請輸入姓名" }],
+              initialValue: this.props.user_detail.name
+            })(
+              <Input
+                className="form-control"
+                type="text"
+                onChange={this.handleNameChange}
+              />
+            )}
+          </FormItem>
+          <FormItem
+            label="性別"
+            validateStatus={genderError ? "error" : ""}
+            help={genderError || ""}
+          >
+            {getFieldDecorator("gender", {
+              initialValue: this.props.user_detail.gender
+            })(
+              <RadioGroup onChange={this.handleGenderChange}>
+                <Radio value="男">男</Radio>
+                <Radio value="女">女</Radio>
+              </RadioGroup>
+            )}
+          </FormItem>
+          <FormItem
+            label="地址"
+            validateStatus={addressError ? "error" : ""}
+            help={addressError || ""}
+          >
+            {getFieldDecorator("address", {
+              rules: [{ required: false }],
+              initialValue: this.props.user_detail.address
+            })(
+              <Input
+                className="form-control"
+                type="text"
+                onChange={this.handleAddressChange}
+              />
+            )}
+          </FormItem>
+          <FormItem
+            label="生日"
+            validateStatus={birthError ? "error" : ""}
+            help={birthError || ""}
+          >
+            {getFieldDecorator("birth", config)(
+              <DatePicker
+                onChange={this.handleBirthChange}
+                placeholder="請選擇生日"
+                disabledDate={disabledDate}
+              />
+            )}
+          </FormItem>
+          <div className="bottom-btn-wrapper">
+            <Button
+              size="large"
+              onClick={this.handleSubmit}
+              htmlType="submit"
+              disabled={hasErrors(getFieldsError())}
+              className="meracle-btn"
+            >
+              送出
+            </Button>
+          </div>
+        </Form>
+      </Card>
     );
   }
 }

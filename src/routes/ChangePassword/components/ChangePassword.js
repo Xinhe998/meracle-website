@@ -180,11 +180,11 @@ class ChangePassword extends React.Component {
           )}
         </FormItem>
         <Button
-          type="primary"
           size="large"
           onClick={this.handleSubmit}
           htmlType="submit"
           disabled={hasErrors(getFieldsError())}
+          className="meracle-btn"
         >
           送出
         </Button>

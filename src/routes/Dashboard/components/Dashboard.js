@@ -45,6 +45,7 @@ export default class Dashboard extends React.Component {
       await this.animatePercentage();
       await this.getBestDataOfThisWeek();
       await this.getChildBestMemory();
+      await this.getDayAvgScore();
     } else {
       this.preventAnonymousAccess();
     }
@@ -275,10 +276,17 @@ export default class Dashboard extends React.Component {
   getChildBestMemory = async () => {
     //孩童最佳記憶力
     const child = this.props.child;
-    const user = this.props.user;
+    const user = await this.props.user;
     var resultArrary = [];
-    const statusArr = ["運動前", "運動後", "吃飯前", "吃飯後", "睡覺前", "剛睡醒"];
-    Object.keys(child).map(function(key, index) {
+    const statusArr = [
+      "運動前",
+      "運動後",
+      "吃飯前",
+      "吃飯後",
+      "睡覺前",
+      "剛睡醒"
+    ];
+    await Object.keys(child).map(function(key, index) {
       fetch("https://www.meracle.me/home/api/Survey/CdBestOfScore", {
         method: "POST",
         headers: {
@@ -292,19 +300,19 @@ export default class Dashboard extends React.Component {
       })
         .then(res => res.json())
         .then(
-          responseJson => {
-            var weekday = new Array(7);
-            weekday[0] = "日";
-            weekday[1] = "一";
-            weekday[2] = "二";
-            weekday[3] = "三";
-            weekday[4] = "四";
-            weekday[5] = "五";
-            weekday[6] = "六";
+          async responseJson => {
+            var weekday = await new Array(7);
+            weekday[0] = await "日";
+            weekday[1] = await "一";
+            weekday[2] = await "二";
+            weekday[3] = await "三";
+            weekday[4] = await "四";
+            weekday[5] = await "五";
+            weekday[6] = await "六";
             for (var i = 0; i <= Object.keys(child).length; i++) {
               if (responseJson[i]) {
-                resultArrary.push({
-                  name: responseJson[i].CdName,
+                await resultArrary.push({
+                  name: child[key].name,
                   score: responseJson[i].Score,
                   status: statusArr[responseJson[i].Status],
                   date: moment(responseJson[i].CreateTime).format("YYYY-MM-DD"),
@@ -322,6 +330,55 @@ export default class Dashboard extends React.Component {
     });
     await this.setState({
       bestMemory: resultArrary
+    });
+  };
+
+  getDayAvgScore = async () => {
+    //每日平均記憶力
+    const child = this.props.child;
+    const user = this.props.user;
+    var avgArrary = [];
+    Object.keys(child).map(function(key, index) {
+      if (child[key].name) {
+        fetch(
+          "https://www.meracle.me/home/api/Survey/CdDayOfScoreByTimerTable",
+          {
+            //跑所有小孩
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: user.authorization
+            },
+            body: JSON.stringify({
+              Account: user.account,
+              CdName: child[key].name
+            })
+          }
+        )
+          .then(res => res.json())
+          .then(
+            async responseJson => {
+              if (responseJson.length) {
+                for (var i = 0; i < Object.keys(responseJson).length; i++) {
+                  //跑六個狀態
+
+                  avgArrary.push({
+                    range: responseJson[i].TimeRangeName
+                  });
+                  avgArrary[i][child[key].name.toString()] =
+                    responseJson[i].Score;
+                }
+              }
+              await avgArrary.splice(6);
+            },
+            function(e) {
+              console.log(e);
+            }
+          );
+      }
+    });
+    await this.setState({
+      personal_day_memory_data: avgArrary
     });
   };
 
@@ -345,15 +402,7 @@ export default class Dashboard extends React.Component {
       navigator.userAgent.match(/BlackBerry/i) ||
       navigator.userAgent.match(/Windows Phone/i);
     const isLoading = this.state.isLoading;
-    const best_memory_data = [
-      { name: "週一", 俊豪: 20, 珮瑄: 90, 家妤: 100, 若翔: 50 },
-      { name: "週二", 俊豪: 83, 珮瑄: 44, 家妤: 65, 若翔: 77 },
-      { name: "週三", 俊豪: 67, 珮瑄: 65, 家妤: 55, 若翔: 66 },
-      { name: "週四", 俊豪: 46, 珮瑄: 90, 家妤: 25, 若翔: 56 },
-      { name: "週五", 俊豪: 89, 珮瑄: 50, 家妤: 40, 若翔: 53 },
-      { name: "週六", 俊豪: 56, 珮瑄: 87, 家妤: 88, 若翔: 30 },
-      { name: "週日", 俊豪: 16, 珮瑄: 28, 家妤: 45, 若翔: 95 }
-    ];
+    const personal_day_memory_data = this.state.personal_day_memory_data;
     var dropdownIndex = 0;
     const child = this.props.child;
     const dropdownMenu = (
@@ -462,7 +511,9 @@ export default class Dashboard extends React.Component {
               {this.state.bestMemory[index].name}
             </div>
             <div className="col-md-12 child_best_momory_data_detail">
-              {this.state.bestMemory[index].date} ({this.state.bestMemory[index].weekDay})
+              {this.state.bestMemory[index].date} ({
+                this.state.bestMemory[index].weekDay
+              })
               {"  "}
               {this.state.bestMemory[index].time}
               {"  "}
@@ -486,7 +537,9 @@ export default class Dashboard extends React.Component {
                 {this.state.isHaveChild ? (
                   <div className="row">
                     <div className="col-md-12 col-lg-3 enter-game-title-wrapper">
-                      <span className="enter-game-title">選擇要進入憶想城市的孩童</span>
+                      <span className="enter-game-title">
+                        選擇要進入憶想城市的孩童
+                      </span>
                     </div>
                     <div className="col-md-12 col-lg-3 cdname-dropdown-wrapper">
                       <Dropdown.Button
@@ -717,77 +770,55 @@ export default class Dashboard extends React.Component {
               </Card>
             </div>
             <div className="col-md-6">
-              {/* 目前是假的 */}
               <Card
                 title="每日平均記憶力"
                 style={{ width: "100%" }}
                 className="dashboard-index-card"
               >
-                <ResponsiveContainer aspect={1.5}>
-                  <LineChart data={best_memory_data} className="linechart">
-                    <XAxis
-                      dataKey="name"
-                      tickLine={false}
-                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      tickLine={false}
-                      tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
-                      axisLine={false}
-                    />
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      stroke="#6D7084"
-                      opacity="0.2"
-                    />
-                    <Tooltip />
-                    <Legend
-                      iconType="circle"
-                      wrapperStyle={{ fontSize: 12, color: "#6D7084" }}
-                    />
-                    {!isLoading ? (
-                      <Line
-                        type="monotone"
-                        dataKey="俊豪"
-                        stroke="#9ACBD9"
-                        strokeWidth="4"
-                        dot={{ stroke: "#9ACBD9", strokeWidth: 4 }}
-                        animationDuration={2000}
+                {!isLoading && (
+                  <ResponsiveContainer aspect={1.5}>
+                    <LineChart
+                      data={personal_day_memory_data}
+                      className="linechart"
+                    >
+                      <XAxis
+                        dataKey="range"
+                        tickLine={false}
+                        tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                        axisLine={false}
                       />
-                    ) : null}
-                    {!isLoading ? (
-                      <Line
-                        type="monotone"
-                        dataKey="珮瑄"
-                        stroke="#F2992E"
-                        strokeWidth="4"
-                        dot={{ stroke: "#F2992E", strokeWidth: 4 }}
-                        animationDuration={2000}
+                      <YAxis
+                        tickLine={false}
+                        tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
+                        axisLine={false}
                       />
-                    ) : null}
-                    {!isLoading ? (
-                      <Line
-                        type="monotone"
-                        dataKey="家妤"
-                        stroke="#F5808B"
-                        strokeWidth="4"
-                        dot={{ stroke: "#F5808B", strokeWidth: 4 }}
-                        animationDuration={2000}
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="#6D7084"
+                        opacity="0.2"
                       />
-                    ) : null}
-                    {!isLoading ? (
-                      <Line
-                        type="monotone"
-                        dataKey="若翔"
-                        stroke="#2F9A9E"
-                        strokeWidth="4"
-                        dot={{ stroke: "#2F9A9E", strokeWidth: 4 }}
-                        animationDuration={2000}
+                      <Tooltip />
+                      <Legend
+                        iconType="circle"
+                        wrapperStyle={{ fontSize: 12, color: "#6D7084" }}
                       />
-                    ) : null}
-                  </LineChart>
-                </ResponsiveContainer>
+                      {!isLoading && child
+                        ? Object.keys(child).map(function(key) {
+                            return (
+                              <Line
+                                type="monotone"
+                                dataKey={child[key].name}
+                                stroke={child[key].color}
+                                strokeWidth="4"
+                                dot={{ stroke: "#9ACBD9", strokeWidth: 4 }}
+                                animationDuration={2000}
+                              />
+                            );
+                          })
+                        : null}
+                    </LineChart>
+                  </ResponsiveContainer>
+                )}
               </Card>
             </div>
           </div>

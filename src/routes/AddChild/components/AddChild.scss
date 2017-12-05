@@ -1,3 +1,9 @@
+$child_color_0: #9acbd9;
+$child_color_1: #f5808b;
+$child_color_2: #f2992e;
+$child_color_3: #2f9a9e;
+$child_color_4: #a77dc2;
+
 %meracle-button {
   border: 2px solid #9acbd9;
   border-radius: 4px !important;
@@ -181,7 +187,7 @@
     letter-spacing: 1.2px;
     line-height: 20px;
     font-weight: 400;
-    margin-right: 16px;
+    // margin-right: 16px;
   }
 }
 .ant-radio-inner:after {
@@ -213,5 +219,30 @@
     line-height: 20px;
     font-weight: 400;
     margin-right: 16px;
+  }
+}
+.child-color-0 {
+  .ant-upload-select {
+    background-color: $child_color_0;
+  }
+}
+.child-color-1 {
+  .ant-upload-select {
+    background-color: $child_color_1;
+  }
+}
+.child-color-2 {
+  .ant-upload-select {
+    background-color: $child_color_2;
+  }
+}
+.child-color-3 {
+  .ant-upload-select {
+    background-color: $child_color_3;
+  }
+}
+.child-color-4 {
+  .ant-upload-select {
+    background-color: $child_color_4;
   }
 }

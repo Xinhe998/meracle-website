@@ -1,7 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 // import { browserHistory, History } from "react-router";
-import { Card, Icon, Button, Table, Modal, Menu, Dropdown } from "antd";
+import {
+  Card,
+  Icon,
+  Button,
+  Table,
+  Modal,
+  Menu,
+  Dropdown,
+  DatePicker
+} from "antd";
 import Loading from "../../../components/Loading";
 import "./MemoryResult.scss";
 import moment from "moment";
@@ -16,6 +25,7 @@ import {
   ResponsiveContainer
 } from "recharts";
 const project = require("../../../../project.config");
+const { MonthPicker, RangePicker } = DatePicker;
 
 export default class MemoryResult extends React.Component {
   static propTypes = {};
@@ -25,7 +35,7 @@ export default class MemoryResult extends React.Component {
       isLoading: true,
       isHaveChild: false,
       selectedCdName: "",
-      selectedStatus: ""
+      selectedStatus: "全部"
     };
   }
   async componentWillMount() {
@@ -215,15 +225,95 @@ export default class MemoryResult extends React.Component {
       isLoading: false
     });
   };
-  handleStatusDropdownClick = event => {
-    this.setState({
+  handleStatusDropdownClick = async event => {
+    const MemoryData = this.state.MemoryData;
+    const MemoryDataFilterDate = this.state.MemoryDataFilterDate;
+    await this.setState({
       selectedStatus: event.item.props.children
+    });
+    const selectedStatus = this.state.selectedStatus;
+    var result = [];
+    if (MemoryDataFilterDate) {
+      if (selectedStatus === "全部") {
+        result = MemoryDataFilterDate;
+      } else {
+        await Object.keys(MemoryDataFilterDate).map(function(index) {
+          if (MemoryDataFilterDate[index].status === selectedStatus) {
+            result.push(MemoryDataFilterDate[index]);
+          }
+        });
+      }
+    } else {
+      if (selectedStatus === "全部") {
+        result = MemoryData;
+      } else {
+        await Object.keys(MemoryData).map(function(index) {
+          if (MemoryData[index].status === selectedStatus) {
+            result.push(MemoryData[index]);
+          }
+        });
+      }
+    }
+
+    await this.setState({
+      MemoryDataFilterStatus: result,
+      isStatusOrDate: "status"
     });
   };
 
+  rangeOnChange = async (dates, dateStrings) => {
+    const MemoryData = this.state.MemoryData;
+    const selectedStatus = this.state.selectedStatus;
+    const MemoryDataFilterStatus = this.state.MemoryDataFilterStatus;
+
+    await this.setState({
+      selectedStartDate: dateStrings[0],
+      selectedEndDate: dateStrings[1]
+    });
+    var result = [];
+    const selectedStartDate = this.state.selectedStartDate;
+    const selectedEndDate = this.state.selectedEndDate;
+
+    if (selectedStatus === "全部") {
+      await Object.keys(MemoryData).map(function(index) {
+        if (
+          moment(MemoryData[index].createTime).format("YYYYMMDD") >=
+            moment(selectedStartDate).format("YYYYMMDD") &&
+          moment(MemoryData[index].createTime).format("YYYYMMDD") <=
+            moment(selectedEndDate).format("YYYYMMDD")
+        ) {
+          result.push(MemoryData[index]);
+        }
+      });
+    } else {
+      await Object.keys(MemoryDataFilterStatus).map(function(index) {
+        if (
+          moment(MemoryDataFilterStatus[index].createTime).format("YYYYMMDD") >=
+            moment(selectedStartDate).format("YYYYMMDD") &&
+          moment(MemoryDataFilterStatus[index].createTime).format("YYYYMMDD") <=
+            moment(selectedEndDate).format("YYYYMMDD")
+        ) {
+          result.push(MemoryDataFilterStatus[index]);
+        }
+      });
+    }
+
+    await this.setState({
+      MemoryDataFilterDate: result,
+      isStatusOrDate: "date"
+    });
+  };
   render() {
     const isLoading = this.state.isLoading;
-    const statusArr = ["運動前", "運動後", "吃飯前", "吃飯後", "睡覺前", "剛睡醒"];
+    const statusArr = [
+      "全部",
+      "運動前",
+      "運動後",
+      "吃飯前",
+      "吃飯後",
+      "睡覺前",
+      "剛睡醒"
+    ];
     const child = this.props.child;
     var dropdownIndex = 0;
     const dropdownCdName = (
@@ -263,6 +353,8 @@ export default class MemoryResult extends React.Component {
       </Menu>
     );
     const MemoryData = this.state.MemoryData;
+    const MemoryDataFilterStatus = this.state.MemoryDataFilterStatus;
+    const MemoryDataFilterDate = this.state.MemoryDataFilterDate;
     var memory_data = [];
     var memoryDataSource = [];
     var weekday = new Array(7);
@@ -274,26 +366,159 @@ export default class MemoryResult extends React.Component {
     weekday[5] = "五";
     weekday[6] = "六";
     if (this.state.MemoryData) {
-      Object.keys(MemoryData).map(function(index) {
-        memoryDataSource.push({
-          key: index,
-          time:
-            moment(MemoryData[index].createTime).format("YYYY/MM/DD") +
-            " ( " +
-            weekday[moment(MemoryData[index].createTime).format("E")] +
-            " ) " +
-            moment(MemoryData[index].createTime).format("HH:mm"),
-          status: MemoryData[index].status,
-          score: MemoryData[index].score
-        });
-        memory_data.push({
-          name:
-            moment(MemoryData[index].createTime).format("MM/DD") +
-            "  " +
-            MemoryData[index].status
-        });
-        memory_data[index][MemoryData[index].name] = MemoryData[index].score;
-      });
+      if (this.state.MemoryDataFilterDate) {
+        if (this.state.MemoryDataFilterStatus) {
+          //有日期又有狀態
+          const isStatusOrDate = this.state.isStatusOrDate;
+          if (isStatusOrDate === "date") {
+            //剛剛選擇的是日期
+            Object.keys(MemoryDataFilterDate).map(function(index) {
+              memoryDataSource.push({
+                key: index,
+                time:
+                  moment(MemoryDataFilterDate[index].createTime).format(
+                    "YYYY/MM/DD"
+                  ) +
+                  " ( " +
+                  weekday[
+                    moment(MemoryDataFilterDate[index].createTime).format("E")
+                  ] +
+                  " ) " +
+                  moment(MemoryDataFilterDate[index].createTime).format(
+                    "HH:mm"
+                  ),
+                status: MemoryDataFilterDate[index].status,
+                score: MemoryDataFilterDate[index].score
+              });
+              memory_data.push({
+                name:
+                  moment(MemoryDataFilterDate[index].createTime).format(
+                    "MM/DD"
+                  ) +
+                  "  " +
+                  MemoryDataFilterDate[index].status
+              });
+              memory_data[index][MemoryDataFilterDate[index].name] =
+                MemoryDataFilterDate[index].score;
+            });
+          }
+          if (isStatusOrDate === "status") {
+            //剛剛選擇的是狀態
+            Object.keys(MemoryDataFilterStatus).map(function(index) {
+              memoryDataSource.push({
+                key: index,
+                time:
+                  moment(MemoryDataFilterStatus[index].createTime).format(
+                    "YYYY/MM/DD"
+                  ) +
+                  " ( " +
+                  weekday[
+                    moment(MemoryDataFilterStatus[index].createTime).format("E")
+                  ] +
+                  " ) " +
+                  moment(MemoryDataFilterStatus[index].createTime).format(
+                    "HH:mm"
+                  ),
+                status: MemoryDataFilterStatus[index].status,
+                score: MemoryDataFilterStatus[index].score
+              });
+              memory_data.push({
+                name:
+                  moment(MemoryDataFilterStatus[index].createTime).format(
+                    "MM/DD"
+                  ) +
+                  "  " +
+                  MemoryDataFilterStatus[index].status
+              });
+              memory_data[index][MemoryDataFilterStatus[index].name] =
+                MemoryDataFilterStatus[index].score;
+            });
+          }
+        } else {
+          //有日期沒狀態
+          Object.keys(MemoryDataFilterDate).map(function(index) {
+            memoryDataSource.push({
+              key: index,
+              time:
+                moment(MemoryDataFilterDate[index].createTime).format(
+                  "YYYY/MM/DD"
+                ) +
+                " ( " +
+                weekday[
+                  moment(MemoryDataFilterDate[index].createTime).format("E")
+                ] +
+                " ) " +
+                moment(MemoryDataFilterDate[index].createTime).format("HH:mm"),
+              status: MemoryDataFilterDate[index].status,
+              score: MemoryDataFilterDate[index].score
+            });
+            memory_data.push({
+              name:
+                moment(MemoryDataFilterDate[index].createTime).format("MM/DD") +
+                "  " +
+                MemoryDataFilterDate[index].status
+            });
+            memory_data[index][MemoryDataFilterDate[index].name] =
+              MemoryDataFilterDate[index].score;
+          });
+        }
+      } else {
+        if (this.state.MemoryDataFilterStatus) {
+          //沒日期但有狀態
+          Object.keys(MemoryDataFilterStatus).map(function(index) {
+            memoryDataSource.push({
+              key: index,
+              time:
+                moment(MemoryDataFilterStatus[index].createTime).format(
+                  "YYYY/MM/DD"
+                ) +
+                " ( " +
+                weekday[
+                  moment(MemoryDataFilterStatus[index].createTime).format("E")
+                ] +
+                " ) " +
+                moment(MemoryDataFilterStatus[index].createTime).format(
+                  "HH:mm"
+                ),
+              status: MemoryDataFilterStatus[index].status,
+              score: MemoryDataFilterStatus[index].score
+            });
+            memory_data.push({
+              name:
+                moment(MemoryDataFilterStatus[index].createTime).format(
+                  "MM/DD"
+                ) +
+                "  " +
+                MemoryDataFilterStatus[index].status
+            });
+            memory_data[index][MemoryDataFilterStatus[index].name] =
+              MemoryDataFilterStatus[index].score;
+          });
+        } else {
+          //沒日期沒狀態
+          Object.keys(MemoryData).map(function(index) {
+            memoryDataSource.push({
+              key: index,
+              time:
+                moment(MemoryData[index].createTime).format("YYYY/MM/DD") +
+                " ( " +
+                weekday[moment(MemoryData[index].createTime).format("E")] +
+                " ) " +
+                moment(MemoryData[index].createTime).format("HH:mm"),
+              status: MemoryData[index].status,
+              score: MemoryData[index].score
+            });
+            memory_data.push({
+              name:
+                moment(MemoryData[index].createTime).format("MM/DD") +
+                "  " +
+                MemoryData[index].status
+            });
+            memory_data[index][MemoryData[index].name] =
+              MemoryData[index].score;
+          });
+        }
+      }
     }
     const memoryInfoSource = [
       {
@@ -322,7 +547,7 @@ export default class MemoryResult extends React.Component {
         ),
         detail: (
           <div className="memory_info_detail">
-            <p>2017/10/24</p>為最佳時間！
+            {/* <p>2017/10/24</p>為最佳時間！ */}
           </div>
         )
       }
@@ -332,15 +557,14 @@ export default class MemoryResult extends React.Component {
       {
         key: "1",
         title: "最佳狀態",
-        status: "睡覺前"
+        //status: "睡覺前"
       }
     ];
     var bestTimeDataSource = [
       {
         key: "1",
-        title: "最佳時間",
-        //time: this.state.best_time
-        time: "10:00-11:00"
+        title: "最佳時段",
+        time: this.state.best_time
       }
     ];
     const memoryDataColumns = [
@@ -405,6 +629,10 @@ export default class MemoryResult extends React.Component {
         width: 135
       }
     ];
+    function disabledDate(current) {
+      // Can not select days after today
+      return current && current.valueOf() > Date.now();
+    }
     return (
       <div>
         {isLoading && <Loading />}
@@ -449,19 +677,23 @@ export default class MemoryResult extends React.Component {
                   placement="bottomRight"
                   className="meracle-dropdown-btn"
                 >
-                  {this.state.selectedStatus ? this.state.selectedStatus : "全部"}
+                  {this.state.selectedStatus
+                    ? this.state.selectedStatus
+                    : "全部"}
                 </Dropdown.Button>
               </div>
               <div className="col-md-12 col-lg-6 status-dropdown-wrapper">
                 <p>顯示日期</p>
-                <Dropdown.Button
-                  overlay={dropdownStatus}
-                  trigger={["click"]}
-                  placement="bottomRight"
-                  className="meracle-dropdown-btn"
-                >
-                  {"2017/10/23 - 2017/10/30"}
-                </Dropdown.Button>
+                <RangePicker
+                  size={"large"}
+                  ranges={{
+                    Today: [moment(), moment()],
+                    "This Month": [moment(), moment().endOf("month")]
+                  }}
+                  onChange={this.rangeOnChange}
+                  locale={{ lang: { rangePlaceholder: ["開始日", "結束日"] } }}
+                  disabledDate={disabledDate}
+                />
               </div>
             </div>
             <div className="row memory_result_chart_wrapper">
@@ -469,6 +701,7 @@ export default class MemoryResult extends React.Component {
                 <LineChart data={memory_data} className="linechart">
                   <XAxis
                     dataKey="name"
+                    rangePlaceholder
                     tickLine={false}
                     tick={{ fill: "#6D7084", fontSize: 12, opacity: 0.8 }}
                     axisLine={false}

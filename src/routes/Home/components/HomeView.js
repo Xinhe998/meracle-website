@@ -2,9 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./HomeView.scss";
 import Loading from "../../../components/Loading";
+import Login from "../../Login/containers/LoginContainer";
+import ForgetPassword from "../../ForgetPassword/containers/ForgetPasswordContainer";
+import Register from "../../Register/containers/RegisterContainer";
 import { Link } from "react-router";
+import "react-html5video/dist/styles.css";
 import {
-  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -13,8 +16,9 @@ import {
   Area,
   ResponsiveContainer
 } from "recharts";
-import { Button } from "antd";
+import { Button, Icon, Tooltip, BackTop } from "antd";
 import Slider from "react-slick";
+const project = require("../../../../project.config");
 
 class HomeView extends React.Component {
   constructor(props) {
@@ -30,9 +34,18 @@ class HomeView extends React.Component {
         { name: "六", 黃小明: 75 },
         { name: "日", 黃小明: 74 }
       ],
-      isScrollToChart: false
+      isScrollToChart: false,
+      isScrollToFooter: false,
+      isScrollToQA: false,
+      isHandlingLogin: false,
+      isHandlingRegister: false,
+      scrollY: 0
     };
     this.handleChartScroll = this.handleChartScroll.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+  }
+  componentWillmount() {
+    document.body.classList.add("overlay-open");
   }
   componentDidMount() {
     setTimeout(() => {
@@ -40,10 +53,31 @@ class HomeView extends React.Component {
         isLoading: false
       });
     }, 800);
+    document.body.classList.remove("overlay-open");
     window.addEventListener("scroll", this.handleChartScroll);
+    window.addEventListener("scroll", this.handleScroll);
+    this.getTotalMember();
+    this.getMemoryUpTotalMember();
+    this.getMemoryUpPercent();
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleChartScroll);
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+  handleScroll(event) {
+    var y =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+    this.setState({
+      scrollY: y
+    });
+    if (y === 0) {
+      document.getElementById("navbar").classList.remove("not-in-top");
+    } else {
+      document.getElementById("navbar").classList.add("not-in-top");
+    }
   }
   isScrolledIntoView(elem) {
     var docViewTop = $(window).scrollTop();
@@ -59,7 +93,124 @@ class HomeView extends React.Component {
         isScrollToChart: true
       });
     }
+    if (this.isScrolledIntoView(document.getElementById("data-section"))) {
+      this.setState({
+        isScrollToQA: true
+      });
+    }
+    if (this.isScrolledIntoView(document.getElementById("aboutus-section"))) {
+      this.setState({
+        isScrollToFooter: true
+      });
+    } else {
+      this.setState({
+        isScrollToFooter: false
+      });
+    }
   }
+
+  getTotalMember = async () => {
+    await fetch("https://www.meracle.me/home/api/Survey/CountMember", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(
+        responseJson => {
+          this.setState({
+            totalMember: responseJson
+          });
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+  };
+
+  getMemoryUpTotalMember = async () => {
+    await fetch("https://www.meracle.me/home/api/Survey/CountMemberMemoryUp", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(
+        responseJson => {
+          this.setState({
+            memoryUpTotalMember: responseJson[0].Updata
+          });
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+  };
+
+  getMemoryUpPercent = async () => {
+    await fetch("https://www.meracle.me/home/api/Survey/CountMemberMemoryUp", {
+      method: "GET"
+    })
+      .then(res => res.json())
+      .then(
+        responseJson => {
+          this.setState({
+            memoryUpPercent: responseJson[0].Updata
+          });
+        },
+        function(e) {
+          console.log(e);
+        }
+      );
+  };
+
+  handleLogin = () => {
+    this.setState({
+      isHandlingLogin: true,
+      isHandlingRegister: false,
+      isHandlingForgetPassword: false
+    });
+    document.body.classList.add("overlay-open");
+  };
+  stopLogin = () => {
+    this.setState({
+      isHandlingLogin: false,
+      isHandlingForgetPassword: false,
+      isHandlingRegister: false
+    });
+    document.body.classList.remove("overlay-open");
+  };
+
+  handleRegister = () => {
+    this.setState({
+      isHandlingLogin: false,
+      isHandlingForgetPassword: false,
+      isHandlingRegister: true
+    });
+    document.body.classList.add("overlay-open");
+  };
+  stopRegister = () => {
+    this.setState({
+      isHandlingLogin: false,
+      isHandlingRegister: false,
+      isHandlingForgetPassword: false
+    });
+    document.body.classList.remove("overlay-open");
+  };
+
+  handleForgetPassword = () => {
+    this.setState({
+      isHandlingLogin: false,
+      isHandlingRegister: false,
+      isHandlingForgetPassword: true
+    });
+    document.body.classList.add("overlay-open");
+  };
+  stopForgetPassword = () => {
+    this.setState({
+      isHandlingLogin: false,
+      isHandlingRegister: false,
+      isHandlingForgetPassword: false
+    });
+    document.body.classList.remove("overlay-open");
+  };
+
   render() {
     const isMobile =
       navigator.userAgent.match(/Android/i) ||
@@ -71,6 +222,11 @@ class HomeView extends React.Component {
       navigator.userAgent.match(/Windows Phone/i);
     const isLoading = this.state.isLoading;
     const isScrollToChart = this.state.isScrollToChart;
+    const isScrollToFooter = this.state.isScrollToFooter;
+    const isScrollToQA = this.state.isScrollToQA;
+    const isHandlingLogin = this.state.isHandlingLogin;
+    const isHandlingRegister = this.state.isHandlingRegister;
+    const isHandlingForgetPassword = this.state.isHandlingForgetPassword;
     var settings = {
       dots: false,
       infinite: true,
@@ -78,10 +234,126 @@ class HomeView extends React.Component {
       slidesToShow: 1,
       slidesToScroll: 1
     };
+    var formOverlayStyle = {
+      display: "-webkit-flex",
+      display: "flex",
+      WebkitFlex: "0 1 auto",
+      flex: "0 1 auto",
+      WebkitFlexDirection: "column",
+      flexDirection: "column",
+      WebkitFlexGrow: 1,
+      flexGrow: 1,
+      WebkitFlexShrink: 0,
+      flexShrink: 0,
+      width: "100%",
+      height: "105vh",
+      WebkitAlignItems: "center",
+      alignItems: "center",
+      WebkitJustifyContent: "center",
+      justifyContent: "center",
+      position: "absolute",
+      zIndex: 5000,
+      top: this.state.scrollY,
+      left: 0,
+      overflowY: "hidden"
+    };
+    const isLogin = localStorage.getItem("state_user");
     return (
       <div>
         {isLoading && <Loading />}
+        {isHandlingLogin && (
+          <div style={formOverlayStyle} className="formOverlay">
+            <img
+              src={require("../../../components/assets/logo_no_background.png")}
+              className="d-inline-block align-top meracle-index-logo"
+              alt=""
+            />
+            <h1>登入</h1>
+            <p>
+              還沒有憶想奇蹟帳號？ <a onClick={this.handleRegister}>註冊</a>
+            </p>
+            <Tooltip placement="bottom" title={"關閉"}>
+              <Icon type="close" onClick={this.stopLogin} />
+            </Tooltip>
+            <div className="form-card">
+              <Login />
+              <div className="bottom-btn-wrapper">
+                <Link onClick={this.handleForgetPassword}>忘記密碼？</Link>
+              </div>
+            </div>
+          </div>
+        )}
+        {isHandlingRegister && (
+          <div style={formOverlayStyle} className="formOverlay">
+            <img
+              src={require("../../../components/assets/logo_no_background.png")}
+              className="d-inline-block align-top meracle-index-logo"
+              alt=""
+            />
+            <h1>註冊帳號</h1>
+            <p>
+              已經有憶想奇蹟帳號了？ <a onClick={this.handleLogin}>登入</a>
+            </p>
+            <Tooltip placement="bottom" title={"關閉"}>
+              <Icon type="close" onClick={this.stopRegister} />
+            </Tooltip>
+            <div className="form-card">
+              <Register />
+            </div>
+          </div>
+        )}
+        {isHandlingForgetPassword && (
+          <div style={formOverlayStyle} className="formOverlay">
+            <img
+              src={require("../../../components/assets/logo_no_background.png")}
+              className="d-inline-block align-top meracle-index-logo"
+              alt=""
+            />
+            <h1>忘記密碼</h1>
+            <p>
+              <Link onClick={this.handleLogin}>登入</Link>{" "}
+              <Link onClick={this.handleRegister}>重新註冊</Link>
+            </p>
+            <Tooltip placement="bottom" title={"關閉"}>
+              <Icon type="close" onClick={this.stopForgetPassword} />
+            </Tooltip>
+            <div className="form-card">
+              <ForgetPassword />
+            </div>
+          </div>
+        )}
+        {!isScrollToFooter && (
+          <div id="sider-download-btn">
+            <img
+              src={require("../assets/kid.png")}
+              className="img-fluid"
+              alt=""
+              draggable="false"
+            />
+            <Button className="index-download-btn">下載APP</Button>
+          </div>
+        )}
         <div id="welcome-section">
+          <div className="header">
+            <ul>
+              {!isLogin && (
+                <li className="float-right" onClick={this.handleLogin}>
+                  登入
+                </li>
+              )}
+
+              {isLogin && (
+                <li className="float-right">
+                  <Link to={project.directory + "logout"}>登出</Link>
+                </li>
+              )}
+              {isLogin && (
+                <li className="float-right">
+                  <Link to={project.directory + "dashboard/"}>管理</Link>
+                </li>
+              )}
+            </ul>
+          </div>
           <div className="container">
             <img
               src={require("../../../components/assets/logo_no_background.png")}
@@ -90,14 +362,11 @@ class HomeView extends React.Component {
             />
             <h1>憶想奇機</h1>
             <h3>為孩子的記憶力創造奇蹟</h3>
-            <Button className="index-joinus-btn">加入我們</Button>
+            <Button className="index-joinus-btn" onClick={this.handleRegister}>
+              加入我們
+            </Button>
             <div className="row">
               <div className="demo-device-wrapper">
-                <img
-                  src={require("../assets/cellphone.png")}
-                  className="d-inline-block align-top meracle-index-cellphone img-fluid"
-                  alt=""
-                />
                 <img
                   src={require("../assets/laptop.png")}
                   className="d-inline-block align-top meracle-index-laptop img-fluid"
@@ -110,7 +379,7 @@ class HomeView extends React.Component {
         <div id="features-section">
           <div className="container">
             <h1>
-              憶想奇蹟打造完善的系統<br />讓孩童開心成長
+              憶想奇機 學童腦波記憶力評估訓練系統<br />讓家長放心 孩子開心成長
             </h1>
             <div className="row">
               <div className="col-md-4 col-lg-6">
@@ -122,8 +391,8 @@ class HomeView extends React.Component {
               </div>
               <div className="col-md-8 col-lg-6">
                 <div
-                  className="meracle-feature-wrapper-border"
-                  style={{ marginLeft: 120, background: "#9acbd9" }}
+                  className="meracle-feature-wrapper-border justify-feature-wrapper-border"
+                  style={{ background: "#9acbd9" }}
                 />
                 <div
                   className="meracle-feature-wrapper float-right"
@@ -154,11 +423,11 @@ class HomeView extends React.Component {
                   style={{ textAlign: "right" }}
                 >
                   <h2>
-                    測量腦波<br />量化為記憶力
+                    測量腦波<br />記憶力指數量化
                   </h2>
                   <h3>
-                    加入孩子最喜歡的多種遊戲 一邊開心玩樂 一邊增加記憶力
-                    並且我們將更努力建造豐富的憶想城市
+                    使用Neurosky腦波耳機收集記憶力的腦波訊號 一鍵按下 輕鬆量測<br
+                    />得到目前記憶力指數
                   </h3>
                 </div>
               </div>
@@ -180,8 +449,8 @@ class HomeView extends React.Component {
               </div>
               <div className="col-md-8 col-lg-6">
                 <div
-                  className="meracle-feature-wrapper-border"
-                  style={{ marginLeft: 120, background: "#F2992E" }}
+                  className="meracle-feature-wrapper-border justify-feature-wrapper-border"
+                  style={{ background: "#F2992E" }}
                 />
                 <div
                   className="meracle-feature-wrapper float-right"
@@ -189,8 +458,9 @@ class HomeView extends React.Component {
                 >
                   <h2>多元統計數據</h2>
                   <h3>
-                    提供您每個孩童的個人紀錄、綜合圖表
-                    並且持續更新大眾孩童的統計數據 還想知道什麼？告訴我們！
+                    提供您每個學童的最佳記憶時段與生理狀態，
+                    個人紀錄、綜合圖表一次掌握 並且持續更新大眾學童的記憶力狀況
+                    <br />還想知道什麼？告訴我們！
                   </h3>
                 </div>
               </div>
@@ -212,8 +482,8 @@ class HomeView extends React.Component {
                 >
                   <h2>提升記憶力</h2>
                   <h3>
-                    我們根據理論、調查訪談、實際測試
-                    確實幫助孩童提升工作記憶力了 超級棒吧！
+                    我們根據理論、調查訪談、實際測試<br />
+                    確實能幫助學童提升工作記憶力了<br />超級棒吧！
                   </h3>
                 </div>
               </div>
@@ -267,26 +537,26 @@ class HomeView extends React.Component {
         </div>
         <div id="data-section">
           <div className="container">
-            <h1>期待您的加入 跟我們一起成長</h1>
+            <h1>期待您的加入 跟著我們一起提升記憶力</h1>
             <div className="row">
               <div className="col-md-4 ">
                 <div className="data-item-wrapper-left" />
                 <div className="data-content">
-                  <p>96</p>人<br />
+                  <p>{this.state.totalMember}</p>人<br />
                   加入憶想奇機
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="data-item-wrapper-middle" />
                 <div className="data-content">
-                  <p>196</p>位學童<br />
+                  <p>{this.state.memoryUpTotalMember}</p>位學童<br />
                   提升了記憶力
                 </div>
               </div>
               <div className="col-md-4">
                 <div className="data-item-wrapper-right" />
                 <div className="data-content" style={{ marginLeft: 70 }}>
-                  <p>79</p>%<br />
+                  <p>{this.state.memoryUpPercent}</p>%<br />
                   的上升幅度
                 </div>
               </div>
@@ -295,25 +565,23 @@ class HomeView extends React.Component {
         </div>
         <div id="qa-section">
           <div className="container">
-            <h1>如何簡單測驗腦波？</h1>
+            <h1>如何簡單測量腦波記憶力指數？</h1>
             <div className="row">
-              <div className="col-md-5" style={{ background: "red" }}>
+              <div className="col-md-5">
                 <div className="demo-wrapper">
-                  <video width="320" height="240" controls>
-                    <source
-                      src="../assets/mindwave_demo.mp4"
-                      type="video/mp4"
+                  {isScrollToQA && (
+                    <img
+                      src={require("../assets/mindwave_demo.gif")}
+                      className="d-inline-block align-top img-fluid demo_gif"
+                      alt=""
+                      draggable="false"
                     />
-                    <source
-                      src="../assets/mindwave_demo.ogg"
-                      type="video/ogg"
-                    />
-                    Your browser does not support the video tag.
-                  </video>
+                  )}
                   <img
                     src={require("../assets/cellphone_frame.png")}
                     className="d-inline-block align-top img-fluid"
                     alt=""
+                    draggable="false"
                   />
                 </div>
               </div>
@@ -370,6 +638,7 @@ class HomeView extends React.Component {
                         src={require("../assets/user-1.jpg")}
                         className="d-inline-block align-top"
                         alt=""
+                        draggable="false"
                       />
                     </div>
                   </div>
@@ -387,7 +656,7 @@ class HomeView extends React.Component {
         </div>
         <div id="aboutus-section">
           <div className="container">
-            <h1>團隊成員介紹</h1>
+            <h1>團隊成員</h1>
             <div className="x1">
               <div className="cloud">
                 <img
@@ -411,54 +680,58 @@ class HomeView extends React.Component {
 
             <div className="row">
               <div className="team-member col-md-4">
-                <Link
-                  to={"https://www.facebook.com/xinhe998"}
+                <a
+                  href="https://www.facebook.com/xinhe998"
                   className="index-member-link"
+                  target="_blank"
                 >
                   <div className="team-member-avatar-wrapper">
                     <img
                       src={require("../assets/xinhe.jpg")}
                       className="d-inline-block align-top meracle-team-avatar"
                       alt=""
+                      draggable="false"
                     />
                   </div>
                   <p className="team-member-name">許歆荷</p>
                   <p className="team-member-position">Front-End Developer</p>
-                </Link>
+                </a>
               </div>
               <div className="team-member col-md-4">
-                <Link
-                  to={
-                    "https://www.facebook.com/profile.php?id=100001456991783&lst=100002124966844%3A100001456991783%3A1512152084"
-                  }
+                <a
+                  href="https://www.facebook.com/profile.php?id=100001456991783&lst=100002124966844%3A100001456991783%3A1512152084"
                   className="index-member-link"
+                  target="_blank"
                 >
                   <div className="team-member-avatar-wrapper">
                     <img
                       src={require("../assets/fufu.jpg")}
                       className="d-inline-block align-top meracle-team-avatar"
                       alt=""
+                      draggable="false"
                     />
                   </div>
                   <p className="team-member-name">王敬夫</p>
                   <p className="team-member-position">Back-End Developer</p>
-                </Link>
+                </a>
               </div>
               <div className="team-member col-md-4">
-                <Link
-                  to={"https://www.facebook.com/joyceljy656"}
+                <a
+                  href="https://www.facebook.com/joyceljy656"
                   className="index-member-link"
+                  target="_blank"
                 >
                   <div className="team-member-avatar-wrapper">
                     <img
                       src={require("../assets/joyce.jpg")}
                       className="d-inline-block align-top meracle-team-avatar"
                       alt=""
+                      draggable="false"
                     />
                   </div>
                   <p className="team-member-name">林家妤</p>
                   <p className="team-member-position">App Developer</p>
-                </Link>
+                </a>
               </div>
             </div>
             <div className="x4">
@@ -473,56 +746,58 @@ class HomeView extends React.Component {
             </div>
             <div className="row">
               <div className="team-member col-md-4">
-                <Link
-                  to={
-                    "https://www.facebook.com/profile.php?id=100002707651200&lst=100002124966844%3A100002707651200%3A1512152257"
-                  }
+                <a
+                  href="https://www.facebook.com/profile.php?id=100002707651200&lst=100002124966844%3A100002707651200%3A1512152257"
                   className="index-member-link"
+                  target="_blank"
                 >
                   <div className="team-member-avatar-wrapper">
                     <img
                       src={require("../assets/xuan.jpg")}
                       className="d-inline-block align-top meracle-team-avatar"
                       alt=""
+                      draggable="false"
                     />
                   </div>
                   <p className="team-member-name">兵珮瑄</p>
                   <p className="team-member-position">App Developer</p>
-                </Link>
+                </a>
               </div>
               <div className="team-member col-md-4">
-                <Link
-                  to={
-                    "https://www.facebook.com/profile.php?id=100009919545106&lst=100002124966844%3A100009919545106%3A1512152215"
-                  }
+                <a
+                  href="https://www.facebook.com/profile.php?id=100009919545106&lst=100002124966844%3A100009919545106%3A1512152215"
                   className="index-member-link"
+                  target="_blank"
                 >
                   <div className="team-member-avatar-wrapper">
                     <img
                       src={require("../assets/yalu.jpg")}
                       className="d-inline-block align-top meracle-team-avatar"
                       alt=""
+                      draggable="false"
                     />
                   </div>
                   <p className="team-member-name">林亞儒</p>
                   <p className="team-member-position">UIUX Designer</p>
-                </Link>
+                </a>
               </div>
               <div className="team-member col-md-4">
-                <Link
-                  to={"https://www.facebook.com/A6ZZZZ"}
+                <a
+                  href="https://www.facebook.com/A6ZZZZ"
                   className="index-member-link"
+                  target="_blank"
                 >
                   <div className="team-member-avatar-wrapper">
                     <img
                       src={require("../assets/a6.jpg")}
                       className="d-inline-block align-top meracle-team-avatar"
                       alt=""
+                      draggable="false"
                     />
                   </div>
                   <p className="team-member-name">劉競勻</p>
                   <p className="team-member-position">UIUX Designer</p>
-                </Link>
+                </a>
               </div>
             </div>
             <div className="x3">
@@ -551,12 +826,15 @@ class HomeView extends React.Component {
           <div className="container">
             <h1>憶想奇機 如何創造奇蹟？</h1>
             <p>
-              市面上充斥著許多記憶力訓練的遊戲或教材，但是我們不想讓用戶覺得每次的記憶力訓練都可有可無，我們想讓您知道每次的進步或退步，甚至提供影響記憶力的因素給您參考，孩童的成長是很重要的，相信這是我們的共識！你知道為什麼我們叫做
-              Meracle 嗎？快下載 App 你也可以創造奇蹟！
+              經研究證實，在年紀越小時訓練記憶力，日後在每個學習階段均能迅速理解並活用，孩童的成長是很重要的，相信這是我們的共識！<br
+              />
+              你知道為何是 Meracle 嗎？<br />快下載 憶想奇機 App
+              你也可以創造奇蹟！
             </p>
             <Button className="index-download-btn">下載APP</Button>
           </div>
         </div>
+        {isScrollToFooter && <BackTop />}
       </div>
     );
   }

@@ -16,8 +16,8 @@ export default class Loading extends React.Component {
       flexGrow: 1,
       WebkitFlexShrink: 0,
       flexShrink: 0,
-      width: "100%",
-      height: "100%",
+      width: "100vw",
+      height: "100vh",
       WebkitAlignItems: "center",
       alignItems: "center",
       WebkitJustifyContent: "center",
@@ -26,7 +26,8 @@ export default class Loading extends React.Component {
       position: "absolute",
       zIndex: 100,
       top: 0,
-      left: 0
+      left: 0,
+      overflowY: 'hidden'
     }
     var logoStyle = {
       width: 150,

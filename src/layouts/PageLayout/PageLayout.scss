@@ -1,6 +1,7 @@
 $mobileWidh: 768px;
 body {
   font-family: "Roboto", "Noto Sans TC", "Arial Unicode MS", sans-serif;
+  overflow-x: hidden;
 }
 .page-layout__viewport {
   // padding-top: 4rem;
@@ -45,7 +46,7 @@ body {
   .navbar {
     display: none;
     visibility: hidden;
-    width: 100%;
+    width: 100vw;
     background-color: #102847 !important;
     transition: 0.5s all;
     z-index: 100;
@@ -101,6 +102,12 @@ body {
       line-height: 26px;
       font-weight: 500;
       margin-left: 16px;
+    }
+    &:hover {
+      color: #ffffff !important;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      background: #78bacc !important;
+      border: 1px solid #78bacc !important;
     }
   }
 }

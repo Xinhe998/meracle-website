@@ -186,3 +186,32 @@
     margin-top: 48px;
   }
 }
+.status-dropdown-wrapper {
+  margin-bottom: 16px;
+  .ant-calendar-picker-input {
+    height: 38px;
+    font-size: 16px;
+    color: #555555;
+    letter-spacing: 1px;
+    line-height: 22px;
+    font-weight: 400;
+    cursor: pointer;
+    &:hover {
+      border-color: #78bacc !important;
+    }
+  }
+
+  .ant-calendar-range-picker-input {
+    cursor: pointer;
+  }
+}
+.ant-calendar-today {
+  .ant-calendar-date {
+    border-color: #78bacc !important;
+    color: #78bacc !important;
+  }
+}
+.ant-calendar-selected-day .ant-calendar-date {
+  background: #78bacc !important;
+  color: #ffffff !important;
+}
