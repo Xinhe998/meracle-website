@@ -91,12 +91,10 @@ class DashBoardLayout extends React.Component {
   };
   preventAnonymousAccess = () => {
     if (!this.props.user) {
-      alert("請先登入");
-      browserHistory.push(project.directory + "Login");
+      browserHistory.push(project.directory);
     } else {
       if (!this.props.user.account) {
-        alert("請先登入");
-        browserHistory.push(project.directory + "Login");
+        browserHistory.push(project.directory);
       }
     }
   };

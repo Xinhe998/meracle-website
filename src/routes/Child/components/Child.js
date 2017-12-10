@@ -146,9 +146,9 @@ export default class Child extends React.Component {
           })
             .then(res => res.json())
             .then(
-              responseJson => {
+              async responseJson => {
                 if (responseJson.result === "success") {
-                  this.getChildData();
+                  window.location.reload();
                 }
               },
               function(e) {
@@ -187,56 +187,58 @@ export default class Child extends React.Component {
 
     var tableData = [];
     const child = this.props.child;
-    Object.keys(child).map(function(key, index) {
-      tableData.push({
-        key: index,
-        avatar: (
-          <div className="avatar-wrapper">
-            {child[index].avatar !== "" ? (
-              <img
-                className="dashboard-avatar"
-                src={
-                  "https://www.meracle.me/home/Filefolder/" +
-                  child[index].avatar +
-                  "?time=" +
-                  new Date().getTime()
-                }
-                alt=""
-              />
-            ) : (
-              <img
-                className="dashboard-avatar"
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                alt=""
-              />
-            )}
-          </div>
-        ),
-        name: child[index].name,
-        gender: child[index].gender,
-        birth: child[index].birth,
-        edit: (
-          <div className="link-wrapper">
-            <Link
-              className="child-edit-link"
-              onClick={() => {
-                editChild(child[index].name, child[index].birth);
-              }}
-            >
-              編輯
-            </Link>
-            <Link
-              className="delete-link"
-              onClick={() => {
-                deleteChild(child[index].name);
-              }}
-            >
-              刪除
-            </Link>
-          </div>
-        )
+    if (child[0].name) {
+      Object.keys(child).map(function(key, index) {
+        tableData.push({
+          key: index,
+          avatar: (
+            <div className="avatar-wrapper">
+              {child[index].avatar !== "" ? (
+                <img
+                  className="dashboard-avatar"
+                  src={
+                    "https://www.meracle.me/home/Filefolder/" +
+                    child[index].avatar +
+                    "?time=" +
+                    new Date().getTime()
+                  }
+                  alt=""
+                />
+              ) : (
+                <img
+                  className="dashboard-avatar"
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  alt=""
+                />
+              )}
+            </div>
+          ),
+          name: child[index].name,
+          gender: child[index].gender,
+          birth: child[index].birth,
+          edit: (
+            <div className="link-wrapper">
+              <Link
+                className="child-edit-link"
+                onClick={() => {
+                  editChild(child[index].name, child[index].birth);
+                }}
+              >
+                編輯
+              </Link>
+              <Link
+                className="delete-link"
+                onClick={() => {
+                  deleteChild(child[index].name);
+                }}
+              >
+                刪除
+              </Link>
+            </div>
+          )
+        });
       });
-    });
+    }
 
     const isLoading = this.state.isLoading;
     return (
@@ -247,13 +249,16 @@ export default class Child extends React.Component {
           title="學童資料"
           className="child-wrapper"
         >
-          <Table
-            columns={columns}
-            dataSource={tableData}
-            bordered
-            pagination={false}
-            className="child-table"
-          />
+          {child && (
+            <Table
+              columns={columns}
+              dataSource={tableData}
+              bordered
+              pagination={false}
+              className="child-table"
+              locale={{ emptyText: "無數據" }}
+            />
+          )}
         </Card>
         <div className="child-footer">
           憶想奇蹟提供您可以管理五個孩童喔！<br />

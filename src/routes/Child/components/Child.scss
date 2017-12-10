@@ -64,8 +64,28 @@
   letter-spacing: 1.2px;
   line-height: 26px;
   a {
-    color: #6D7084;
+    color: #6d7084;
     letter-spacing: 1.6px;
     text-decoration: underline;
   }
+}
+.ant-calendar-picker-input {
+  cursor: pointer;
+}
+.ant-calendar-picker-container {
+  z-index: 6000 !important;
+  top: 50vh !important;
+}
+.ant-input:hover {
+  border-color: #9acbd9 !important;
+}
+.ant-calendar-today {
+  .ant-calendar-date {
+    border-color: #78bacc !important;
+    color: #78bacc !important;
+  }
+}
+.ant-calendar-selected-day .ant-calendar-date {
+  background: #78bacc !important;
+  color: #ffffff !important;
 }

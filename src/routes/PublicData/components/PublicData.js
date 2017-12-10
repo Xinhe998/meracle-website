@@ -86,7 +86,7 @@ export default class PublicData extends React.Component {
     //大眾孩童每日平均表現
     var avgArrary = [];
     await fetch(
-      "https://www.meracle.me/home/api/Survey/AvgPublicMemeryOrderBy",
+      "https://www.meracle.me/home/api/Survey/AvgPublicStatusScoreAllMemeryNoOrderBy",
       {
         method: "GET"
       }

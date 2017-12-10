@@ -1,9 +1,32 @@
 .notfound-wrapper {
   text-align: center;
   margin-top: 50px;
-  font-size: 20px;
+  font-size: 50px;
   font-weight: 500;
   .logo {
     width: 400px;
+  }
+  %meracle-button {
+    border: 2px solid #9acbd9;
+    border-radius: 4px !important;
+    height: 60px !important;
+    line-height: 24px !important;
+    font-size: 14px !important;
+    color: #9acbd9;
+    letter-spacing: 1.4px;
+    width: 10%;
+  }
+  .meracle-btn {
+    @extend %meracle-button;
+    background: #9acbd9 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    &:hover {
+      color: #ffffff !important;
+      @extend %meracle-button;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      background: #78bacc !important;
+      border: 1px solid #78bacc !important;
+    }
   }
 }

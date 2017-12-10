@@ -58,12 +58,10 @@ export default class Dashboard extends React.Component {
   }
   preventAnonymousAccess = () => {
     if (!this.props.user) {
-      alert("請先登入");
-      browserHistory.push(project.directory + "Login");
+      browserHistory.push(project.directory);
     } else {
       if (!this.props.user.account) {
-        alert("請先登入");
-        browserHistory.push(project.directory + "Login");
+        browserHistory.push(project.directory);
       }
     }
   };
@@ -341,7 +339,7 @@ export default class Dashboard extends React.Component {
     Object.keys(child).map(function(key, index) {
       if (child[key].name) {
         fetch(
-          "https://www.meracle.me/home/api/Survey/CdDayOfScoreByTimerTable",
+          "https://www.meracle.me/home/api/Survey/CdAllOfScoreByTimerTable",
           {
             //跑所有小孩
             method: "POST",
@@ -361,7 +359,6 @@ export default class Dashboard extends React.Component {
               if (responseJson.length) {
                 for (var i = 0; i < Object.keys(responseJson).length; i++) {
                   //跑六個狀態
-
                   avgArrary.push({
                     range: responseJson[i].TimeRangeName
                   });
@@ -425,19 +422,19 @@ export default class Dashboard extends React.Component {
         })}
       </Menu>
     );
-    const startFarmerGame = () => {
-      var newWindow = window.open("../../Game/FarmerGame/farmer.html");
+    const startGame = () => {
+      var newWindow = window.open("../../Game/map/index.html");
       newWindow.account = this.props.user.account;
       newWindow.authorization = this.props.user.authorization;
       newWindow.child_name = this.state.selectedCdName;
       //取用：window.account
     };
-    const startBackerGame = () => {
-      var newWindow = window.open("../../Game/BakeryGame/game_first_page.html");
-      newWindow.account = this.props.user.account;
-      newWindow.authorization = this.props.user.authorization;
-      newWindow.child_name = this.state.selectedCdName;
-    };
+    // const startBackerGame = () => {
+    //   var newWindow = window.open("../../Game/BakeryGame/game_first_page.html");
+    //   newWindow.account = this.props.user.account;
+    //   newWindow.authorization = this.props.user.authorization;
+    //   newWindow.child_name = this.state.selectedCdName;
+    // };
     const child_color = ["#9ACBD9", "#F5808B", "#F2992E", "#2F9A9E", "#A77DC2"];
     switch (this.state.latestData_color) {
       case "#9ACBD9":
@@ -566,20 +563,20 @@ export default class Dashboard extends React.Component {
                         )}
                       </Dropdown.Button>
                     </div>
-                    <div className="col-md-5 col-lg-2">
+                    {/* <div className="col-md-5 col-lg-2">
                       <Button
                         className="meracle-outline-btn float-right"
                         onClick={() => startFarmerGame()}
                       >
                         進入遊戲
                       </Button>
-                    </div>
-                    <div className="col-md-7 col-lg-4">
+                    </div> */}
+                    <div className="col-md-12 col-lg-6">
                       <Button
                         className="meracle-btn"
-                        onClick={() => startBackerGame()}
+                        onClick={() => startGame()}
                       >
-                        進入遊戲＆測量腦波
+                        進入遊戲 ＆ 測量腦波
                       </Button>
                     </div>
                   </div>
@@ -691,15 +688,26 @@ export default class Dashboard extends React.Component {
                       strokeWidth={5}
                       className={latestData_color_type}
                     />
-                    {this.state.latestData_different !== undefined ? (
-                      <p
-                        className="progress-gain hidden-md-down"
-                        style={{ color: this.state.latestData_color }}
-                      >
-                        <Icon type="caret-up" />{" "}
-                        {this.state.latestData_different}
-                      </p>
-                    ) : null}
+                    {this.state.latestData_different !== undefined &&
+                      this.state.latestData_different >= 0 && (
+                        <p
+                          className="progress-gain hidden-md-down"
+                          style={{ color: this.state.latestData_color }}
+                        >
+                          <Icon type="caret-up" />{" "}
+                          {this.state.latestData_different}
+                        </p>
+                      )}
+                    {this.state.latestData_different !== undefined &&
+                      this.state.latestData_different < 0 && (
+                        <p
+                          className="progress-gain hidden-md-down"
+                          style={{ color: this.state.latestData_color }}
+                        >
+                          <Icon type="caret-down" />{" "}
+                          {Math.abs(this.state.latestData_different)}
+                        </p>
+                      )}
                   </Card>
                 </div>
                 <div className="col-md-12">
@@ -810,7 +818,11 @@ export default class Dashboard extends React.Component {
                                 dataKey={child[key].name}
                                 stroke={child[key].color}
                                 strokeWidth="4"
-                                dot={{ stroke: "#9ACBD9", strokeWidth: 4 }}
+                                dot={{
+                                  stroke: child[key].color,
+                                  strokeWidth: 4,
+                                  fill: child[key].color
+                                }}
                                 animationDuration={2000}
                               />
                             );

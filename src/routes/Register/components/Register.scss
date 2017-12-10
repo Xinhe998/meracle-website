@@ -21,12 +21,13 @@
   .meracle-btn {
     @extend %meracle-button;
     background: #9acbd9 !important;
-    width: 100%;
+    width: 100% !important;
     color: #ffffff !important;
     font-weight: 500;
     &:hover {
       color: #ffffff !important;
       @extend %meracle-button;
+      width: 100% !important;
       box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
       background: #78bacc !important;
       border: 1px solid #78bacc !important;
@@ -66,6 +67,7 @@
     }
   }
   .ant-calendar-picker-container {
+    z-index: 6000;
     top: 40vh !important;
   }
   .register-avatar-wrapper {
@@ -105,4 +107,24 @@
     font-weight: 300;
     text-align: center;
   }
+}
+.ant-calendar-picker-input {
+  cursor: pointer;
+}
+.ant-calendar-picker-container {
+  z-index: 6000 !important;
+  top: 100vh !important;
+}
+.ant-input:hover {
+  border-color: #9acbd9 !important;
+}
+.ant-calendar-today {
+  .ant-calendar-date {
+    border-color: #78bacc !important;
+    color: #78bacc !important;
+  }
+}
+.ant-calendar-selected-day .ant-calendar-date {
+  background: #78bacc !important;
+  color: #ffffff !important;
 }

@@ -28,9 +28,9 @@ export const createRoutes = store => [
     component: PageLayout,
     indexRoute: Home,
     childRoutes: [
-      Login(store),
-      Register(store),
-      ForgetPassword(store),
+      // Login(store),
+      // Register(store),
+      // ForgetPassword(store),
       Logout(store)
     ]
   },

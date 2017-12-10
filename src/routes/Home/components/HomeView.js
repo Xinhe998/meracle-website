@@ -6,7 +6,6 @@ import Login from "../../Login/containers/LoginContainer";
 import ForgetPassword from "../../ForgetPassword/containers/ForgetPasswordContainer";
 import Register from "../../Register/containers/RegisterContainer";
 import { Link } from "react-router";
-import "react-html5video/dist/styles.css";
 import {
   Line,
   XAxis,
@@ -210,6 +209,10 @@ class HomeView extends React.Component {
     });
     document.body.classList.remove("overlay-open");
   };
+  downloadApp = () => {
+    window.location.href =
+      "https://drive.google.com/uc?export=download&id=1Io-UE6QPMn8czCLoKRfbkbzvc8s-2xZW";
+  };
 
   render() {
     const isMobile =
@@ -330,7 +333,12 @@ class HomeView extends React.Component {
               alt=""
               draggable="false"
             />
-            <Button className="index-download-btn">下載APP</Button>
+            <Button
+              className="index-download-btn"
+              onClick={() => this.downloadApp}
+            >
+              下載APP
+            </Button>
           </div>
         )}
         <div id="welcome-section">
@@ -635,7 +643,7 @@ class HomeView extends React.Component {
                   <div className="col-md-4">
                     <div className="user-photo-wrapper">
                       <img
-                        src={require("../assets/user-1.jpg")}
+                        src={require("../assets/user.png")}
                         className="d-inline-block align-top"
                         alt=""
                         draggable="false"
@@ -643,10 +651,11 @@ class HomeView extends React.Component {
                     </div>
                   </div>
                   <div className="col-md-6">
-                    我家小朋友很喜歡玩憶想城市的房間大變身這個遊戲，而且越玩越有成就感，我也發現他的記憶力指數有逐漸上升，非常開心可以使用這個產品！
+                    我是國中三年級的許小昕，因為姐姐製作了這個系統，讓我可以第一個使用憶想奇機來提升記憶力，我最喜歡憶想城市裡的農夫收耕遊戲，一定會推薦更多同學來使用的！
+                    <br />
                     <br />
                     <p className="user-experience-name float-right align-bottom">
-                      張小姐
+                      許小昕
                     </p>
                   </div>
                 </div>
@@ -831,7 +840,12 @@ class HomeView extends React.Component {
               你知道為何是 Meracle 嗎？<br />快下載 憶想奇機 App
               你也可以創造奇蹟！
             </p>
-            <Button className="index-download-btn">下載APP</Button>
+            <Button
+              className="index-download-btn"
+              onClick={() => this.downloadApp}
+            >
+              下載APP
+            </Button>
           </div>
         </div>
         {isScrollToFooter && <BackTop />}

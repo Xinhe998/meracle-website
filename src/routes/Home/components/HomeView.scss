@@ -673,16 +673,28 @@ body {
   border-radius: 10px !important;
   width: 40px !important;
   height: 40px !important;
-  &.slick-prev:before {
-    content: "\1F868" !important;
-  }
-  &.slick-next:before {
-    content: "\1F86A" !important;
-  }
+  // &.slick-prev:before {
+  //   content: "\1F868" !important;
+  //   /* <unicode-range> values */
+  //   unicode-range: U+26; /* single codepoint */
+  //   unicode-range: U+0-7f;
+  //   unicode-range: U+0025-00ff; /* codepoint range */
+  //   unicode-range: U+4??; /* wildcard range */
+  //   unicode-range: U+0025-00ff, U+4??; /* multiple values */
+  // }
+  // &.slick-next:before {
+  //   content: "\1F86A" !important;
+  //   /* <unicode-range> values */
+  //   unicode-range: U+26; /* single codepoint */
+  //   unicode-range: U+0-7f;
+  //   unicode-range: U+0025-00ff; /* codepoint range */
+  //   unicode-range: U+4??; /* wildcard range */
+  //   unicode-range: U+0025-00ff, U+4??; /* multiple values */
+  // }
 }
 .slick-list {
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.3); 
   border-radius: 8px;
   font-size: 18px;
   color: #ffffff;
@@ -760,4 +772,23 @@ body {
   i {
     margin-top: 20px !important;
   }
+}
+.ant-calendar-picker-input {
+  cursor: pointer;
+}
+.ant-calendar-picker-container {
+  z-index: 6000 !important;
+}
+.ant-input:hover {
+  border-color: #9acbd9 !important;
+}
+.ant-calendar-today {
+  .ant-calendar-date {
+    border-color: #78bacc !important;
+    color: #78bacc !important;
+  }
+}
+.ant-calendar-selected-day .ant-calendar-date {
+  background: #78bacc !important;
+  color: #ffffff !important;
 }

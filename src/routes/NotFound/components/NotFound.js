@@ -1,5 +1,7 @@
 import React from "react";
 import "./NotFound.scss";
+import { browserHistory } from "react-router";
+import { Button } from "antd";
 
 export const NotFound = () => (
   <div className="notfound-wrapper">
@@ -8,8 +10,20 @@ export const NotFound = () => (
       className="logo"
       alt=""
     />
-    <p>團隊正在水深火熱 開發中...</p>
-    <p>敬請期待 ^_^</p>
+    <p>
+      Oops！ <br />抱歉，您要找的網頁找不到
+    </p>
+    <br />
+    <div className="bottom-btn-wrapper">
+      <Button
+        size="large"
+        className="meracle-btn"
+        onClick={() => browserHistory.push("/my_meracle/")}
+      >
+        {" "}
+        回首頁{" "}
+      </Button>
+    </div>
   </div>
 );
 

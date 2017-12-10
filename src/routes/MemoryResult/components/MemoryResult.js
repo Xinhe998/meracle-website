@@ -188,7 +188,13 @@ export default class MemoryResult extends React.Component {
               MemoryData: resultArray,
               best_time: responseJson.OptimalTimer
                 ? responseJson.OptimalTimer.m_Item1
-                : null
+                : null,
+              best_status: responseJson.StatusName
+                ? responseJson.StatusName
+                : null,
+              best_date: moment(responseJson.OptimalStatus.CreateTime).format(
+                "YYYY-MM-DD"
+              )
             });
           },
           function(e) {
@@ -547,7 +553,7 @@ export default class MemoryResult extends React.Component {
         ),
         detail: (
           <div className="memory_info_detail">
-            {/* <p>2017/10/24</p>為最佳時間！ */}
+            <p>{this.state.best_date}</p>為最佳時間！
           </div>
         )
       }
@@ -557,13 +563,13 @@ export default class MemoryResult extends React.Component {
       {
         key: "1",
         title: "最佳狀態",
-        //status: "睡覺前"
+        status: this.state.best_status
       }
     ];
     var bestTimeDataSource = [
       {
         key: "1",
-        title: "最佳時段",
+        title: "最佳時間",
         time: this.state.best_time
       }
     ];
