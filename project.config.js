@@ -10,10 +10,10 @@ module.exports = {
   /** The file name of the application's entry point */
   main: "main",
   /** The name of the directory in which to emit compiled assets */
-  outDir: "React/",
+  outDir: "docs/",
   /** The base path for all projects assets (relative to the website root) */
-  publicPath: "/my_meracle/", //production
-  // publicPath: '/',  //development
+  // publicPath: "/my_meracle/", //production
+  publicPath: '/',  //development
   /** Whether to generate sourcemaps */
   directory: "/my_meracle/",
   sourcemaps: true,

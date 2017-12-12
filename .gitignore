@@ -1,7 +1,6 @@
 .DS_STORE
 *.log
 node_modules
-React
 coverage
 .idea/
 .yarn-cache
