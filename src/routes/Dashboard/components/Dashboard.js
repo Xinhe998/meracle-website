@@ -74,7 +74,7 @@ export default class Dashboard extends React.Component {
 
   checkHavaChild = async () => {
     //檢查此帳號是否擁有學童
-    await fetch("https://www.meracle.me/home/api/Member/isAccHaveChild", {
+    await fetch(project.api.url + "api/Member/isAccHaveChild", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export default class Dashboard extends React.Component {
   getChildData = async () => {
     const child_color = ["#9ACBD9", "#F5808B", "#F2992E", "#2F9A9E", "#A77DC2"];
     //取得有哪些學童，存姓名至array
-    await fetch("https://www.meracle.me/home/api/Member/GetAccountCdName", {
+    await fetch(project.api.url + "api/Member/GetAccountCdName", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,7 +149,7 @@ export default class Dashboard extends React.Component {
 
   getLatestData = async () => {
     //最新數據
-    await fetch("https://www.meracle.me/home/api/Survey/CdNewScoreTable", {
+    await fetch(project.api.url + "api/Survey/CdNewScoreTable", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -193,7 +193,7 @@ export default class Dashboard extends React.Component {
   };
   getBestDataOfThisWeek = async () => {
     //本周最佳表現
-    await fetch("https://www.meracle.me/home/api/Survey/WeekOfBestScoreCd", {
+    await fetch(project.api.url + "api/Survey/WeekOfBestScoreCd", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -236,7 +236,7 @@ export default class Dashboard extends React.Component {
     const user = this.props.user;
     var avgArrary = [];
     Object.keys(child).map(function(key, index) {
-      fetch("https://www.meracle.me/home/api/Survey/AvgCdStatusOfScore", {
+      fetch(project.api.url + "api/Survey/AvgCdStatusOfScore", {
         //跑所有小孩
         method: "POST",
         headers: {
@@ -285,7 +285,7 @@ export default class Dashboard extends React.Component {
       "剛睡醒"
     ];
     await Object.keys(child).map(function(key, index) {
-      fetch("https://www.meracle.me/home/api/Survey/CdBestOfScore", {
+      fetch(project.api.url + "api/Survey/CdBestOfScore", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -338,21 +338,18 @@ export default class Dashboard extends React.Component {
     var avgArrary = [];
     Object.keys(child).map(function(key, index) {
       if (child[key].name) {
-        fetch(
-          "https://www.meracle.me/home/api/Survey/CdAllOfScoreByTimerTable",
-          {
-            //跑所有小孩
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: user.authorization
-            },
-            body: JSON.stringify({
-              Account: user.account,
-              CdName: child[key].name
-            })
-          }
-        )
+        fetch(project.api.url + "api/Survey/CdAllOfScoreByTimerTable", {
+          //跑所有小孩
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: user.authorization
+          },
+          body: JSON.stringify({
+            Account: user.account,
+            CdName: child[key].name
+          })
+        })
           .then(res => res.json())
           .then(
             async responseJson => {

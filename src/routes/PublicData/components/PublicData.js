@@ -28,7 +28,7 @@ import {
   Cell,
   LabelList
 } from "recharts";
-
+const project = require("../../../../project.config");
 export default class PublicData extends React.Component {
   static propTypes = {};
   constructor(props) {
@@ -55,7 +55,7 @@ export default class PublicData extends React.Component {
     //本周最佳表現
     var avgArrary = [];
     await fetch(
-      "https://www.meracle.me/home/api/Survey/AvgPublicSleepAvgScoreNoOrderby",
+      project.api.url + "api/Survey/AvgPublicSleepAvgScoreNoOrderby",
       {
         method: "GET"
       }
@@ -86,7 +86,7 @@ export default class PublicData extends React.Component {
     //大眾孩童每日平均表現
     var avgArrary = [];
     await fetch(
-      "https://www.meracle.me/home/api/Survey/AvgPublicStatusScoreAllMemeryNoOrderBy",
+      project.api.url + "api/Survey/AvgPublicStatusScoreAllMemeryNoOrderBy",
       {
         method: "GET"
       }
@@ -116,12 +116,9 @@ export default class PublicData extends React.Component {
   getAvgAgeOfMemory = async () => {
     //大眾孩童各年齡記憶力
     var avgArrary = [];
-    await fetch(
-      "https://www.meracle.me/home/api/Survey/AvgPublicAgeRangeScoreOrderby",
-      {
-        method: "GET"
-      }
-    )
+    await fetch(project.api.url + "api/Survey/AvgPublicAgeRangeScoreOrderby", {
+      method: "GET"
+    })
       .then(res => res.json())
       .then(
         async responseJson => {
@@ -146,12 +143,9 @@ export default class PublicData extends React.Component {
   getAvgFoodOfMemory = async () => {
     //大眾孩童各年齡記憶力
     var avgArrary = [];
-    await fetch(
-      "https://www.meracle.me/home/api/Survey/AvgPublicCerealOrderBy",
-      {
-        method: "GET"
-      }
-    )
+    await fetch(project.api.url + "api/Survey/AvgPublicCerealOrderBy", {
+      method: "GET"
+    })
       .then(res => res.json())
       .then(
         async responseJson => {
@@ -176,7 +170,7 @@ export default class PublicData extends React.Component {
   getConditionOfMemory = async () => {
     //大眾孩童生理狀況
     var avgArrary = [];
-    await fetch("https://www.meracle.me/home/api/Survey/AvgPublicBodyAvgScoreOrderBy", {
+    await fetch(project.api.url + "api/Survey/AvgPublicBodyAvgScoreOrderBy", {
       method: "GET"
     })
       .then(res => res.json())

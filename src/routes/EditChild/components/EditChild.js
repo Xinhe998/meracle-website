@@ -62,7 +62,7 @@ class EditChild extends React.Component {
   }
 
   fetchChildData = async () => {
-    await fetch("https://www.meracle.me/home/api/Member/CdPersonalPage", {
+    await fetch(project.api.url + "api/Member/CdPersonalPage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ class EditChild extends React.Component {
       formData.child_avatar = sessionStorage.child_avatar;
     });
     console.log("formData ==>", formData);
-    await fetch("https://www.meracle.me/home/api/Member/EdlitCdPersonalPage", {
+    await fetch(project.api.url + "api/Member/EdlitCdPersonalPage", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -139,7 +139,7 @@ class EditChild extends React.Component {
         }
       );
     if (sessionStorage.child_avatar) {
-      await fetch("https://www.meracle.me/home/api/Member/ReactPostImage", {
+      await fetch(project.api.url + "api/Member/ReactPostImage", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -275,10 +275,7 @@ class EditChild extends React.Component {
                       />
                     ) : (
                       <img
-                        src={
-                          "https://www.meracle.me/home/Filefolder/" +
-                          child_avatar
-                        }
+                        src={project.api.url + "Filefolder/" + child_avatar}
                         alt=""
                         className="avatar"
                       />

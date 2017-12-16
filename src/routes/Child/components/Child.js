@@ -28,7 +28,7 @@ export default class Child extends React.Component {
     }, 300);
   }
   checkHavaChild = async () => {
-    await fetch("https://www.meracle.me/home/api/Member/isAccHaveChild", {
+    await fetch(project.api.url + "api/Member/isAccHaveChild", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default class Child extends React.Component {
   };
   getChildData = async () => {
     //取得有哪些學童，存姓名至array
-    await fetch("https://www.meracle.me/home/api/Member/GetAccountCdName", {
+    await fetch(project.api.url + "api/Member/GetAccountCdName", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default class Child extends React.Component {
     //依取得的學童姓名拿詳細資料
     var cdDetailArray = [];
     for (var index in this.props.child) {
-      await fetch("https://www.meracle.me/home/api/Member/CdPersonalPage", {
+      await fetch(project.api.url + "api/Member/CdPersonalPage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export default class Child extends React.Component {
         okType: "danger",
         cancelText: "取消",
         onOk() {
-          fetch("https://www.meracle.me/home/api/Member/RmCdMember", {
+          fetch(project.api.url + "api/Member/RmCdMember", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -197,7 +197,8 @@ export default class Child extends React.Component {
                 <img
                   className="dashboard-avatar"
                   src={
-                    "https://www.meracle.me/home/Filefolder/" +
+                    project.api.url +
+                    "Filefolder/" +
                     child[index].avatar +
                     "?time=" +
                     new Date().getTime()

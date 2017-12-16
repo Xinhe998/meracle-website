@@ -51,7 +51,7 @@ export default class MemoryResult extends React.Component {
     await this.getTheChildAllMemoryData();
   }
   checkHavaChild = async () => {
-    await fetch("https://www.meracle.me/home/api/Member/isAccHaveChild", {
+    await fetch(project.api.url + "api/Member/isAccHaveChild", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default class MemoryResult extends React.Component {
   getChildData = async () => {
     const child_color = ["#9ACBD9", "#F5808B", "#F2992E", "#2F9A9E", "#A77DC2"];
     //取得有哪些學童，存姓名至array
-    await fetch("https://www.meracle.me/home/api/Member/GetAccountCdName", {
+    await fetch(project.api.url + "api/Member/GetAccountCdName", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export default class MemoryResult extends React.Component {
     //依取得的學童姓名拿詳細資料
     var cdDetailArray = [];
     for (var index in this.props.child) {
-      await fetch("https://www.meracle.me/home/api/Member/CdPersonalPage", {
+      await fetch(project.api.url + "api/Member/CdPersonalPage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -158,7 +158,7 @@ export default class MemoryResult extends React.Component {
   getTheChildAllMemoryData = async () => {
     var resultArray = [];
     if (this.state.selectedCdName) {
-      await fetch("https://www.meracle.me/home/api/Survey/GetCdAllTestData", {
+      await fetch(project.api.url + "api/Survey/GetCdAllTestData", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -541,7 +541,8 @@ export default class MemoryResult extends React.Component {
               <img
                 className="dashboard-avatar"
                 src={
-                  "https://www.meracle.me/home/Filefolder/" +
+                  project.api.url +
+                  "Filefolder/" +
                   this.state.selectedCdAvatar +
                   "?time=" +
                   new Date().getTime()

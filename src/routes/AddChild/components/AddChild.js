@@ -58,7 +58,6 @@ class AddChild extends React.Component {
 
   next() {
     const current = this.state.current + 1;
-    console.log("current=>", current);
     if (current === 1) {
       this.step1(event);
     }
@@ -69,7 +68,6 @@ class AddChild extends React.Component {
   }
   prev() {
     const current = this.state.current - 1;
-    console.log("current=>", current);
     this.setState({
       current: current,
       child_avatar: sessionStorage.child_avatar
@@ -77,7 +75,7 @@ class AddChild extends React.Component {
   }
   getChildData = async () => {
     //取得有哪些學童，存姓名至array
-    await fetch("https://www.meracle.me/home/api/Member/GetAccountCdName", {
+    await fetch(project.api.url + "api/Member/GetAccountCdName", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +92,6 @@ class AddChild extends React.Component {
             this.setState({
               child_count: responseJson.CdName.length
             });
-            console.log(this.state.child_count);
           }
         },
         function(e) {
@@ -138,8 +135,7 @@ class AddChild extends React.Component {
       formData.child_condition = values.child_condition;
       formData.child_sleep_time = this.state.child_sleep_time;
     });
-    console.log("formData ==>", formData);
-    await fetch("https://www.meracle.me/home/api/Member/CdRegister", {
+    await fetch(project.api.url + "api/Member/CdRegister", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -181,7 +177,7 @@ class AddChild extends React.Component {
       );
     if (successToAddCd) {
       if (sessionStorage.child_avatar) {
-        await fetch("https://www.meracle.me/home/api/Member/ReactPostImage", {
+        await fetch(project.api.url + "api/Member/ReactPostImage", {
           method: "POST",
           mode: "cors",
           headers: {
@@ -199,14 +195,13 @@ class AddChild extends React.Component {
           .then(res => res.json())
           .then(
             responseJson => {
-              console.log(responseJson);
             },
             function(e) {
               console.log(e);
             }
           );
       }
-      await fetch("https://www.meracle.me/home/api/Survey/Questionnaire", {
+      await fetch(project.api.url + "api/Survey/Questionnaire", {
         method: "POST",
         mode: "cors",
         headers: {

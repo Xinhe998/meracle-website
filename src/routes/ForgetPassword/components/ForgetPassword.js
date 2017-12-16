@@ -41,7 +41,7 @@ class ForgetPassword extends React.Component {
       }
     });
     if (isOk) {
-      await fetch("https://www.meracle.me/home/api/Member/ForgetPassword", {
+      await fetch(project.api.url + "api/Member/ForgetPassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

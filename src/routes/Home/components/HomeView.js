@@ -109,7 +109,7 @@ class HomeView extends React.Component {
   }
 
   getTotalMember = async () => {
-    await fetch("https://www.meracle.me/home/api/Survey/CountMember", {
+    await fetch(project.api.url + "api/Survey/CountMember", {
       method: "GET"
     })
       .then(res => res.json())
@@ -126,7 +126,7 @@ class HomeView extends React.Component {
   };
 
   getMemoryUpTotalMember = async () => {
-    await fetch("https://www.meracle.me/home/api/Survey/CountMemberMemoryUp", {
+    await fetch(project.api.url + "api/Survey/CountMemberMemoryUp", {
       method: "GET"
     })
       .then(res => res.json())
@@ -143,7 +143,7 @@ class HomeView extends React.Component {
   };
 
   getMemoryUpPercent = async () => {
-    await fetch("https://www.meracle.me/home/api/Survey/CountMemberMemoryUp", {
+    await fetch(project.api.url + "api/Survey/CountMemberMemoryUp", {
       method: "GET"
     })
       .then(res => res.json())
@@ -434,8 +434,7 @@ class HomeView extends React.Component {
                     測量腦波<br />記憶力指數量化
                   </h2>
                   <h3>
-                    使用Neurosky腦波耳機收集記憶力的腦波訊號 一鍵按下 輕鬆量測<br
-                    />得到目前記憶力指數
+                    使用Neurosky腦波耳機收集記憶力的腦波訊號 一鍵按下 輕鬆量測<br />得到目前記憶力指數
                   </h3>
                 </div>
               </div>
@@ -835,8 +834,7 @@ class HomeView extends React.Component {
           <div className="container">
             <h1>憶想奇機 如何創造奇蹟？</h1>
             <p>
-              經研究證實，在年紀越小時訓練記憶力，日後在每個學習階段均能迅速理解並活用，孩童的成長是很重要的，相信這是我們的共識！<br
-              />
+              經研究證實，在年紀越小時訓練記憶力，日後在每個學習階段均能迅速理解並活用，孩童的成長是很重要的，相信這是我們的共識！<br />
               你知道為何是 Meracle 嗎？<br />快下載 憶想奇機 App
               你也可以創造奇蹟！
             </p>

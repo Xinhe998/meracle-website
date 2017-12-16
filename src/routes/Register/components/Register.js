@@ -77,7 +77,7 @@ class Register extends React.Component {
 
     var curStep = 1;
     if (isOk) {
-      await fetch("https://www.meracle.me/home/api/Member/Register", {
+      await fetch(project.api.url + "api/Member/Register", {
         method: "POST",
         mode: "cors",
         headers: {

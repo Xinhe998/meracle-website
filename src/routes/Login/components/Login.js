@@ -47,7 +47,7 @@ class Login extends React.Component {
     });
     if (isOk) {
       try {
-        await fetch("https://www.meracle.me/home/api/Member/Login", {
+        await fetch(project.api.url + "api/Member/Login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

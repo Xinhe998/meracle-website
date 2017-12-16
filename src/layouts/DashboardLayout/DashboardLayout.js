@@ -105,7 +105,7 @@ class DashBoardLayout extends React.Component {
     });
   };
   getProfileData = async user => {
-    await fetch("https://www.meracle.me/home/api/Member/PersonalPage", {
+    await fetch(project.api.url + "api/Member/PersonalPage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -188,7 +188,8 @@ class DashBoardLayout extends React.Component {
                 <img
                   className="dashboard-avatar"
                   src={
-                    "https://www.meracle.me/home/Filefolder/" +
+                    project.api.url +
+                    "Filefolder/" +
                     this.props.user_detail.avatar +
                     "?time=" +
                     new Date().getTime()

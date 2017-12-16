@@ -4,3 +4,5 @@ node_modules
 coverage
 .idea/
 .yarn-cache
+project.config.js
+docs

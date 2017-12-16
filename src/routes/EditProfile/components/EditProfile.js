@@ -77,7 +77,7 @@ class EditProfile extends React.Component {
       this.setState({
         isLoading: true
       });
-      await fetch("https://www.meracle.me/home/api/Member/EdlitPersonalPage", {
+      await fetch(project.api.url + "api/Member/EdlitPersonalPage", {
         method: "POST",
         mode: "cors",
         headers: {
@@ -107,7 +107,7 @@ class EditProfile extends React.Component {
         }
       );
       if (this.state.avatar) {
-        await fetch("https://www.meracle.me/home/api/Member/ReactPostImage", {
+        await fetch(project.api.url + "api/Member/ReactPostImage", {
           method: "POST",
           mode: "cors",
           headers: {
@@ -232,7 +232,8 @@ class EditProfile extends React.Component {
                   ) : (
                     <img
                       src={
-                        "https://www.meracle.me/home/Filefolder/" +
+                        project.api.url +
+                        "Filefolder/" +
                         this.props.user_detail.avatar +
                         "?time=" +
                         new Date().getTime()

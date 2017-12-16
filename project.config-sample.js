@@ -17,7 +17,7 @@ module.exports = {
   /** Whether to generate sourcemaps */
   directory: "/my_meracle/",
   api: {
-    url: "https://www.meracle.me/home/"
+    url: ""
   },
   sourcemaps: true,
   /** A hash map of keys that the compiler should treat as external to the project */

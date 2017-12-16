@@ -5,9 +5,11 @@ import Loading from "../../../components/Loading";
 import { DatePicker, Button, Input, AutoComplete, Radio, Form } from "antd";
 // import './HomeView.scss'
 const FormItem = Form.Item;
+const project = require("../../../../project.config");
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
+
 class ChangePassword extends React.Component {
   static propTypes = {};
   constructor(props) {
@@ -48,7 +50,7 @@ class ChangePassword extends React.Component {
     });
     console.log(formData);
     if (isOk) {
-      await fetch("https://www.meracle.me/home/api/Member/EditPassword", {
+      await fetch(project.api.url + "api/Member/EditPassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
